@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UMali — Privacy Policy & About Us</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#C9A84C; --gold-light:#E8C97A;
+  --green-deep:#0A2E1A; --green-mid:#1A5C34; --green-bright:#2E9954;
+  --cream:#FAF7F0; --white:#fff; --text:#2A2A2A; --muted:#7A7A6E;
+  --maroon-mid:#A00000; --danger:#C0392B;
+  --shadow:0 2px 12px rgba(0,0,0,.07);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--green-deep);color:var(--text);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(201,168,76,.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(46,153,84,.1) 0%,transparent 50%);pointer-events:none;z-index:0;}
+
+/* SCREENS */
+.screen{display:none;min-height:100vh;position:relative;z-index:1;}
+.screen.active{display:flex;flex-direction:column;}
+
+/* TOP NAV */
+.topnav{background:var(--green-deep);padding:0 20px;display:flex;align-items:center;gap:14px;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3);}
+.back-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:16px;cursor:pointer;flex-shrink:0;transition:all .2s;}
+.back-btn:hover{background:rgba(255,255,255,.15);}
+.topnav-title{font-family:'Playfair Display',serif;color:var(--gold);font-size:20px;font-weight:700;}
+
+/* PAGE TABS */
+.page-tabs{background:var(--green-deep);padding:0 20px 16px;display:flex;gap:8px;border-bottom:1px solid rgba(255,255,255,.06);}
+.page-tab{flex:1;text-align:center;padding:10px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;color:rgba(255,255,255,.4);transition:all .2s;}
+.page-tab.active{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3);}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;background:var(--cream);}
+
+/* ===== HOME SCREEN ===== */
+#homeScreen{background:var(--green-deep);}
+.home-hero{background:linear-gradient(135deg,var(--green-deep),var(--green-mid));padding:48px 24px 60px;text-align:center;position:relative;overflow:hidden;}
+.home-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(201,168,76,.12) 0%,transparent 70%);border-radius:50%;}
+.home-hero::after{content:'';position:absolute;bottom:-20px;left:0;right:0;height:40px;background:var(--cream);border-radius:40px 40px 0 0;}
+.home-logo-icon{width:80px;height:80px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 20px;box-shadow:0 10px 40px rgba(201,168,76,.3);animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.home-logo-name{font-family:'Playfair Display',serif;font-size:48px;font-weight:900;color:var(--gold);letter-spacing:-2px;display:block;margin-bottom:6px;}
+.home-logo-tag{color:rgba(255,255,255,.5);font-size:13px;letter-spacing:2px;text-transform:uppercase;}
+.home-desc{color:rgba(255,255,255,.6);font-size:15px;line-height:1.7;max-width:340px;margin:20px auto 0;}
+
+.home-menu{padding:28px 20px;background:var(--cream);}
+.menu-card{background:var(--white);border-radius:18px;padding:20px;margin-bottom:12px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow);border:1px solid transparent;}
+.menu-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+.menu-card-icon{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.menu-card-title{font-weight:700;color:var(--green-deep);font-size:16px;margin-bottom:4px;}
+.menu-card-sub{font-size:12px;color:var(--muted);line-height:1.4;}
+.menu-card-arrow{margin-left:auto;color:var(--gold);font-size:20px;flex-shrink:0;}
+
+.contact-card{background:linear-gradient(135deg,var(--green-deep),var(--green-mid));border-radius:18px;padding:20px;margin:0 0 12px;text-align:center;}
+.contact-title{font-family:'Playfair Display',serif;color:var(--white);font-size:18px;margin-bottom:6px;}
+.contact-sub{color:rgba(255,255,255,.5);font-size:12px;margin-bottom:14px;}
+.contact-email{background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:10px;padding:10px 16px;color:var(--gold);font-weight:600;font-size:14px;font-family:'DM Mono',monospace;display:inline-block;}
+
+.version-info{text-align:center;padding:16px 20px;color:var(--muted);font-size:12px;}
+
+/* ===== ABOUT US ===== */
+.about-hero{background:linear-gradient(135deg,var(--green-deep),var(--green-mid));padding:32px 24px 52px;position:relative;overflow:hidden;}
+.about-hero::before{content:'🇿🇦';position:absolute;right:-10px;top:-10px;font-size:120px;opacity:.06;}
+.about-hero::after{content:'';position:absolute;bottom:-20px;left:0;right:0;height:40px;background:var(--cream);border-radius:40px 40px 0 0;}
+.about-hero-tag{background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:20px;padding:5px 14px;font-size:11px;color:var(--gold);font-weight:600;letter-spacing:1px;text-transform:uppercase;display:inline-block;margin-bottom:12px;}
+.about-hero-title{font-family:'Playfair Display',serif;color:var(--white);font-size:28px;margin-bottom:8px;line-height:1.2;}
+.about-hero-sub{color:rgba(255,255,255,.5);font-size:13px;line-height:1.6;}
+
+.about-content{padding:28px 20px;}
+.about-section{margin-bottom:28px;}
+.about-section-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--green-deep);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gold-pale);}
+.about-text{font-size:14px;color:var(--text);line-height:1.8;margin-bottom:10px;}
+.about-text strong{color:var(--green-deep);}
+
+.founder-card{background:linear-gradient(135deg,var(--green-deep),var(--green-mid));border-radius:20px;padding:24px;margin-bottom:28px;position:relative;overflow:hidden;}
+.founder-card::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(201,168,76,.15) 0%,transparent 70%);border-radius:50%;}
+.founder-avatar{width:64px;height:64px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:14px;}
+.founder-name{font-family:'Playfair Display',serif;color:var(--white);font-size:22px;margin-bottom:4px;}
+.founder-title{color:var(--gold);font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+.founder-bio{color:rgba(255,255,255,.6);font-size:13px;line-height:1.7;}
+.founder-age-badge{background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:20px;padding:5px 14px;font-size:11px;color:var(--gold);font-weight:700;display:inline-block;margin-top:12px;}
+
+.mission-card{background:var(--white);border-radius:18px;padding:20px;margin-bottom:14px;box-shadow:var(--shadow);}
+.mission-icon{font-size:32px;margin-bottom:10px;display:block;}
+.mission-title{font-weight:700;color:var(--green-deep);font-size:15px;margin-bottom:6px;}
+.mission-text{font-size:13px;color:var(--muted);line-height:1.6;}
+
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.stat-card{background:var(--white);border-radius:16px;padding:16px;text-align:center;box-shadow:var(--shadow);}
+.stat-num{font-family:'DM Mono',monospace;font-size:24px;font-weight:700;color:var(--green-mid);display:block;}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:3px;}
+
+.values-list{display:flex;flex-direction:column;gap:10px;}
+.value-item{background:var(--white);border-radius:14px;padding:14px;display:flex;gap:12px;align-items:flex-start;box-shadow:var(--shadow);}
+.value-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.value-title{font-weight:700;color:var(--green-deep);font-size:13px;margin-bottom:3px;}
+.value-text{font-size:12px;color:var(--muted);line-height:1.5;}
+
+.team-note{background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(46,153,84,.1));border:1px solid rgba(201,168,76,.3);border-radius:16px;padding:18px;text-align:center;margin-bottom:20px;}
+.team-note-text{font-size:13px;color:var(--text);line-height:1.7;}
+.team-note-text strong{color:var(--green-deep);}
+
+/* ===== PRIVACY POLICY ===== */
+.privacy-hero{background:linear-gradient(135deg,#0A0A2E,#1A1A5C);padding:32px 24px 52px;position:relative;overflow:hidden;}
+.privacy-hero::before{content:'🔐';position:absolute;right:-10px;top:-10px;font-size:120px;opacity:.05;}
+.privacy-hero::after{content:'';position:absolute;bottom:-20px;left:0;right:0;height:40px;background:var(--cream);border-radius:40px 40px 0 0;}
+.privacy-hero-tag{background:rgba(100,100,255,.15);border:1px solid rgba(100,100,255,.3);border-radius:20px;padding:5px 14px;font-size:11px;color:#8888FF;font-weight:600;letter-spacing:1px;text-transform:uppercase;display:inline-block;margin-bottom:12px;}
+.privacy-hero-title{font-family:'Playfair Display',serif;color:var(--white);font-size:26px;margin-bottom:8px;}
+.privacy-hero-date{color:rgba(255,255,255,.4);font-size:12px;}
+
+.privacy-content{padding:28px 20px;}
+.privacy-section{margin-bottom:28px;}
+.privacy-number{width:32px;height:32px;background:var(--green-mid);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:13px;margin-bottom:10px;flex-shrink:0;}
+.privacy-section-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.privacy-section-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--green-deep);}
+.privacy-text{font-size:13px;color:var(--text);line-height:1.8;margin-bottom:8px;}
+.privacy-text strong{color:var(--green-deep);}
+.privacy-list{margin:8px 0 8px 16px;}
+.privacy-list li{font-size:13px;color:var(--text);line-height:1.8;margin-bottom:4px;}
+.privacy-list li::marker{color:var(--green-mid);}
+
+.privacy-box{border-radius:14px;padding:14px;margin-bottom:10px;}
+.privacy-box.green{background:#E8F5E9;border:1px solid #A5D6A7;}
+.privacy-box.blue{background:#EEF3FF;border:1px solid #90CAF9;}
+.privacy-box.gold{background:var(--gold-pale);border:1px solid rgba(201,168,76,.3);}
+.privacy-box.red{background:#FFEBEE;border:1px solid #FFCDD2;}
+.privacy-box-title{font-weight:700;font-size:13px;margin-bottom:6px;}
+.privacy-box.green .privacy-box-title{color:#2E7D32;}
+.privacy-box.blue .privacy-box-title{color:#0D47A1;}
+.privacy-box.gold .privacy-box-title{color:#B8860B;}
+.privacy-box.red .privacy-box-title{color:var(--danger);}
+.privacy-box-text{font-size:12px;line-height:1.6;}
+.privacy-box.green .privacy-box-text{color:#1B5E20;}
+.privacy-box.blue .privacy-box-text{color:#0D47A1;}
+.privacy-box.gold .privacy-box-text{color:#7B6008;}
+.privacy-box.red .privacy-box-text{color:#B71C1C;}
+
+.popia-badge{background:linear-gradient(135deg,var(--green-deep),var(--green-mid));border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.popia-icon{font-size:28px;flex-shrink:0;}
+.popia-title{color:var(--white);font-weight:700;font-size:14px;margin-bottom:3px;}
+.popia-sub{color:rgba(255,255,255,.5);font-size:12px;line-height:1.4;}
+
+.contact-section{background:linear-gradient(135deg,var(--green-deep),var(--green-mid));border-radius:18px;padding:20px;text-align:center;margin-bottom:20px;}
+.contact-section-title{font-family:'Playfair Display',serif;color:var(--white);font-size:18px;margin-bottom:6px;}
+.contact-section-sub{color:rgba(255,255,255,.5);font-size:12px;margin-bottom:14px;}
+.contact-detail{background:rgba(255,255,255,.08);border-radius:10px;padding:10px;margin-bottom:8px;color:rgba(255,255,255,.7);font-size:13px;}
+.contact-detail strong{color:var(--gold);}
+
+.last-updated{text-align:center;color:var(--muted);font-size:11px;padding:10px 0 20px;}
+</style>
+</head>
+<body>
+
+<!-- ===== HOME / MENU SCREEN ===== -->
+<div id="homeScreen" class="screen active">
+  <div class="home-hero">
+    <div class="home-logo-icon">💰</div>
+    <span class="home-logo-name">UMali</span>
+    <span class="home-logo-tag">Stokvel · Burial Societies · Funerals</span>
+    <div class="home-desc">Africa's first complete digital platform connecting burial societies to funeral services — built in South Africa, for South Africa.</div>
+  </div>
+
+  <div class="home-menu">
+    <div class="menu-card" onclick="showScreen('aboutScreen')">
+      <div class="menu-card-icon" style="background:#E8F5E9;">🇿🇦</div>
+      <div>
+        <div class="menu-card-title">About UMali</div>
+        <div class="menu-card-sub">Our story, our mission, and who we are building for</div>
+      </div>
+      <div class="menu-card-arrow">›</div>
+    </div>
+
+    <div class="menu-card" onclick="showScreen('privacyScreen')">
+      <div class="menu-card-icon" style="background:#EEF3FF;">🔐</div>
+      <div>
+        <div class="menu-card-title">Privacy Policy</div>
+        <div class="menu-card-sub">How we protect your data — POPIA compliant</div>
+      </div>
+      <div class="menu-card-arrow">›</div>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-title">Get In Touch</div>
+      <div class="contact-sub">Questions, partnerships, or funeral company listings</div>
+      <div class="contact-email">umaliapp@gmail.com</div>
+    </div>
+
+    <div class="version-info">
+      UMali v7.0 · Built in South Africa 🇿🇦<br>
+      © 2026 UMali (Pty) Ltd · All rights reserved
+    </div>
+  </div>
+</div>
+
+<!-- ===== ABOUT US SCREEN ===== -->
+<div id="aboutScreen" class="screen">
+  <div class="topnav">
+    <button class="back-btn" onclick="showScreen('homeScreen')">←</button>
+    <div class="topnav-title">About UMali</div>
+  </div>
+
+  <div class="content">
+    <div class="about-hero">
+      <div class="about-hero-tag">🇿🇦 Made in South Africa</div>
+      <div class="about-hero-title">Built for our communities. Built for our people.</div>
+      <div class="about-hero-sub">UMali is Africa's first complete digital platform that manages burial societies, tracks stokvel contributions, and connects grieving families to funeral services — all in one app.</div>
+    </div>
+
+    <div class="about-content">
+
+      <!-- FOUNDER -->
+      <div class="founder-card">
+        <div class="founder-avatar">👤</div>
+        <div class="founder-name">Andisa Shabalala</div>
+        <div class="founder-title">Founder & CEO · UMali</div>
+        <div class="founder-bio">
+          I grew up watching burial society admins struggle with notebooks, WhatsApp arguments about who paid, and families waiting days for funeral payments during the most painful moments of their lives. I knew there had to be a better way.
+
+          At 17 years old, I built UMali from nothing — no money, no investors, just a phone and a vision. I wanted to build something that serves real South African communities, not just people who can afford fintech apps.
+
+          UMali is for Mama Dlamini running a 30-family burial society in Soweto. It is for the stokvel group in Khayelitsha saving for December. It is for every South African family who deserves dignity when they bury their loved ones.
+        </div>
+        <div class="founder-age-badge">🔥 Founded at age 17 · South Africa</div>
+      </div>
+
+      <!-- STATS -->
+      <div class="about-section">
+        <div class="about-section-title">The Problem We Solve</div>
+        <div class="stats-row">
+          <div class="stat-card">
+            <span class="stat-num">11M</span>
+            <div class="stat-lbl">Stokvel members in SA managing money manually</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">100K+</span>
+            <div class="stat-lbl">Burial societies with no digital management</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">R50B</span>
+            <div class="stat-lbl">Managed through stokvels annually</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">0</span>
+            <div class="stat-lbl">Apps connecting burial societies to funeral services before UMali</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MISSION -->
+      <div class="about-section">
+        <div class="about-section-title">Our Mission</div>
+        <div class="mission-card">
+          <span class="mission-icon">💰</span>
+          <div class="mission-title">Financial Dignity for Every South African</div>
+          <div class="mission-text">We believe every South African family deserves to manage their money with transparency, security and dignity — regardless of where they live or how much they earn.</div>
+        </div>
+        <div class="mission-card">
+          <span class="mission-icon">🕊️</span>
+          <div class="mission-title">Dignity in Death</div>
+          <div class="mission-text">When someone passes away, their family should never have to worry about money. UMali ensures burial society payouts reach funeral homes instantly so families can focus on what matters.</div>
+        </div>
+        <div class="mission-card">
+          <span class="mission-icon">🌍</span>
+          <div class="mission-title">Built for Africa</div>
+          <div class="mission-text">We are not a foreign company trying to understand African communities. We are from here. We understand stokvels, burial societies and the deep cultural importance of how we bury our people.</div>
+        </div>
+      </div>
+
+      <!-- VALUES -->
+      <div class="about-section">
+        <div class="about-section-title">Our Values</div>
+        <div class="values-list">
+          <div class="value-item">
+            <div class="value-icon" style="background:#E8F5E9;">🤝</div>
+            <div>
+              <div class="value-title">Community First</div>
+              <div class="value-text">Every decision we make starts with one question: does this serve South African communities better? If the answer is no, we don't build it.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" style="background:#EEF3FF;">🔐</div>
+            <div>
+              <div class="value-title">Trust & Security</div>
+              <div class="value-text">We handle people's money and their most painful moments. We take that responsibility seriously. Every rand is protected. Every piece of data is encrypted.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" style="background:#FFF8E1;">⚡</div>
+            <div>
+              <div class="value-title">Speed When It Matters</div>
+              <div class="value-text">When someone dies, their family needs money fast. Our instant payment system ensures funeral homes are paid within minutes so burial can happen with dignity.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" style="background:#F3E5F5;">💡</div>
+            <div>
+              <div class="value-title">Simple for Everyone</div>
+              <div class="value-text">Our app must work for a gogos in a rural village and a young professional in Sandton. If it's too complicated, we simplify it until everyone can use it.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" style="background:#FFEBEE;">❤️</div>
+            <div>
+              <div class="value-title">Dignity Always</div>
+              <div class="value-text">Whether someone is rich or poor, from a township or a suburb — they deserve the same dignity when managing their finances and burying their loved ones.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WHAT WE DO -->
+      <div class="about-section">
+        <div class="about-section-title">What UMali Does</div>
+        <div class="about-text">UMali is the <strong>first app in Africa</strong> that combines all of these in one platform:</div>
+        <div class="values-list">
+          <div class="value-item">
+            <div class="value-icon" style="background:#E8F5E9;">💰</div>
+            <div>
+              <div class="value-title">Stokvel Management</div>
+              <div class="value-text">Create and manage any type of stokvel — savings, grocery, burial. Track contributions, manage payouts and send automatic reminders.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" style="background:#FFEBEE;">⚰️</div>
+            <div>
+              <div class="value-title">Burial Society Management</div>
+              <div class="value-text">Full admin dashboard for burial society leaders. Member management, contribution tracking, claim filing and approval — all digital.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" style="background:#F3E5F5;">🕊️</div>
+            <div>
+              <div class="value-title">Funeral Services Marketplace</div>
+              <div class="value-text">Browse, compare and book trusted funeral companies across South Africa. Burial society payout sent directly to funeral home within minutes.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" style="background:#EEF3FF;">⚡</div>
+            <div>
+              <div class="value-title">Instant Funeral Payments</div>
+              <div class="value-text">Once a claim is approved, UMali automatically pays the funeral home and notifies all society members. No waiting. No manual transfers.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" style="background:#FFF8E1;">🏦</div>
+            <div>
+              <div class="value-title">All SA Banks Connected</div>
+              <div class="value-text">FNB, Capitec, Standard Bank, ABSA, Nedbank, TymeBank, Discovery Bank and African Bank — all connected through one secure integration.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEAM NOTE -->
+      <div class="team-note">
+        <div style="font-size:32px;margin-bottom:10px;">🇿🇦</div>
+        <div class="team-note-text">
+          <strong>UMali was built by a 17-year-old South African</strong> who saw a gap that no one else was filling. We are proof that you do not need money, investors or a fancy office to build something that matters. You need a real problem, a real community, and the courage to start.
+        </div>
+      </div>
+
+      <div style="text-align:center;padding:10px 0 20px;color:var(--muted);font-size:12px;line-height:1.8;">
+        🏢 UMali (Pty) Ltd<br>
+        📍 South Africa<br>
+        📧 umaliapp@gmail.com<br>
+        🌐 umali-app.vercel.app
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== PRIVACY POLICY SCREEN ===== -->
+<div id="privacyScreen" class="screen">
+  <div class="topnav">
+    <button class="back-btn" onclick="showScreen('homeScreen')">←</button>
+    <div class="topnav-title">Privacy Policy</div>
+  </div>
+
+  <div class="content">
+    <div class="privacy-hero">
+      <div class="privacy-hero-tag">🔐 POPIA Compliant</div>
+      <div class="privacy-hero-title">UMali Privacy Policy</div>
+      <div class="privacy-hero-date">Last updated: 18 March 2026 · Effective immediately</div>
+    </div>
+
+    <div class="privacy-content">
+
+      <!-- POPIA BADGE -->
+      <div class="popia-badge">
+        <span class="popia-icon">🛡️</span>
+        <div>
+          <div class="popia-title">POPIA Compliant</div>
+          <div class="popia-sub">This policy complies with South Africa's Protection of Personal Information Act (POPIA) No. 4 of 2013. Your data rights are protected by South African law.</div>
+        </div>
+      </div>
+
+      <!-- INTRO -->
+      <div class="privacy-section">
+        <div class="privacy-text">
+          Welcome to UMali. We are committed to protecting your personal information and your right to privacy. This Privacy Policy explains how UMali (Pty) Ltd collects, uses, stores and protects your personal information when you use our platform.
+        </div>
+        <div class="privacy-text">
+          By using UMali, you agree to the collection and use of information as described in this policy. If you do not agree, please do not use our platform.
+        </div>
+        <div class="privacy-box gold">
+          <div class="privacy-box-title">📌 Simple Summary</div>
+          <div class="privacy-box-text">We collect only what we need to run your burial society or stokvel. We never sell your data. We never share it without your permission except to process payments. You can delete your account and all your data at any time.</div>
+        </div>
+      </div>
+
+      <!-- 1. WHO WE ARE -->
+      <div class="privacy-section">
+        <div class="privacy-section-header">
+          <div class="privacy-number">1</div>
+          <div class="privacy-section-title">Who We Are</div>
+        </div>
+        <div class="privacy-text"><strong>Company Name:</strong> UMali (Pty) Ltd</div>
+        <div class="privacy-text"><strong>Platform:</strong> UMali — Stokvel, Burial Society & Funeral Services Platform</div>
+        <div class="privacy-text"><strong>Contact Email:</strong> umaliapp@gmail.com</div>
+        <div class="privacy-text"><strong>Country:</strong> South Africa</div>
+        <div class="privacy-text"><strong>Website:</strong> umali-app.vercel.app</div>
+        <div class="privacy-text">UMali is the responsible party (also called the "Information Officer") as defined under POPIA.</div>
+      </div>
+
+      <!-- 2. WHAT WE COLLECT -->
+      <div class="privacy-section">
+        <div class="privacy-section-header">
+          <div class="privacy-number">2</div>
+          <div class="privacy-section-title">What Information We Collect</div>
+        </div>
+        <div class="privacy-text">We collect the following personal information when you register and use UMali:</div>
+
+        <div class="privacy-box green">
+          <div class="privacy-box-title">👤 Personal Identity Information</div>
+          <div class="privacy-box-text">
+            • Full name<br>
+            • South African ID number (for KYC verification)<br>
+            • Date of birth<br>
+            • Profile photo (optional)
+          </div>
+        </div>
+
+        <div class="privacy-box blue">
+          <div class="privacy-box-title">📞 Contact Information</div>
+          <div class="privacy-box-text">
+            • Phone number (required for OTP verification)<br>
+            • Email address<br>
+            • Physical address (for burial society membership)
+          </div>
+        </div>
+
+        <div class="privacy-box gold">
+          <div class="privacy-box-title">💰 Financial Information</div>
+          <div class="privacy-box-text">
+            • Bank account details (encrypted and stored securely)<br>
+            • Contribution payment history<br>
+            • Stokvel and burial society balances<br>
+            • Transaction references
+          </div>
+        </div>
+
+        <div class="privacy-box green">
+          <div class="privacy-box-title">⚰️ Burial Society Information</div>
+          <div class="privacy-box-text">
+            • Society membership details<br>
+            • Contribution records<br>
+            • Claim information (including deceased details)<br>
+            • Death certificates (uploaded by members)
+          </div>
+        </div>
+
+        <div class="privacy-text" style="margin-top:10px;"><strong>We do NOT collect:</strong></div>
+        <ul class="privacy-list">
+          <li>Your banking passwords or PINs</li>
+          <li>Your exact location (only province for funeral search)</li>
+          <li>Social media information</li>
+          <li>Information about your children without consent</li>
+        </ul>
+      </div>
+
+      <!-- 3. WHY WE COLLECT IT -->
+      <div class="privacy-section">
+        <div class="privacy-section-header">
+          <div class="privacy-number">3</div>
+          <div class="privacy-section-title">Why We Collect Your Information</div>
+        </div>
+        <div class="privacy-text">We collect your information only for these specific purposes:</div>
+        <ul class="privacy-list">
+          <li><strong>To create and manage your account</strong> on UMali</li>
+          <li><strong>To manage your burial society or stokvel</strong> membership and contributions</li>
+          <li><strong>To process payments</strong> for contributions and funeral bookings</li>
+          <li><strong>To verify your identity</strong> as required by South African financial regulations</li>
+          <li><strong>To send you notifications</strong> about payments, claims and society updates</li>
+          <li><strong>To connect you to funeral services</strong> when a burial claim is approved</li>
+          <li><strong>To generate financial statements</strong> for your society or stokvel</li>
+          <li><strong>To detect and prevent fraud</strong> on our platform</li>
+          <li><strong>To comply with South African law</strong> including POPIA and FICA</li>
+        </ul>
+      </div>
+
+      <!-- 4. WHO WE SHARE IT WITH -->
+      <div class="privacy-section">
+        <div class="privacy-section-header">
+          <div class="privacy-number">4</div>
+          <div class="privacy-section-title">Who We Share Your Information With</div>
+        </div>
+        <div class="privacy-text">We share your information only with the following parties and only when necessary:</div>
+
+        <div class="privacy-box green">
+          <div class="privacy-box-title">✅ Payment Processors</div>
+          <div class="privacy-box-text">PayFast and Ozow receive your payment information to process contributions and funeral payments. They have their own POPIA-compliant privacy policies.</div>
+        </div>
+
+        <div class="privacy-box blue">
+          <div class="privacy-box-title">✅ Funeral Companies (Only When You Book)</div>
+          <div class="privacy-box-text">When a burial claim is approved and a funeral booking is made, we share your contact details and burial requirements with the selected funeral company only.</div>
+        </div>
+
+        <div class="privacy-box gold">
+          <div class="privacy-box-title">✅ Bank Integration (Stitch Money)</div>
+          <div class="privacy-box-text">To verify bank payments, we use Stitch Money's read-only banking API. We never share your banking password. Only transaction verification data is accessed.</div>
+        </div>
+
+        <div class="privacy-box red">
+          <div class="privacy-box-title">❌ We NEVER Share With</div>
+          <div class="privacy-box-text">
+            • Advertisers or marketing companies<br>
+            • Data brokers<br>
+            • Other burial societies or stokvels without your consent<br>
+            • Any third party for commercial purposes<br>
+            • Government unless required by law
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. HOW WE PROTECT IT -->
+      <div class="privacy-section">
+        <div class="privacy-section-header">
+          <div class="privacy-number">5</div>
+          <div class="privacy-section-title">How We Protect Your Information</div>
+        </div>
+        <div class="privacy-text">We use industry-leading security measures to protect your data:</div>
+        <ul class="privacy-list">
+          <li><strong>AES-256-GCM encryption</strong> — the same standard used by major South African banks</li>
+          <li><strong>Two-factor authentication (2FA)</strong> — OTP required for every login</li>
+          <li><strong>Biometric authentication</strong> — Face ID and fingerprint support</li>
+          <li><strong>AI fraud detection</strong> — monitors every transaction for suspicious activity</li>
+          <li><strong>Firebase Security Rules</strong> — your data is only accessible by you</li>
+          <li><strong>Encrypted database storage</strong> — on Google's secure servers</li>
+          <li><strong>Secure HTTPS connection</strong> — all data in transit is encrypted</li>
+          <li><strong>Regular security audits</strong> — to identify and fix vulnerabilities</li>
+        </ul>
+        <div class="privacy-box gold">
+          <div class="privacy-box-title">⚠️ Important</div>
+          <div class="privacy-box-text">No system is 100% secure. If you believe your account has been compromised, contact us immediately at umaliapp@gmail.com and use the Account Freeze feature in the app.</div>
+        </div>
+      </div>
+
+      <!-- 6. HOW LONG WE KEEP IT -->
+      <div class="privacy-section">
+        <div class="privacy-section-header">
+          <div class="privacy-number">6</div>
+          <div class="privacy-section-title">How Long We Keep Your Information</div>
+        </div>
+        <div class="privacy-text">We keep your personal information for the following periods:</div>
+        <ul class="privacy-list">
+          <li><strong>Active account data:</strong> For as long as your account is active</li>
+          <li><strong>Financial transaction records:</strong> 5 years (required by South African law)</li>
+          <li><strong>Burial claim records:</strong> 7 years (for legal and insurance purposes)</li>
+          <li><strong>Security logs:</strong> 2 years</li>
+          <li><strong>Deleted account data:</strong> Permanently deleted within 30 days of your request</li>
+        </ul>
+      </div>
+
+      <!-- 7. YOUR RIGHTS -->
+      <div class="privacy-section">
+        <div class="privacy-section-header">
+          <div class="privacy-number">7</div>
+          <div class="privacy-section-title">Your Rights Under POPIA</div>
+        </div>
+        <div class="privacy-text">As a South African citizen, POPIA gives you the following rights:</div>
+
+        <div class="values-list">
+          <div class="value-item">
+            <div class="value-icon" style="background:#E8F5E9;">👁️</div>
+            <div>
+              <div class="value-title">Right to Access</div>
+              <div class="value-text">You can request a copy of all personal information we hold about you at any time.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" style="background:#EEF3FF;">✏️</div>
+            <div>
+              <div class="value-title">Right to Correction</div>
+              <div class="value-text">You can ask us to correct any inaccurate personal information we hold about you.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" style="background:#FFEBEE;">🗑️</div>
+            <div>
+              <div class="value-title">Right to Deletion</div>
+              <div class="value-text">You can request that we delete your personal information. We will do so within 30 days except where we are required by law to keep it.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" style="background:#FFF8E1;">🚫</div>
+            <div>
+              <div class="value-title">Right to Object</div>
+              <div class="value-text">You can object to us processing your personal information for certain purposes including direct marketing.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon" style="background:#F3E5F5;">📦</div>
+            <div>
+              <div class="value-title">Right to Data Portability</div>
+              <div class="value-text">You can request your data in a portable format to transfer to another service.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="privacy-text" style="margin-top:14px;">To exercise any of these rights, contact us at <strong>umaliapp@gmail.com</strong> with the subject line "POPIA Data Request". We will respond within 30 days.</div>
+      </div>
+
+      <!-- 8. COOKIES -->
+      <div class="privacy-section">
+        <div class="privacy-section-header">
+          <div class="privacy-number">8</div>
+          <div class="privacy-section-title">Cookies and Tracking</div>
+        </div>
+        <div class="privacy-text">UMali uses minimal cookies and tracking technologies:</div>
+        <ul class="privacy-list">
+          <li><strong>Session cookies:</strong> To keep you logged in securely</li>
+          <li><strong>Security cookies:</strong> To detect fraud and protect your account</li>
+          <li><strong>Analytics:</strong> Anonymous usage data to improve the app (no personal identification)</li>
+        </ul>
+        <div class="privacy-text">We do <strong>NOT</strong> use advertising cookies or tracking pixels. We do not display advertisements in UMali.</div>
+      </div>
+
+      <!-- 9. CHILDREN -->
+      <div class="privacy-section">
+        <div class="privacy-section-header">
+          <div class="privacy-number">9</div>
+          <div class="privacy-section-title">Children's Privacy</div>
+        </div>
+        <div class="privacy-text">UMali is designed for adults (18 years and older). We do not knowingly collect personal information from anyone under the age of 18 without verifiable parental consent.</div>
+        <div class="privacy-text">If you believe we have collected information from a minor without consent, please contact us immediately at umaliapp@gmail.com.</div>
+      </div>
+
+      <!-- 10. CHANGES -->
+      <div class="privacy-section">
+        <div class="privacy-section-header">
+          <div class="privacy-number">10</div>
+          <div class="privacy-section-title">Changes to This Policy</div>
+        </div>
+        <div class="privacy-text">We may update this Privacy Policy from time to time. When we make significant changes we will:</div>
+        <ul class="privacy-list">
+          <li>Update the "Last Updated" date at the top of this policy</li>
+          <li>Send you a notification through the UMali app</li>
+          <li>Send you an SMS or email if the changes significantly affect your rights</li>
+        </ul>
+        <div class="privacy-text">Your continued use of UMali after changes are posted means you accept the updated policy.</div>
+      </div>
+
+      <!-- 11. COMPLAINTS -->
+      <div class="privacy-section">
+        <div class="privacy-section-header">
+          <div class="privacy-number">11</div>
+          <div class="privacy-section-title">Complaints and Regulators</div>
+        </div>
+        <div class="privacy-text">If you are unhappy with how we handle your personal information, you have the right to complain to the Information Regulator of South Africa:</div>
+        <div class="privacy-box blue">
+          <div class="privacy-box-title">🏛️ Information Regulator (South Africa)</div>
+          <div class="privacy-box-text">
+            Website: inforegulator.org.za<br>
+            Email: inforeg@justice.gov.za<br>
+            Phone: 012 406 4818<br>
+            Address: JD House, 27 Stiemens Street, Braamfontein, 2001
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="contact-section">
+        <div class="contact-section-title">Contact Our Privacy Team</div>
+        <div class="contact-section-sub">For any privacy questions or to exercise your POPIA rights</div>
+        <div class="contact-detail"><strong>Email:</strong> umaliapp@gmail.com</div>
+        <div class="contact-detail"><strong>Subject:</strong> Privacy Policy Enquiry</div>
+        <div class="contact-detail"><strong>Response time:</strong> Within 30 days as required by POPIA</div>
+      </div>
+
+      <div class="last-updated">
+        Privacy Policy Version 1.0<br>
+        Last Updated: 18 March 2026<br>
+        © 2026 UMali (Pty) Ltd · South Africa 🇿🇦
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+
+</body>
+</html>
