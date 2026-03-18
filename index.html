@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UMali — Instant Funeral Payments</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#C9A84C; --gold-light:#E8C97A; --gold-pale:#FDF6E3;
+  --green-deep:#0A2E1A; --green-mid:#1A5C34; --green-bright:#2E9954;
+  --cream:#FAF7F0; --white:#fff; --text:#2A2A2A; --muted:#7A7A6E;
+  --purple-mid:#4A1080; --purple-soft:#F3E5F5;
+  --maroon-mid:#A00000; --maroon-light:#FFF0F0;
+  --danger:#C0392B; --success:#27AE60; --warning:#E67E22;
+  --instant:#0066FF; --instant-light:#E8F0FF;
+  --shadow:0 2px 12px rgba(0,0,0,0.07);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--green-deep);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(201,168,76,.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(46,153,84,.1) 0%,transparent 50%);pointer-events:none;z-index:0;}
+
+.screen{display:none;min-height:100vh;position:relative;z-index:1;}
+.screen.active{display:flex;flex-direction:column;}
+#loginScreen{background:var(--green-deep);align-items:center;justify-content:center;padding:40px 20px;}
+
+/* LOGIN */
+.login-wrap{width:100%;max-width:420px;animation:up .6s ease forwards;}
+@keyframes up{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.logo-box{text-align:center;margin-bottom:28px;}
+.logo-icon{width:70px;height:70px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:20px;display:inline-flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:14px;box-shadow:0 8px 32px rgba(201,168,76,.3);}
+.logo-name{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;color:var(--gold);display:block;}
+.logo-tag{color:rgba(255,255,255,.4);font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-top:4px;}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.role-btn{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s;}
+.role-btn.on{border-color:var(--gold);background:rgba(201,168,76,.1);}
+.role-btn-icon{font-size:24px;display:block;margin-bottom:5px;}
+.role-btn-title{color:var(--white);font-weight:700;font-size:12px;}
+.role-btn-sub{color:rgba(255,255,255,.35);font-size:10px;margin-top:1px;}
+.lcard{background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.2);border-radius:22px;padding:26px;backdrop-filter:blur(20px);}
+.lcard h2{font-family:'Playfair Display',serif;color:var(--white);font-size:20px;margin-bottom:14px;}
+.fg{margin-bottom:12px;}
+.fg label{display:block;color:rgba(255,255,255,.5);font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.fg input{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(201,168,76,.2);border-radius:11px;padding:12px 14px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:all .2s;}
+.fg input:focus{border-color:var(--gold);}
+.fg input::placeholder{color:rgba(255,255,255,.25);}
+.btn-gold{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--green-deep);border:none;border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:4px;}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,.4);}
+.btn-red{width:100%;background:linear-gradient(135deg,var(--maroon-mid),var(--danger));color:white;border:none;border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:4px;}
+.btn-red:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(160,0,0,.4);}
+.btn-green{width:100%;background:linear-gradient(135deg,var(--success),#2ECC71);color:white;border:none;border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:4px;}
+.btn-green:hover{transform:translateY(-1px);}
+.btn-blue{width:100%;background:linear-gradient(135deg,var(--instant),#0088FF);color:white;border:none;border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-blue:hover{transform:translateY(-1px);}
+
+/* APP */
+#appScreen{background:var(--cream);}
+.topbar{background:var(--green-deep);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3);}
+.topbar-logo{font-family:'Playfair Display',serif;color:var(--gold);font-size:24px;font-weight:900;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.live-badge{display:flex;align-items:center;gap:5px;background:rgba(46,153,84,.2);border:1px solid rgba(46,153,84,.4);border-radius:20px;padding:5px 12px;font-size:11px;color:#4CAF50;font-weight:500;}
+.live-dot{width:6px;height:6px;background:#4CAF50;border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.instant-badge{display:flex;align-items:center;gap:5px;background:rgba(0,102,255,.15);border:1px solid rgba(0,102,255,.3);border-radius:20px;padding:5px 12px;font-size:11px;color:#4488FF;font-weight:700;}
+.avatar{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--green-deep);cursor:pointer;border:none;}
+
+.main{flex:1;overflow-y:auto;padding-bottom:80px;}
+.tab{display:none;}.tab.active{display:block;}
+
+/* HEROES */
+.hero{background:linear-gradient(135deg,var(--green-deep),var(--green-mid));padding:24px 20px 44px;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;bottom:-20px;left:0;right:0;height:40px;background:var(--cream);border-radius:40px 40px 0 0;}
+.maroon-hero{background:linear-gradient(160deg,#1A0000,#8B0000,#3A0000);padding:24px 20px 44px;position:relative;overflow:hidden;}
+.maroon-hero::before{content:'⚡';position:absolute;right:10px;top:10px;font-size:100px;opacity:.06;}
+.maroon-hero::after{content:'';position:absolute;bottom:-20px;left:0;right:0;height:40px;background:var(--cream);border-radius:40px 40px 0 0;}
+
+.bal-card{background:rgba(255,255,255,.07);border:1px solid rgba(201,168,76,.25);border-radius:20px;padding:20px;}
+.bal-label{color:rgba(255,255,255,.5);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;}
+.bal-amount{font-family:'DM Mono',monospace;color:var(--gold);font-size:34px;font-weight:500;margin-bottom:12px;}
+.bal-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.bal-stat{text-align:center;}
+.bal-val{color:var(--white);font-weight:600;font-size:13px;}
+.bal-lbl{color:rgba(255,255,255,.4);font-size:10px;margin-top:1px;}
+.bal-div{width:1px;background:rgba(255,255,255,.1);}
+
+.sec{padding:18px 20px 0;}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.sec-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--green-deep);font-weight:700;}
+
+/* ======= INSTANT PAYMENT TIMER ======= */
+.instant-pay-hero {
+  background: linear-gradient(135deg, #000B1E, #001A4A, #000B1E);
+  border-radius: 20px;
+  padding: 20px;
+  margin: 20px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0,102,255,.3);
+}
+.instant-pay-hero::before {
+  content: '⚡';
+  position: absolute;
+  right: -10px;
+  top: -10px;
+  font-size: 100px;
+  opacity: .05;
+}
+.instant-tag {
+  background: rgba(0,102,255,.2);
+  border: 1px solid rgba(0,102,255,.4);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 10px;
+  color: #4488FF;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.instant-title {
+  font-family: 'Playfair Display', serif;
+  color: var(--white);
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+.instant-desc {
+  color: rgba(255,255,255,.5);
+  font-size: 12px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.timer-display {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.timer-box {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(0,102,255,.3);
+  border-radius: 12px;
+  padding: 12px 16px;
+  text-align: center;
+  flex: 1;
+}
+.timer-number {
+  font-family: 'DM Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: #4488FF;
+  display: block;
+  line-height: 1;
+}
+.timer-label {
+  font-size: 9px;
+  color: rgba(255,255,255,.4);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.instant-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.instant-step {
+  background: rgba(255,255,255,.05);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.instant-step-icon { font-size: 16px; }
+.instant-step-text { font-size: 11px; color: rgba(255,255,255,.5); line-height: 1.3; }
+.instant-step-text strong { color: rgba(255,255,255,.8); }
+
+/* ======= CLAIM APPROVAL WITH INSTANT PAY ======= */
+.claim-card {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--danger);
+}
+.claim-urgency {
+  background: linear-gradient(135deg, #FFF0F0, #FFE4E4);
+  border: 1px solid #FFCDD2;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.urgency-icon { font-size: 24px; flex-shrink: 0; }
+.urgency-text h4 { font-weight: 700; color: var(--danger); font-size: 13px; margin-bottom: 2px; }
+.urgency-text p { font-size: 11px; color: #C62828; line-height: 1.4; }
+
+.claim-deceased { font-weight: 700; color: var(--green-deep); font-size: 16px; margin-bottom: 3px; }
+.claim-claimant { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+.claim-checks { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.claim-check { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text); }
+.check-icon { width: 20px; height: 20px; border-radius: 50%; background: #E8F5E9; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
+
+/* FUNERAL OPTIONS */
+.funeral-opts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.funeral-opt {
+  background: #F8F8F8;
+  border: 2px solid #E8E8E8;
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.funeral-opt.on { border-color: var(--instant); background: var(--instant-light); }
+.funeral-opt-logo { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+.funeral-opt-name { font-weight: 700; color: var(--green-deep); font-size: 12px; }
+.funeral-opt-detail { font-size: 10px; color: var(--muted); margin-top: 1px; }
+.funeral-opt-price { font-family: 'DM Mono', monospace; font-weight: 700; color: var(--instant); font-size: 14px; margin-left: auto; }
+
+/* INSTANT PAY BUTTON */
+.instant-pay-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #0044CC, var(--instant), #0088FF);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.instant-pay-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+  animation: shimmer 2s infinite;
+}
+@keyframes shimmer { to { left: 100%; } }
+.instant-pay-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,102,255,.4); }
+.instant-pay-sub {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* ======= PAYMENT PROCESSING SCREEN ======= */
+#processingScreen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.9);
+  z-index: 500;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+}
+#processingScreen.open { display: flex; }
+
+.processing-card {
+  background: var(--white);
+  border-radius: 28px;
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+.processing-icon { font-size: 60px; display: block; margin-bottom: 16px; }
+.processing-title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--green-deep); margin-bottom: 8px; }
+.processing-sub { color: var(--muted); font-size: 13px; margin-bottom: 24px; line-height: 1.5; }
+
+/* PROGRESS STEPS */
+.pay-steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; text-align: left; }
+.pay-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #F8F8F8;
+  transition: all .3s;
+}
+.pay-step.active { background: var(--instant-light); border: 1px solid rgba(0,102,255,.2); }
+.pay-step.done { background: #E8F5E9; border: 1px solid rgba(39,174,96,.2); }
+.pay-step-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #E0E0E0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  transition: all .3s;
+}
+.pay-step.active .pay-step-icon { background: var(--instant); animation: spin .8s linear infinite; }
+.pay-step.done .pay-step-icon { background: var(--success); animation: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.pay-step-text { flex: 1; }
+.pay-step-name { font-weight: 600; color: var(--green-deep); font-size: 13px; }
+.pay-step-detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.pay-step.active .pay-step-name { color: var(--instant); }
+.pay-step.done .pay-step-name { color: var(--success); }
+
+/* LIVE TIMER DURING PROCESSING */
+.live-timer {
+  background: linear-gradient(135deg, #000B1E, #001A4A);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.live-timer-label { color: rgba(255,255,255,.5); font-size: 11px; margin-bottom: 6px; }
+.live-timer-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 40px;
+  font-weight: 700;
+  color: #4488FF;
+  letter-spacing: -2px;
+}
+.live-timer-sub { color: rgba(255,255,255,.3); font-size: 10px; margin-top: 4px; }
+
+/* ======= SUCCESS SCREEN ======= */
+#successScreen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.9);
+  z-index: 600;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  overflow-y: auto;
+}
+#successScreen.open { display: flex; }
+
+.success-card {
+  background: var(--white);
+  border-radius: 28px;
+  padding: 28px 22px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  animation: pop .4s ease;
+  margin: auto;
+}
+@keyframes pop { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
+
+.success-checkmark {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--success), #2ECC71);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  margin: 0 auto 16px;
+  animation: bounce .6s ease;
+}
+@keyframes bounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+
+.success-title { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--green-deep); margin-bottom: 4px; }
+.success-subtitle { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+
+.success-time-badge {
+  background: linear-gradient(135deg, #E8F0FF, #D0E4FF);
+  border: 1px solid rgba(0,102,255,.2);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.time-badge-icon { font-size: 28px; }
+.time-badge-text h4 { font-weight: 700; color: var(--instant); font-size: 14px; }
+.time-badge-text p { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.success-details {
+  background: #F8F8F8;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 14px;
+  text-align: left;
+}
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #F0F0F0;
+}
+.detail-row:last-child { border-bottom: none; }
+.detail-label { font-size: 11px; color: var(--muted); }
+.detail-value { font-weight: 700; font-size: 11px; color: var(--green-deep); }
+
+/* NOTIFICATION BLAST */
+.notif-blast {
+  background: linear-gradient(135deg, #E8F5E9, #F0FFF4);
+  border: 1px solid rgba(39,174,96,.2);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 14px;
+  text-align: left;
+}
+.notif-blast-title {
+  font-weight: 700;
+  color: var(--success);
+  font-size: 13px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.notif-blast-message {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.6;
+  border: 1px solid #E8E8E8;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+.notif-blast-count {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* MEMBER NOTIF SCROLL */
+.member-notif-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+  margin-bottom: 14px;
+}
+.member-notif-scroll::-webkit-scrollbar { display: none; }
+.member-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.member-chip-av {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  color: white;
+  position: relative;
+}
+.member-chip-check {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 14px;
+  height: 14px;
+  background: var(--success);
+  border-radius: 50%;
+  border: 2px solid white;
+  font-size: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+.member-chip-name { font-size: 9px; color: var(--muted); text-align: center; max-width: 40px; }
+
+/* NOTIFICATIONS */
+.notif-feed { padding: 0 20px; }
+.notif-item {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow);
+  display: flex;
+  gap: 12px;
+  border-left: 4px solid transparent;
+}
+.notif-item.instant { border-left-color: var(--instant); }
+.notif-item.success { border-left-color: var(--success); }
+.notif-item.warning { border-left-color: var(--warning); }
+.notif-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.notif-body { flex: 1; }
+.notif-title { font-weight: 700; color: var(--green-deep); font-size: 13px; margin-bottom: 3px; }
+.notif-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.notif-time { font-size: 10px; color: var(--muted); margin-top: 4px; }
+.time-chip { background: var(--instant-light); color: var(--instant); border-radius: 8px; padding: 2px 8px; font-size: 10px; font-weight: 700; display: inline-block; margin-top: 4px; }
+
+/* PAYMENT TRACKER */
+.tracker-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow);
+}
+.member-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #F5F5F5;
+}
+.member-row:last-child { border-bottom: none; }
+.mem-av { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: white; flex-shrink: 0; }
+.mem-name { flex: 1; font-weight: 600; color: var(--green-deep); font-size: 13px; }
+.mem-sub { font-size: 10px; color: var(--muted); }
+.mem-right { text-align: right; }
+.mem-amount { font-family: 'DM Mono', monospace; font-weight: 600; font-size: 12px; }
+.pill { padding: 3px 8px; border-radius: 20px; font-size: 9px; font-weight: 700; text-transform: uppercase; }
+.pill-paid { background: #E8F5E9; color: #2E7D32; }
+.pill-pending { background: #FFF3E0; color: #E65100; }
+.pill-late { background: #FFEBEE; color: #C62828; }
+
+/* BOTTOM NAV */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid #F0F0F0; display: flex; padding: 8px 0 16px; z-index: 100; box-shadow: 0 -4px 20px rgba(0,0,0,.08); }
+.nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 0; border: none; background: none; position: relative; }
+.nav-icon { font-size: 19px; transition: transform .2s; }
+.nav-lbl { font-size: 9px; color: var(--muted); font-weight: 500; }
+.nav-btn.active .nav-lbl { color: var(--maroon-mid); font-weight: 700; }
+.nav-btn.active .nav-icon { transform: scale(1.15); }
+.nav-badge { position: absolute; top: 0; right: calc(50% - 18px); background: var(--danger); color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+/* OVERLAY */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 200; align-items: flex-end; backdrop-filter: blur(4px); }
+.overlay.open { display: flex; }
+.modal { background: var(--white); border-radius: 28px 28px 0 0; padding: 22px 20px 34px; width: 100%; animation: slideUp .3s ease; max-height: 90vh; overflow-y: auto; }
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.modal-handle { width: 40px; height: 4px; background: #E0E0E0; border-radius: 2px; margin: 0 auto 16px; }
+.modal-title { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--green-deep); margin-bottom: 4px; }
+.modal-sub { color: var(--muted); font-size: 12px; margin-bottom: 16px; }
+.mfg { margin-bottom: 12px; }
+.mfg label { display: block; color: var(--muted); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.mfg input, .mfg select, .mfg textarea { width: 100%; background: #F8F8F8; border: 1px solid #E8E8E8; border-radius: 11px; padding: 12px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; color: var(--text); }
+
+/* TOAST */
+.toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--green-deep); color: var(--white); padding: 12px 22px; border-radius: 100px; font-size: 12px; font-weight: 500; z-index: 700; opacity: 0; transition: all .3s; white-space: nowrap; border: 1px solid rgba(201,168,76,.3); max-width: 90vw; text-align: center; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.card { background: var(--white); border-radius: 16px; padding: 16px; margin-bottom: 10px; box-shadow: var(--shadow); cursor: pointer; transition: all .2s; border: 1px solid transparent; }
+.card:hover { border-color: var(--gold); transform: translateY(-1px); }
+.qa-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+.qa-btn { background: var(--white); border-radius: 14px; padding: 12px 6px; text-align: center; cursor: pointer; transition: all .2s; border: 1px solid transparent; box-shadow: var(--shadow); }
+.qa-btn:hover { border-color: var(--gold); transform: translateY(-2px); }
+.qa-icon { font-size: 20px; margin-bottom: 5px; display: block; }
+.qa-label { font-size: 9px; color: var(--muted); font-weight: 600; }
+.prog-bar { background: #F0F0F0; border-radius: 10px; height: 5px; overflow: hidden; margin-top: 6px; }
+.prog-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, var(--green-mid), var(--gold)); }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="screen active">
+  <div class="login-wrap">
+    <div class="logo-box">
+      <div class="logo-icon">⚡</div>
+      <span class="logo-name">UMali</span>
+      <span class="logo-tag">Instant · Burial Societies · Funerals</span>
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="color:rgba(255,255,255,.4);font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;text-align:center;">I am a...</div>
+      <div class="role-grid">
+        <div class="role-btn on" id="roleMember" onclick="selectRole('member')">
+          <span class="role-btn-icon">👤</span>
+          <div class="role-btn-title">Member</div>
+          <div class="role-btn-sub">I belong to a group</div>
+        </div>
+        <div class="role-btn" id="roleAdmin" onclick="selectRole('admin')">
+          <span class="role-btn-icon">👑</span>
+          <div class="role-btn-title">Society Admin</div>
+          <div class="role-btn-sub">I run a group</div>
+        </div>
+      </div>
+    </div>
+    <div class="lcard">
+      <h2>Welcome to UMali</h2>
+      <div class="fg"><label>Phone or Email</label><input type="text" placeholder="+27 xxx xxx xxxx" /></div>
+      <div class="fg"><label>PIN</label><input type="password" placeholder="Enter your PIN" /></div>
+      <button class="btn-gold" onclick="doLogin()">Sign In Securely 🔐</button>
+    </div>
+    <div style="margin-top:16px;text-align:center;color:rgba(255,255,255,.15);font-size:10px;">⚡ Instant payments · 🏦 All SA banks · 🇿🇦 Built for South Africa</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appScreen" class="screen">
+  <div class="topbar">
+    <div class="topbar-logo">UMali</div>
+    <div class="topbar-right">
+      <div class="instant-badge">⚡ Instant Pay</div>
+      <div class="live-badge"><div class="live-dot"></div>Live</div>
+      <button class="avatar">A</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- HOME -->
+    <div id="tab-home" class="tab active">
+      <div class="hero">
+        <div style="color:rgba(255,255,255,.6);font-size:13px;margin-bottom:3px;">Good day,</div>
+        <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:24px;font-weight:700;margin-bottom:18px;" id="heroName">Andisa 👋</div>
+        <div class="bal-card">
+          <div class="bal-label">Total Balance</div>
+          <div class="bal-amount">R 24,800</div>
+          <div class="bal-grid">
+            <div class="bal-stat"><div class="bal-val">2</div><div class="bal-lbl">Groups</div></div>
+            <div class="bal-div"></div>
+            <div class="bal-stat"><div class="bal-val">32</div><div class="bal-lbl">Members</div></div>
+            <div class="bal-div"></div>
+            <div class="bal-stat"><div class="bal-val" style="color:#4488FF;">⚡ Auto</div><div class="bal-lbl">Pay Mode</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INSTANT PAYMENT FEATURE -->
+      <div class="instant-pay-hero">
+        <div class="instant-tag">⚡ Instant Payment System</div>
+        <div class="instant-title">Paid Within Hours — Not Days</div>
+        <div class="instant-desc">When a burial claim is approved, UMali instantly pays the funeral home and notifies every member automatically. No waiting. No manual transfers. No stress.</div>
+        <div class="timer-display">
+          <div class="timer-box">
+            <span class="timer-number">0</span>
+            <div class="timer-label">Hours</div>
+          </div>
+          <div class="timer-box">
+            <span class="timer-number">15</span>
+            <div class="timer-label">Minutes</div>
+          </div>
+          <div class="timer-box">
+            <span class="timer-number">00</span>
+            <div class="timer-label">Seconds</div>
+          </div>
+        </div>
+        <div style="text-align:center;color:rgba(255,255,255,.4);font-size:11px;margin-bottom:14px;">Average time from claim approval to funeral home payment</div>
+        <div class="instant-steps">
+          <div class="instant-step"><span class="instant-step-icon">📋</span><div class="instant-step-text"><strong>Claim Filed</strong><br>Family submits</div></div>
+          <div class="instant-step"><span class="instant-step-icon">✅</span><div class="instant-step-text"><strong>Admin Approves</strong><br>One tap</div></div>
+          <div class="instant-step"><span class="instant-step-icon">⚡</span><div class="instant-step-text"><strong>Auto Payment</strong><br>Under 2 min</div></div>
+          <div class="instant-step"><span class="instant-step-icon">📲</span><div class="instant-step-text"><strong>All Notified</strong><br>Instantly</div></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div style="font-family:'Playfair Display',serif;font-size:18px;color:var(--green-deep);font-weight:700;margin-bottom:12px;">Quick Actions</div>
+        <div class="qa-grid">
+          <div class="qa-btn" onclick="switchTab('society')"><span class="qa-icon">⚰️</span><span class="qa-label">My Society</span></div>
+          <div class="qa-btn" onclick="switchTab('payments')"><span class="qa-icon">💸</span><span class="qa-label">Payments</span></div>
+          <div class="qa-btn" onclick="openOverlay('claimOverlay')"><span class="qa-icon">📋</span><span class="qa-label">File Claim</span></div>
+          <div class="qa-btn" onclick="switchTab('notifications')"><span class="qa-icon">🔔</span><span class="qa-label">Alerts</span></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="font-family:'Playfair Display',serif;font-size:18px;color:var(--green-deep);font-weight:700;">My Groups</div>
+        </div>
+        <div class="card" onclick="switchTab('society')">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <div style="width:40px;height:40px;border-radius:12px;background:#FFEBEE;display:flex;align-items:center;justify-content:center;font-size:18px;">⚰️</div>
+              <div>
+                <div style="font-weight:700;color:var(--green-deep);font-size:13px;">Lesedi Burial Society</div>
+                <div style="color:var(--muted);font-size:10px;">32 families · ADMIN · <span style="color:var(--instant);font-weight:600;">⚡ Instant Pay ON</span></div>
+              </div>
+            </div>
+            <span class="pill pill-paid">Active</span>
+          </div>
+          <div class="prog-bar"><div class="prog-fill" style="width:80%"></div></div>
+          <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--muted);"><span>26/32 paid · 1 claim pending 🚨</span><span>R24,800</span></div>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <div style="width:40px;height:40px;border-radius:12px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:18px;">💰</div>
+              <div>
+                <div style="font-weight:700;color:var(--green-deep);font-size:13px;">Zama Zama Stokvel</div>
+                <div style="color:var(--muted);font-size:10px;">8 members · Savings</div>
+              </div>
+            </div>
+            <span class="pill pill-paid">Active</span>
+          </div>
+          <div class="prog-bar"><div class="prog-fill" style="width:62%"></div></div>
+          <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--muted);"><span>5/8 paid</span><span>R8,000</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOCIETY / CLAIM APPROVAL -->
+    <div id="tab-society" class="tab">
+      <div class="maroon-hero">
+        <div style="color:rgba(255,255,255,.4);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;">⚡ Instant Pay Enabled</div>
+        <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:22px;margin-bottom:3px;">Lesedi Burial Society</div>
+        <div style="color:rgba(255,255,255,.35);font-size:11px;margin-bottom:16px;">Soweto · 32 families · Admin: Andisa</div>
+        <div class="bal-card">
+          <div class="bal-label">Treasury</div>
+          <div class="bal-amount">R 24,800</div>
+          <div class="bal-grid">
+            <div class="bal-stat"><div class="bal-val">32</div><div class="bal-lbl">Families</div></div>
+            <div class="bal-div"></div>
+            <div class="bal-stat"><div class="bal-val">R200</div><div class="bal-lbl">Monthly</div></div>
+            <div class="bal-div"></div>
+            <div class="bal-stat"><div class="bal-val">R20K</div><div class="bal-lbl">Payout</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec" style="padding-top:28px;">
+        <div class="sec-hdr"><div class="sec-title">🚨 Urgent — Pending Claim</div></div>
+
+        <div class="claim-card">
+
+          <!-- URGENCY BANNER -->
+          <div class="claim-urgency">
+            <div class="urgency-icon">⚡</div>
+            <div class="urgency-text">
+              <h4>Family needs payment URGENTLY</h4>
+              <p>Approve now and UMali pays the funeral home within minutes. Family can arrange burial today.</p>
+            </div>
+          </div>
+
+          <div class="claim-deceased">Sipho Dlamini (deceased)</div>
+          <div class="claim-claimant">👤 Nomvula Dlamini (Wife) filed this claim · 2 hours ago</div>
+
+          <!-- VERIFICATION CHECKS -->
+          <div class="claim-checks">
+            <div class="claim-check"><div class="check-icon">✓</div>Member since January 2020 — 6 years</div>
+            <div class="claim-check"><div class="check-icon">✓</div>All 38 contributions paid on time</div>
+            <div class="claim-check"><div class="check-icon">✓</div>Death certificate uploaded and verified</div>
+            <div class="claim-check"><div class="check-icon">✓</div>Relationship verified — legal spouse</div>
+            <div class="claim-check"><div class="check-icon">✓</div>Payout amount: R20,000 available in treasury</div>
+          </div>
+
+          <!-- SELECT FUNERAL COMPANY -->
+          <div style="font-size:12px;color:var(--muted);font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">⚡ Select Funeral Home (Auto-payment in minutes)</div>
+          <div class="funeral-opts">
+            <div class="funeral-opt on" id="fopt1" onclick="selectFuneralOpt('fopt1','Avbob Funeral Services','R12,500')">
+              <div class="funeral-option-logo" style="background:linear-gradient(135deg,#1A2F5A,#2E4A8A);">🏛️</div>
+              <div style="flex:1;">
+                <div class="funeral-opt-name">Avbob Funeral Services</div>
+                <div class="funeral-opt-detail">📍 Nationwide · ⭐4.8 · ⚡ Receives payment in 2 min</div>
+              </div>
+              <div class="funeral-opt-price">R12,500</div>
+            </div>
+            <div class="funeral-opt" id="fopt2" onclick="selectFuneralOpt('fopt2','Doves Funeral Services','R15,000')">
+              <div class="funeral-option-logo" style="background:linear-gradient(135deg,#2E4A1A,#4A7A2A);">🕊️</div>
+              <div style="flex:1;">
+                <div class="funeral-opt-name">Doves Funeral Services</div>
+                <div class="funeral-opt-detail">📍 Gauteng · ⭐4.6 · ⚡ Receives payment in 2 min</div>
+              </div>
+              <div class="funeral-opt-price">R15,000</div>
+            </div>
+            <div class="funeral-opt" id="fopt3" onclick="selectFuneralOpt('fopt3','Ntombi\'s Parlour','R18,500')">
+              <div class="funeral-option-logo" style="background:linear-gradient(135deg,#1A1A4A,#3A3A8A);">💐</div>
+              <div style="flex:1;">
+                <div class="funeral-opt-name">Ntombi's Parlour (Soweto)</div>
+                <div class="funeral-opt-detail">📍 Soweto · ⭐4.9 · ⚡ Receives payment in 2 min</div>
+              </div>
+              <div class="funeral-opt-price">R18,500</div>
+            </div>
+          </div>
+
+          <!-- INSTANT PAY BUTTON -->
+          <button class="instant-pay-btn" onclick="startInstantPay()">
+            <span>⚡</span>
+            <span>Approve & Pay <span id="selectedFuneralName">Avbob</span> Instantly</span>
+          </button>
+          <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;font-size:11px;color:var(--muted);">
+            <span>💸</span><span id="selectedPrice">R12,500</span>
+            <span>·</span>
+            <span>⚡ Under 2 minutes</span>
+            <span>·</span>
+            <span>📲 32 members notified</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-title" style="margin-bottom:10px;">Admin Actions</div>
+        <div class="qa-grid">
+          <div class="qa-btn" onclick="showToast('📲 Reminders sent to 6 members!')"><span class="qa-icon">📲</span><span class="qa-label">Reminders</span></div>
+          <div class="qa-btn" onclick="openOverlay('addMemberOverlay')"><span class="qa-icon">➕</span><span class="qa-label">Add Member</span></div>
+          <div class="qa-btn" onclick="showToast('📄 Statement generated!')"><span class="qa-icon">📄</span><span class="qa-label">Statement</span></div>
+          <div class="qa-btn" onclick="switchTab('payments')"><span class="qa-icon">👁️</span><span class="qa-label">Payments</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENTS TAB -->
+    <div id="tab-payments" class="tab">
+      <div class="maroon-hero">
+        <div style="color:rgba(255,255,255,.4);font-size:11px;margin-bottom:3px;">Lesedi Burial Society</div>
+        <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:20px;margin-bottom:14px;">March 2026 — Who Paid</div>
+        <div class="bal-card">
+          <div class="bal-label">Collected</div>
+          <div class="bal-amount">R5,200</div>
+          <div style="background:rgba(255,255,255,.1);border-radius:10px;height:8px;overflow:hidden;margin-top:6px;">
+            <div style="height:100%;width:81%;border-radius:10px;background:linear-gradient(90deg,var(--green-mid),var(--gold));"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:5px;color:rgba(255,255,255,.4);font-size:10px;">
+            <span>26 of 32 paid</span><span>81%</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;overflow-x:auto;padding:28px 20px 0;scrollbar-width:none;">
+        <div style="background:var(--maroon-mid);color:white;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;white-space:nowrap;cursor:pointer;" onclick="filterPayments('all',this)">All (32)</div>
+        <div style="background:var(--white);border:1px solid #E8E8E8;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;cursor:pointer;" onclick="filterPayments('paid',this)">Paid ✅ (26)</div>
+        <div style="background:var(--white);border:1px solid #E8E8E8;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;cursor:pointer;" onclick="filterPayments('pending',this)">Pending ⏳ (4)</div>
+        <div style="background:var(--white);border:1px solid #E8E8E8;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;cursor:pointer;" onclick="filterPayments('late',this)">Late 🔴 (2)</div>
+      </div>
+
+      <div style="padding:14px 20px 0;" id="memberList">
+        <!-- Members rendered here -->
+      </div>
+
+      <div style="padding:16px 20px 0;">
+        <button class="btn-gold" onclick="showToast('📲 WhatsApp reminders sent to 6 unpaid members!')">📲 Send Reminders to Unpaid (6)</button>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS TAB -->
+    <div id="tab-notifications" class="tab">
+      <div style="background:linear-gradient(135deg,var(--green-deep),var(--green-mid));padding:24px 20px 44px;position:relative;">
+        <div style="position:absolute;bottom:-20px;left:0;right:0;height:40px;background:var(--cream);border-radius:40px 40px 0 0;"></div>
+        <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:22px;margin-bottom:4px;">🔔 All Member Notifications</div>
+        <div style="color:rgba(255,255,255,.4);font-size:12px;">Sent automatically to every member</div>
+      </div>
+
+      <div class="notif-feed" style="padding-top:28px;">
+        <div class="notif-item instant">
+          <div class="notif-icon" style="background:var(--instant-light);">⚡</div>
+          <div class="notif-body">
+            <div class="notif-title">⚡ Instant Payment — Sipho Dlamini</div>
+            <div class="notif-desc">R12,500 was instantly paid to Avbob Funeral Services from the Lesedi Burial Society treasury. Payment confirmed in 1 minute 43 seconds. Burial confirmed for 22 March 2026.</div>
+            <div class="time-chip">⚡ Paid in 1 min 43 sec</div>
+            <div class="notif-time" style="margin-top:6px;">Today 14:32 · Sent to all 32 members automatically</div>
+          </div>
+        </div>
+
+        <div class="notif-item success">
+          <div class="notif-icon" style="background:#E8F5E9;">✅</div>
+          <div class="notif-body">
+            <div class="notif-title">Your Contribution Confirmed</div>
+            <div class="notif-desc">Your R200 contribution to Lesedi Burial Society for March 2026 has been recorded and verified. Thank you for keeping your family protected.</div>
+            <div class="notif-time">10 Mar 2026 · 09:15 · Personal notification</div>
+          </div>
+        </div>
+
+        <div class="notif-item warning">
+          <div class="notif-icon" style="background:#FFF3E0;">⏰</div>
+          <div class="notif-body">
+            <div class="notif-title">Payment Reminder — 5 Days Left</div>
+            <div class="notif-desc">Your R200 contribution to Lesedi Burial Society is due on 25 March 2026. Pay now to avoid a R50 late fee and maintain your payout eligibility.</div>
+            <div class="notif-time">20 Mar 2026 · 08:00 · Auto-sent to 6 unpaid members</div>
+          </div>
+        </div>
+
+        <div class="notif-item instant">
+          <div class="notif-icon" style="background:var(--instant-light);">⚡</div>
+          <div class="notif-body">
+            <div class="notif-title">⚡ Previous Instant Payment — Feb 2026</div>
+            <div class="notif-desc">R20,000 was instantly paid to Doves Funeral Services for Thandi Mokoena. Payment completed in 58 seconds. This is UMali's fastest payment record.</div>
+            <div class="time-chip">⚡ Paid in 58 seconds 🏆</div>
+            <div class="notif-time">10 Feb 2026 · Sent to all 31 members</div>
+          </div>
+        </div>
+
+        <div class="notif-item success">
+          <div class="notif-icon" style="background:#E8F5E9;">👤</div>
+          <div class="notif-body">
+            <div class="notif-title">New Member Joined</div>
+            <div class="notif-desc">Bongani Mthembu joined Lesedi Burial Society. Society now has 32 member families. Welcome Bongani!</div>
+            <div class="notif-time">5 Mar 2026 · Sent to all members</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <button class="nav-btn active" id="nav-home" onclick="switchTab('home')"><span class="nav-icon">🏠</span><span class="nav-lbl">Home</span></button>
+    <button class="nav-btn" id="nav-society" onclick="switchTab('society')"><span class="nav-icon">⚰️</span><span class="nav-lbl">Society</span></button>
+    <button class="nav-btn" id="nav-payments" onclick="switchTab('payments')"><span class="nav-icon">💸</span><span class="nav-lbl">Payments</span></button>
+    <button class="nav-btn" id="nav-notifications" onclick="switchTab('notifications')">
+      <span class="nav-icon">🔔</span><span class="nav-lbl">Alerts</span>
+      <div class="nav-badge">3</div>
+    </button>
+    <button class="nav-btn" id="nav-more" onclick="openOverlay('claimOverlay')"><span class="nav-icon">📋</span><span class="nav-lbl">File Claim</span></button>
+  </div>
+</div>
+
+<!-- ======= PAYMENT PROCESSING SCREEN ======= -->
+<div id="processingScreen">
+  <div class="processing-card">
+    <span class="processing-icon" id="processingIcon">⚡</span>
+    <div class="processing-title" id="processingTitle">Processing Payment...</div>
+    <div class="processing-sub" id="processingSubtitle">UMali is sending payment to the funeral home</div>
+
+    <div class="live-timer">
+      <div class="live-timer-label">Time elapsed</div>
+      <div class="live-timer-count" id="liveTimerCount">0:00</div>
+      <div class="live-timer-sub">⚡ Target: Under 2 minutes</div>
+    </div>
+
+    <div class="pay-steps">
+      <div class="pay-step active" id="step1">
+        <div class="pay-step-icon">⚡</div>
+        <div class="pay-step-text">
+          <div class="pay-step-name">Verifying claim details</div>
+          <div class="pay-step-detail">Checking member eligibility...</div>
+        </div>
+      </div>
+      <div class="pay-step" id="step2">
+        <div class="pay-step-icon">🏦</div>
+        <div class="pay-step-text">
+          <div class="pay-step-name">Connecting to society bank</div>
+          <div class="pay-step-detail">Authorising R12,500 transfer...</div>
+        </div>
+      </div>
+      <div class="pay-step" id="step3">
+        <div class="pay-step-icon">💸</div>
+        <div class="pay-step-text">
+          <div class="pay-step-name">Sending to funeral home</div>
+          <div class="pay-step-detail">Instant EFT to Avbob...</div>
+        </div>
+      </div>
+      <div class="pay-step" id="step4">
+        <div class="pay-step-icon">📲</div>
+        <div class="pay-step-text">
+          <div class="pay-step-name">Notifying all 32 members</div>
+          <div class="pay-step-detail">WhatsApp & SMS sending...</div>
+        </div>
+      </div>
+      <div class="pay-step" id="step5">
+        <div class="pay-step-icon">✅</div>
+        <div class="pay-step-text">
+          <div class="pay-step-name">Payment complete</div>
+          <div class="pay-step-detail">Generating receipt...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= SUCCESS SCREEN ======= -->
+<div id="successScreen">
+  <div class="success-card">
+    <div class="success-checkmark">✅</div>
+    <div class="success-title">Payment Sent!</div>
+    <div class="success-subtitle">Funeral home paid · All members notified</div>
+
+    <div class="success-time-badge">
+      <span class="time-badge-icon">⚡</span>
+      <div class="time-badge-text">
+        <h4>Paid in <span id="finalTime">1 min 43 sec</span></h4>
+        <p>Family can arrange burial today. No waiting for bank transfers.</p>
+      </div>
+    </div>
+
+    <div class="success-details">
+      <div class="detail-row"><span class="detail-label">Deceased</span><span class="detail-value">Sipho Dlamini</span></div>
+      <div class="detail-row"><span class="detail-label">Funeral Home</span><span class="detail-value" id="successFuneralName">Avbob</span></div>
+      <div class="detail-row"><span class="detail-label">Amount Paid</span><span class="detail-value" style="color:var(--instant);" id="successAmount">R12,500</span></div>
+      <div class="detail-row"><span class="detail-label">Paid From</span><span class="detail-value" style="color:var(--success);">Society Treasury ✅</span></div>
+      <div class="detail-row"><span class="detail-label">New Balance</span><span class="detail-value">R12,300</span></div>
+      <div class="detail-row"><span class="detail-label">Burial Date</span><span class="detail-value">22 March 2026</span></div>
+      <div class="detail-row"><span class="detail-label">Reference</span><span class="detail-value" style="font-family:'DM Mono',monospace;font-size:10px;">UM-2026-031714:32</span></div>
+    </div>
+
+    <div class="notif-blast">
+      <div class="notif-blast-title">📲 All 32 Members Notified Automatically</div>
+      <div class="notif-blast-message">"Dear Lesedi Burial Society member. A burial claim has been approved for Sipho Dlamini. R12,500 was instantly paid to Avbob Funeral Services. Burial: 22 March 2026. Our thoughts are with the Dlamini family. 🕊️ — UMali"</div>
+      <div class="notif-blast-count">✅ Sent via WhatsApp + SMS to all 32 members</div>
+    </div>
+
+    <div style="font-size:12px;color:var(--muted);font-weight:600;margin-bottom:10px;">Members Who Received Notification:</div>
+    <div class="member-notif-scroll">
+      <div class="member-chip"><div class="member-chip-av" style="background:linear-gradient(135deg,#1A5C34,#2E9954);">N<div class="member-chip-check">✓</div></div><div class="member-chip-name">Nomvula</div></div>
+      <div class="member-chip"><div class="member-chip-av" style="background:linear-gradient(135deg,#1565C0,#1E88E5);">T<div class="member-chip-check">✓</div></div><div class="member-chip-name">Thabo</div></div>
+      <div class="member-chip"><div class="member-chip-av" style="background:linear-gradient(135deg,#E67E22,#F39C12);">Z<div class="member-chip-check">✓</div></div><div class="member-chip-name">Zanele</div></div>
+      <div class="member-chip"><div class="member-chip-av" style="background:linear-gradient(135deg,#6A1B9A,#AB47BC);">B<div class="member-chip-check">✓</div></div><div class="member-chip-name">Bongani</div></div>
+      <div class="member-chip"><div class="member-chip-av" style="background:linear-gradient(135deg,#00695C,#00897B);">L<div class="member-chip-check">✓</div></div><div class="member-chip-name">Lerato</div></div>
+      <div class="member-chip"><div class="member-chip-av" style="background:linear-gradient(135deg,#37474F,#546E7A);">M<div class="member-chip-check">✓</div></div><div class="member-chip-name">Mandla</div></div>
+      <div class="member-chip"><div class="member-chip-av" style="background:linear-gradient(135deg,#4527A0,#7E57C2);">P<div class="member-chip-check">✓</div></div><div class="member-chip-name">Palesa</div></div>
+      <div class="member-chip"><div class="member-chip-av" style="background:linear-gradient(135deg,#C0392B,#E74C3C);">S<div class="member-chip-check">✓</div></div><div class="member-chip-name">Sipho</div></div>
+      <div class="member-chip" style="justify-content:center;"><div style="width:36px;height:36px;border-radius:50%;background:#F0F0F0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--muted);">+24</div><div class="member-chip-name">more</div></div>
+    </div>
+
+    <button class="btn-gold" onclick="closeSuccessScreen()">Done ✅</button>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="overlay" id="claimOverlay" onclick="closeOverlayOutside(event,'claimOverlay')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📋 File Burial Claim</div>
+    <div class="modal-sub">Submit now — admin will process instantly</div>
+    <div class="mfg"><label>Deceased Full Name</label><input type="text" placeholder="Full name of deceased" /></div>
+    <div class="mfg"><label>Date of Passing</label><input type="date" /></div>
+    <div class="mfg"><label>Your Relationship</label>
+      <select><option>Spouse</option><option>Child</option><option>Parent</option><option>Sibling</option></select>
+    </div>
+    <div class="mfg"><label>Burial Society</label>
+      <select><option>Lesedi Burial Society — R20,000 payout</option></select>
+    </div>
+    <div style="background:var(--instant-light);border:1px solid rgba(0,102,255,.2);border-radius:12px;padding:12px;margin-bottom:14px;font-size:11px;color:var(--instant);line-height:1.5;">
+      ⚡ <strong>Instant Payment:</strong> Once admin approves your claim, UMali automatically pays the funeral home within minutes. No waiting for bank transfers.
+    </div>
+    <button class="btn-red" onclick="submitClaim()">Submit Claim → Admin Reviews Now</button>
+  </div>
+</div>
+
+<div class="overlay" id="addMemberOverlay" onclick="closeOverlayOutside(event,'addMemberOverlay')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">➕ Add Member Family</div>
+    <div class="modal-sub">New member to Lesedi Burial Society</div>
+    <div class="mfg"><label>Full Name</label><input type="text" placeholder="e.g. Bongani Mthembu" /></div>
+    <div class="mfg"><label>Phone Number</label><input type="tel" placeholder="+27 xxx xxx xxxx" /></div>
+    <div class="mfg"><label>SA ID Number</label><input type="text" placeholder="13-digit SA ID" /></div>
+    <button class="btn-red" onclick="addMember()">Add & Send WhatsApp Invite 📲</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// State
+let currentRole = 'member';
+let selectedFuneral = 'Avbob Funeral Services';
+let selectedPrice = 'R12,500';
+let timerInterval = null;
+let processingSeconds = 0;
+
+// All members data
+const allMembers = [
+  { name:'Nomvula Dlamini', sub:'Paid via FNB · 10 Mar', status:'paid', color:'#1A5C34,#2E9954', initial:'N' },
+  { name:'Thabo Sithole', sub:'Paid via Capitec · 8 Mar', status:'paid', color:'#1565C0,#1E88E5', initial:'T' },
+  { name:'Zanele Khumalo', sub:'Paid via ABSA · 12 Mar', status:'paid', color:'#E67E22,#F39C12', initial:'Z' },
+  { name:'Lerato Mokoena', sub:'Paid via Standard Bank · 9 Mar', status:'paid', color:'#00695C,#00897B', initial:'L' },
+  { name:'Palesa Nkosi', sub:'Paid via Nedbank · 11 Mar', status:'paid', color:'#4527A0,#7E57C2', initial:'P' },
+  { name:'Bongani Mthembu', sub:'Paid via TymeBank · 7 Mar', status:'paid', color:'#C0392B,#E74C3C', initial:'B' },
+  { name:'Sipho Nkosi', sub:'Overdue · 5 days late', status:'late', color:'#B71C1C,#D32F2F', initial:'S' },
+  { name:'Mandla Cele', sub:'Reminder sent · Due 25 Mar', status:'pending', color:'#37474F,#546E7A', initial:'M' },
+  { name:'Busi Zulu', sub:'Not yet paid · Due 25 Mar', status:'pending', color:'#6A1B9A,#AB47BC', initial:'Bu' },
+  { name:'Lindiwe Dube', sub:'Late · 3 days overdue', status:'late', color:'#827717,#A5962A', initial:'Li' },
+];
+
+function renderMembers(filter) {
+  const list = document.getElementById('memberList');
+  const filtered = filter === 'all' ? allMembers : allMembers.filter(m => m.status === filter);
+  list.innerHTML = filtered.map(m => `
+    <div class="member-row">
+      <div class="mem-av" style="background:linear-gradient(135deg,#${m.color});">${m.initial}</div>
+      <div style="flex:1;">
+        <div class="mem-name">${m.name}</div>
+        <div class="mem-sub">${m.sub}</div>
+      </div>
+      <div class="mem-right">
+        <div class="mem-amount">R200</div>
+        <span class="pill pill-${m.status}">${m.status === 'paid' ? 'Paid ✅' : m.status === 'late' ? 'Late 🔴' : 'Pending ⏳'}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Login
+function selectRole(role) {
+  currentRole = role;
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('on'));
+  document.getElementById(role === 'member' ? 'roleMember' : 'roleAdmin').classList.add('on');
+}
+
+function doLogin() {
+  document.getElementById('loginScreen').classList.remove('active');
+  document.getElementById('appScreen').classList.add('active');
+  if (currentRole === 'admin') document.getElementById('heroName').textContent = 'Andisa 👑';
+  renderMembers('all');
+}
+
+// Tabs
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + tab)?.classList.add('active');
+  document.getElementById('nav-' + tab)?.classList.add('active');
+  if (tab === 'payments') renderMembers('all');
+}
+
+// Filter
+function filterPayments(filter, btn) {
+  document.querySelectorAll('.tab-payments button, .tab-payments div[onclick]').forEach(b => {
+    b.style.background = 'var(--white)';
+    b.style.color = 'var(--muted)';
+  });
+  renderMembers(filter);
+}
+
+// Overlays
+function openOverlay(id) { document.getElementById(id)?.classList.add('open'); }
+function closeOverlay(id) { document.getElementById(id)?.classList.remove('open'); }
+function closeOverlayOutside(e, id) { if (e.target.classList.contains('overlay')) closeOverlay(id); }
+
+// Funeral selection
+function selectFuneralOpt(id, name, price) {
+  document.querySelectorAll('.funeral-opt').forEach(o => o.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  selectedFuneral = name;
+  selectedPrice = price;
+  document.getElementById('selectedFuneralName').textContent = name.split(' ')[0];
+  document.getElementById('selectedPrice').textContent = price;
+  document.getElementById('successFuneralName').textContent = name;
+  document.getElementById('successAmount').textContent = price;
+}
+
+// ============================================
+// INSTANT PAYMENT PROCESSING
+// The key feature - pays within minutes
+// ============================================
+function startInstantPay() {
+  // Show processing screen
+  document.getElementById('processingScreen').style.display = 'flex';
+  processingSeconds = 0;
+
+  // Start live timer
+  timerInterval = setInterval(() => {
+    processingSeconds++;
+    const mins = Math.floor(processingSeconds / 60);
+    const secs = processingSeconds % 60;
+    document.getElementById('liveTimerCount').textContent =
+      mins + ':' + String(secs).padStart(2, '0');
+  }, 1000);
+
+  // Step 1 — Verifying
+  setTimeout(() => {
+    completeStep('step1');
+    activateStep('step2');
+    document.getElementById('processingTitle').textContent = 'Connecting to Bank...';
+  }, 2000);
+
+  // Step 2 — Bank connection
+  setTimeout(() => {
+    completeStep('step2');
+    activateStep('step3');
+    document.getElementById('processingTitle').textContent = 'Sending Payment...';
+    showToast('💸 Sending R12,500 to ' + selectedFuneral + '...');
+  }, 4500);
+
+  // Step 3 — Payment sent
+  setTimeout(() => {
+    completeStep('step3');
+    activateStep('step4');
+    document.getElementById('processingTitle').textContent = 'Notifying Members...';
+    showToast('📲 Notifying all 32 members...');
+  }, 7000);
+
+  // Step 4 — Notifications
+  setTimeout(() => {
+    completeStep('step4');
+    activateStep('step5');
+    document.getElementById('processingTitle').textContent = 'Almost Done...';
+  }, 9000);
+
+  // Step 5 — Complete!
+  setTimeout(() => {
+    completeStep('step5');
+    document.getElementById('processingTitle').textContent = 'Payment Complete! ✅';
+
+    clearInterval(timerInterval);
+    const mins = Math.floor(processingSeconds / 60);
+    const secs = processingSeconds % 60;
+    const finalTime = mins + ' min ' + secs + ' sec';
+    document.getElementById('finalTime').textContent = finalTime;
+
+    // Switch to success screen
+    setTimeout(() => {
+      document.getElementById('processingScreen').style.display = 'none';
+      document.getElementById('successScreen').classList.add('open');
+    }, 800);
+
+  }, 11000);
+}
+
+function completeStep(id) {
+  const step = document.getElementById(id);
+  step.classList.remove('active');
+  step.classList.add('done');
+  step.querySelector('.pay-step-icon').textContent = '✅';
+}
+
+function activateStep(id) {
+  const step = document.getElementById(id);
+  step.classList.add('active');
+  step.querySelector('.pay-step-icon').textContent = '⚡';
+}
+
+function closeSuccessScreen() {
+  document.getElementById('successScreen').classList.remove('open');
+  switchTab('notifications');
+  showToast('✅ Payment complete! All 32 members notified');
+}
+
+// Other actions
+function submitClaim() {
+  closeOverlay('claimOverlay');
+  showToast('📋 Claim submitted! Admin notified instantly');
+  setTimeout(() => showToast('⚡ Once approved payment happens in minutes'), 2000);
+}
+
+function addMember() {
+  closeOverlay('addMemberOverlay');
+  showToast('✅ Member added! WhatsApp invite sent 📲');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// Init
+renderMembers('all');
+</script>
+
+</body>
+</html>
