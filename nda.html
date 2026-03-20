@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UMali — Legal Documents</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#C9A84C; --gold-light:#E8C97A;
+  --green-deep:#0A2E1A; --green-mid:#1A5C34;
+  --cream:#FAF7F0; --white:#fff; --text:#2A2A2A; --muted:#7A7A6E;
+  --danger:#C0392B; --success:#27AE60;
+  --shadow:0 2px 12px rgba(0,0,0,.07);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--green-deep);color:var(--text);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(201,168,76,.08) 0%,transparent 50%);pointer-events:none;z-index:0;}
+
+.screen{display:none;min-height:100vh;position:relative;z-index:1;}
+.screen.active{display:flex;flex-direction:column;}
+
+/* HOME */
+#homeScreen{background:var(--green-deep);align-items:center;justify-content:center;padding:40px 20px;}
+.home-wrap{width:100%;max-width:420px;}
+.home-logo{text-align:center;margin-bottom:32px;}
+.home-logo-icon{width:70px;height:70px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:20px;display:inline-flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:14px;box-shadow:0 8px 32px rgba(201,168,76,.3);}
+.home-logo-name{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;color:var(--gold);display:block;}
+.home-logo-tag{color:rgba(255,255,255,.4);font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-top:4px;}
+.home-title{font-family:'Playfair Display',serif;color:var(--white);font-size:22px;margin-bottom:6px;text-align:center;}
+.home-sub{color:rgba(255,255,255,.5);font-size:13px;text-align:center;margin-bottom:28px;line-height:1.5;}
+.menu-card{background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.2);border-radius:18px;padding:18px;margin-bottom:12px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s;}
+.menu-card:hover{background:rgba(201,168,76,.08);border-color:var(--gold);transform:translateY(-1px);}
+.menu-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.menu-title{color:var(--white);font-weight:700;font-size:15px;margin-bottom:3px;}
+.menu-sub{color:rgba(255,255,255,.4);font-size:11px;}
+.menu-arrow{margin-left:auto;color:var(--gold);font-size:20px;}
+
+/* DOCUMENT SCREENS */
+.doc-screen{background:var(--cream);}
+.topnav{background:var(--green-deep);padding:0 20px;display:flex;align-items:center;gap:14px;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3);}
+.back-btn{background:rgba(255,255,255,.08);border:none;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:16px;cursor:pointer;flex-shrink:0;}
+.topnav-title{font-family:'Playfair Display',serif;color:var(--gold);font-size:18px;font-weight:700;}
+.content{flex:1;overflow-y:auto;}
+
+/* HEROES */
+.doc-hero{padding:28px 24px 48px;position:relative;overflow:hidden;}
+.doc-hero::after{content:'';position:absolute;bottom:-20px;left:0;right:0;height:40px;background:var(--cream);border-radius:40px 40px 0 0;}
+.nda-hero{background:linear-gradient(135deg,#0A0A2E,#1A1A5C);}
+.terms-hero{background:linear-gradient(135deg,#0A2A00,#1A5C00);}
+.doc-hero-tag{border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;display:inline-block;margin-bottom:12px;}
+.nda-hero .doc-hero-tag{background:rgba(100,100,255,.15);border:1px solid rgba(100,100,255,.3);color:#8888FF;}
+.terms-hero .doc-hero-tag{background:rgba(46,153,84,.15);border:1px solid rgba(46,153,84,.3);color:#4CAF50;}
+.doc-hero-title{font-family:'Playfair Display',serif;color:var(--white);font-size:24px;margin-bottom:6px;line-height:1.2;}
+.doc-hero-sub{color:rgba(255,255,255,.4);font-size:12px;line-height:1.5;}
+
+/* DOCUMENT CONTENT */
+.doc-content{padding:24px 20px;}
+.doc-section{margin-bottom:24px;}
+.doc-section-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.doc-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:12px;flex-shrink:0;}
+.nda-num{background:var(--green-mid);}
+.terms-num{background:var(--green-mid);}
+.doc-section-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--green-deep);}
+.doc-text{font-size:13px;color:var(--text);line-height:1.8;margin-bottom:8px;}
+.doc-text strong{color:var(--green-deep);}
+.doc-list{margin:8px 0 8px 16px;}
+.doc-list li{font-size:13px;color:var(--text);line-height:1.8;margin-bottom:4px;}
+.doc-list li::marker{color:var(--green-mid);}
+
+.doc-box{border-radius:14px;padding:14px;margin-bottom:12px;}
+.doc-box.green{background:#E8F5E9;border:1px solid #A5D6A7;}
+.doc-box.red{background:#FFEBEE;border:1px solid #FFCDD2;}
+.doc-box.gold{background:#FDF6E3;border:1px solid rgba(201,168,76,.3);}
+.doc-box.blue{background:#EEF3FF;border:1px solid #90CAF9;}
+.doc-box-title{font-weight:700;font-size:13px;margin-bottom:6px;}
+.doc-box.green .doc-box-title{color:#2E7D32;}
+.doc-box.red .doc-box-title{color:var(--danger);}
+.doc-box.gold .doc-box-title{color:#7B6008;}
+.doc-box.blue .doc-box-title{color:#0D47A1;}
+.doc-box-text{font-size:12px;line-height:1.6;}
+.doc-box.green .doc-box-text{color:#1B5E20;}
+.doc-box.red .doc-box-text{color:#B71C1C;}
+.doc-box.gold .doc-box-text{color:#7B6008;}
+.doc-box.blue .doc-box-text{color:#0D47A1;}
+
+/* SIGNATURE SECTION */
+.signature-section{background:var(--white);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow);}
+.sig-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--green-deep);margin-bottom:16px;text-align:center;}
+.sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.sig-box{border:2px dashed #E8E8E8;border-radius:12px;padding:14px;text-align:center;}
+.sig-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:20px;}
+.sig-line{border-top:2px solid #333;margin:8px 0;}
+.sig-name{font-size:11px;color:var(--muted);margin-top:4px;}
+.sig-date{margin-top:16px;}
+.sig-date-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.sig-date-line{border-bottom:1px solid #333;height:20px;}
+
+/* PRINT BUTTON */
+.print-btn{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--green-deep);border:none;border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:12px;}
+.share-btn{width:100%;background:var(--green-mid);color:white;border:none;border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:20px;}
+
+.doc-footer{text-align:center;color:var(--muted);font-size:11px;padding:8px 0 24px;line-height:1.8;}
+
+/* IMPORTANT NOTICE */
+.important-notice{background:linear-gradient(135deg,var(--green-deep),var(--green-mid));border-radius:18px;padding:20px;margin-bottom:16px;}
+.notice-title{font-family:'Playfair Display',serif;color:var(--white);font-size:16px;margin-bottom:8px;}
+.notice-text{color:rgba(255,255,255,.6);font-size:12px;line-height:1.7;}
+.notice-text strong{color:var(--gold);}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="homeScreen" class="screen active">
+  <div class="home-wrap">
+    <div class="home-logo">
+      <div class="home-logo-icon">⚖️</div>
+      <span class="home-logo-name">UMali</span>
+      <span class="home-logo-tag">Legal Documents</span>
+    </div>
+    <div class="home-title">Legal Protection Documents</div>
+    <div class="home-sub">Use these documents to protect UMali before showing anyone your app or business idea</div>
+
+    <div class="menu-card" onclick="showScreen('ndaScreen')">
+      <div class="menu-icon" style="background:rgba(100,100,255,.15);">🤝</div>
+      <div>
+        <div class="menu-title">Non-Disclosure Agreement</div>
+        <div class="menu-sub">Make anyone sign this before showing them UMali</div>
+      </div>
+      <div class="menu-arrow">›</div>
+    </div>
+
+    <div class="menu-card" onclick="showScreen('termsScreen')">
+      <div class="menu-icon" style="background:rgba(46,153,84,.15);">📋</div>
+      <div>
+        <div class="menu-title">Terms & Conditions</div>
+        <div class="menu-sub">Legal terms for everyone who uses UMali</div>
+      </div>
+      <div class="menu-arrow">›</div>
+    </div>
+
+    <div style="text-align:center;margin-top:20px;color:rgba(255,255,255,.25);font-size:11px;line-height:1.8;">
+      © 2026 UMali (Pty) Ltd · All rights reserved<br>
+      These documents protect your intellectual property 🛡️
+    </div>
+  </div>
+</div>
+
+<!-- ===== NDA SCREEN ===== -->
+<div id="ndaScreen" class="screen doc-screen">
+  <div class="topnav">
+    <button class="back-btn" onclick="showScreen('homeScreen')">←</button>
+    <div class="topnav-title">Non-Disclosure Agreement</div>
+  </div>
+
+  <div class="content">
+    <div class="doc-hero nda-hero">
+      <div class="doc-hero-tag">🔐 Confidential</div>
+      <div class="doc-hero-title">UMali Non-Disclosure Agreement (NDA)</div>
+      <div class="doc-hero-sub">Send this to anyone before showing them your app, code, business model or any UMali information. Get it signed FIRST.</div>
+    </div>
+
+    <div class="doc-content">
+
+      <div class="important-notice">
+        <div class="notice-title">⚠️ When To Use This NDA</div>
+        <div class="notice-text">
+          Send this to <strong>funeral companies</strong> before partnership discussions.<br>
+          Send to <strong>potential investors</strong> before pitching.<br>
+          Send to <strong>developers</strong> you hire to help build.<br>
+          Send to <strong>anyone</strong> you show your business model to.<br><br>
+          <strong>Do NOT need NDA for:</strong> Regular app users, beta testers just using the app, journalists (just don't show code).
+        </div>
+      </div>
+
+      <!-- NDA DOCUMENT -->
+      <div style="background:var(--white);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow);">
+
+        <div style="text-align:center;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #F0F0F0;">
+          <div style="font-family:'Playfair Display',serif;font-size:24px;color:var(--green-deep);margin-bottom:4px;">UMali (Pty) Ltd</div>
+          <div style="font-size:14px;color:var(--muted);margin-bottom:8px;">NON-DISCLOSURE AGREEMENT</div>
+          <div style="font-size:11px;color:var(--muted);">Confidential · Do Not Distribute</div>
+        </div>
+
+        <!-- PARTIES -->
+        <div class="doc-section">
+          <div class="doc-section-hdr">
+            <div class="doc-num nda-num">1</div>
+            <div class="doc-section-title">The Parties</div>
+          </div>
+          <div class="doc-text">This Non-Disclosure Agreement ("Agreement") is entered into between:</div>
+          <div class="doc-box green">
+            <div class="doc-box-title">Disclosing Party (UMali)</div>
+            <div class="doc-box-text">
+              <strong>Company:</strong> UMali (Pty) Ltd<br>
+              <strong>Founder:</strong> Andisa Shabalala<br>
+              <strong>Email:</strong> umaliapp@gmail.com<br>
+              <strong>Platform:</strong> umali-app.vercel.app<br>
+              <strong>Country:</strong> South Africa
+            </div>
+          </div>
+          <div class="doc-box blue">
+            <div class="doc-box-title">Receiving Party (You)</div>
+            <div class="doc-box-text">
+              <strong>Full Name:</strong> ________________________________<br>
+              <strong>Company:</strong> ________________________________<br>
+              <strong>Email:</strong> ________________________________<br>
+              <strong>Phone:</strong> ________________________________<br>
+              <strong>ID Number:</strong> ________________________________
+            </div>
+          </div>
+        </div>
+
+        <!-- CONFIDENTIAL INFO -->
+        <div class="doc-section">
+          <div class="doc-section-hdr">
+            <div class="doc-num nda-num">2</div>
+            <div class="doc-section-title">What Is Confidential</div>
+          </div>
+          <div class="doc-text">"Confidential Information" means ALL information about UMali including but not limited to:</div>
+          <ul class="doc-list">
+            <li>The UMali app source code and technical architecture</li>
+            <li>Business model, pricing and revenue strategy</li>
+            <li>User data and member information</li>
+            <li>Funeral company partnership details and agreements</li>
+            <li>Marketing strategy and launch plans</li>
+            <li>Financial information and projections</li>
+            <li>Product roadmap and future features</li>
+            <li>Any other information marked as confidential</li>
+          </ul>
+        </div>
+
+        <!-- OBLIGATIONS -->
+        <div class="doc-section">
+          <div class="doc-section-hdr">
+            <div class="doc-num nda-num">3</div>
+            <div class="doc-section-title">Your Obligations</div>
+          </div>
+          <div class="doc-text">By signing this Agreement the Receiving Party agrees to:</div>
+          <ul class="doc-list">
+            <li><strong>Keep all Confidential Information strictly secret</strong> and not disclose it to any third party without prior written consent from UMali</li>
+            <li><strong>Not copy, reproduce or distribute</strong> any part of the UMali platform or business model</li>
+            <li><strong>Not use the information</strong> to build a competing product or service</li>
+            <li><strong>Not share with employees or colleagues</strong> unless they also sign this agreement</li>
+            <li><strong>Immediately notify UMali</strong> if there is any unauthorised disclosure or breach</li>
+            <li><strong>Return or destroy</strong> all confidential materials upon request</li>
+          </ul>
+        </div>
+
+        <!-- EXCEPTIONS -->
+        <div class="doc-section">
+          <div class="doc-section-hdr">
+            <div class="doc-num nda-num">4</div>
+            <div class="doc-section-title">What Is NOT Confidential</div>
+          </div>
+          <div class="doc-text">This agreement does NOT apply to information that:</div>
+          <ul class="doc-list">
+            <li>Was already publicly known before you received it from UMali</li>
+            <li>You already legally possessed before this agreement</li>
+            <li>You received from a third party without confidentiality restrictions</li>
+            <li>Is required to be disclosed by South African law or court order</li>
+          </ul>
+        </div>
+
+        <!-- DURATION -->
+        <div class="doc-section">
+          <div class="doc-section-hdr">
+            <div class="doc-num nda-num">5</div>
+            <div class="doc-section-title">How Long This Lasts</div>
+          </div>
+          <div class="doc-text">This agreement remains in effect for <strong>3 years</strong> from the date of signing. Even after the agreement ends, you may never use UMali's confidential information to build a competing product.</div>
+        </div>
+
+        <!-- BREACH -->
+        <div class="doc-section">
+          <div class="doc-section-hdr">
+            <div class="doc-num nda-num">6</div>
+            <div class="doc-section-title">If You Break This Agreement</div>
+          </div>
+          <div class="doc-box red">
+            <div class="doc-box-title">⚠️ Consequences of Breach</div>
+            <div class="doc-box-text">
+              If you break this agreement UMali has the right to:<br><br>
+              • Immediately seek an urgent court interdict to stop you<br>
+              • Claim damages for all losses suffered<br>
+              • Claim legal costs from you<br>
+              • Report the breach to relevant authorities<br><br>
+              This agreement is governed by the laws of the Republic of South Africa. Any disputes will be resolved in the South African courts.
+            </div>
+          </div>
+        </div>
+
+        <!-- PURPOSE -->
+        <div class="doc-section">
+          <div class="doc-section-hdr">
+            <div class="doc-num nda-num">7</div>
+            <div class="doc-section-title">Purpose of Disclosure</div>
+          </div>
+          <div class="doc-text">The Confidential Information is being shared ONLY for the following purpose:</div>
+          <div style="background:#F8F8F8;border-radius:12px;padding:14px;margin-bottom:8px;">
+            <div style="font-size:13px;color:var(--muted);margin-bottom:8px;">Purpose (circle one or describe):</div>
+            <div style="font-size:13px;color:var(--text);line-height:2;">
+              □ Partnership discussion<br>
+              □ Investment discussion<br>
+              □ Technical development<br>
+              □ Business evaluation<br>
+              □ Other: ________________________________
+            </div>
+          </div>
+        </div>
+
+        <!-- SIGNATURES -->
+        <div class="signature-section">
+          <div class="sig-title">✍️ Signatures</div>
+          <div class="doc-text" style="text-align:center;margin-bottom:16px;">Both parties agree to the terms of this Non-Disclosure Agreement</div>
+
+          <div class="sig-grid">
+            <div class="sig-box">
+              <div class="sig-label">UMali (Disclosing Party)</div>
+              <div class="sig-line"></div>
+              <div class="sig-name">Andisa Shabalala</div>
+              <div class="sig-name">Founder, UMali (Pty) Ltd</div>
+              <div class="sig-date" style="margin-top:12px;">
+                <div class="sig-date-label">Date</div>
+                <div class="sig-date-line"></div>
+              </div>
+            </div>
+            <div class="sig-box">
+              <div class="sig-label">Receiving Party</div>
+              <div class="sig-line"></div>
+              <div class="sig-name">Full Name: ____________</div>
+              <div class="sig-name">Title: ________________</div>
+              <div class="sig-date" style="margin-top:12px;">
+                <div class="sig-date-label">Date</div>
+                <div class="sig-date-line"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="print-btn" onclick="window.print()">🖨️ Print This NDA</button>
+      <button class="share-btn" onclick="shareDoc('NDA')">📲 Share via WhatsApp</button>
+
+      <div class="doc-footer">
+        © 2026 UMali (Pty) Ltd · All rights reserved<br>
+        This document is legally binding under South African law<br>
+        Governed by the laws of the Republic of South Africa
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== TERMS & CONDITIONS SCREEN ===== -->
+<div id="termsScreen" class="screen doc-screen">
+  <div class="topnav">
+    <button class="back-btn" onclick="showScreen('homeScreen')">←</button>
+    <div class="topnav-title">Terms & Conditions</div>
+  </div>
+
+  <div class="content">
+    <div class="doc-hero terms-hero">
+      <div class="doc-hero-tag">📋 Legal Agreement</div>
+      <div class="doc-hero-title">UMali Terms & Conditions</div>
+      <div class="doc-hero-sub">Last updated: 19 March 2026 · By using UMali you agree to these terms</div>
+    </div>
+
+    <div class="doc-content">
+
+      <div class="doc-box gold" style="margin-bottom:16px;">
+        <div class="doc-box-title">📌 Simple Summary</div>
+        <div class="doc-box-text">Use UMali honestly and legally. We protect your money and data. You pay your subscription on time. You cannot copy or resell UMali. We are not responsible if you break the rules. South African law applies to everything.</div>
+      </div>
+
+      <!-- 1. ACCEPTANCE -->
+      <div class="doc-section">
+        <div class="doc-section-hdr">
+          <div class="doc-num terms-num">1</div>
+          <div class="doc-section-title">Acceptance of Terms</div>
+        </div>
+        <div class="doc-text">By downloading, accessing or using the UMali platform ("Platform") you agree to be bound by these Terms and Conditions ("Terms"). If you do not agree to these Terms do not use UMali.</div>
+        <div class="doc-text">These Terms constitute a legally binding agreement between you ("User") and UMali (Pty) Ltd ("UMali", "we", "us", "our").</div>
+      </div>
+
+      <!-- 2. WHO CAN USE -->
+      <div class="doc-section">
+        <div class="doc-section-hdr">
+          <div class="doc-num terms-num">2</div>
+          <div class="doc-section-title">Who Can Use UMali</div>
+        </div>
+        <div class="doc-text">You may use UMali if you:</div>
+        <ul class="doc-list">
+          <li>Are 18 years or older OR have parental consent</li>
+          <li>Are a South African resident or citizen</li>
+          <li>Provide accurate and truthful registration information</li>
+          <li>Have the legal authority to manage a burial society or stokvel</li>
+          <li>Agree to comply with all applicable South African laws</li>
+        </ul>
+      </div>
+
+      <!-- 3. WHAT UMALI PROVIDES -->
+      <div class="doc-section">
+        <div class="doc-section-hdr">
+          <div class="doc-num terms-num">3</div>
+          <div class="doc-section-title">What UMali Provides</div>
+        </div>
+        <div class="doc-text">UMali provides the following services:</div>
+        <ul class="doc-list">
+          <li>Digital management tools for burial societies and stokvels</li>
+          <li>Contribution tracking and payment recording</li>
+          <li>Burial claim filing and approval workflow</li>
+          <li>Funeral services marketplace and booking</li>
+          <li>Automated notifications to group members</li>
+          <li>Financial statements and reporting</li>
+          <li>Bank account integration services</li>
+        </ul>
+        <div class="doc-box blue">
+          <div class="doc-box-title">ℹ️ Important</div>
+          <div class="doc-box-text">UMali is a technology platform only. We are not a registered insurance company, bank or financial advisor. We do not guarantee burial society payouts. Payouts depend on your society's own funds and rules.</div>
+        </div>
+      </div>
+
+      <!-- 4. SUBSCRIPTION AND PAYMENT -->
+      <div class="doc-section">
+        <div class="doc-section-hdr">
+          <div class="doc-num terms-num">4</div>
+          <div class="doc-section-title">Subscription and Payment</div>
+        </div>
+        <div class="doc-text"><strong>Subscription Plans:</strong></div>
+        <ul class="doc-list">
+          <li><strong>Basic Plan:</strong> R29/month — up to 15 members</li>
+          <li><strong>Standard Plan:</strong> R59/month — up to 30 members</li>
+          <li><strong>Premium Plan:</strong> R99/month — unlimited members</li>
+        </ul>
+        <div class="doc-text" style="margin-top:10px;"><strong>Payment Terms:</strong></div>
+        <ul class="doc-list">
+          <li>Subscriptions are billed monthly in advance</li>
+          <li>Payment is due on the same date each month</li>
+          <li>We accept payment via PayFast, Ozow and EFT</li>
+          <li>Failed payments may result in account suspension after 7 days</li>
+          <li>No refunds for partial months used</li>
+        </ul>
+        <div class="doc-text"><strong>Transaction Fees:</strong></div>
+        <ul class="doc-list">
+          <li>2% processing fee on all contributions made through UMali</li>
+          <li>8% commission on funeral home bookings made through UMali</li>
+          <li>SMS notification fees may apply at R0.30 per message</li>
+        </ul>
+      </div>
+
+      <!-- 5. USER RESPONSIBILITIES -->
+      <div class="doc-section">
+        <div class="doc-section-hdr">
+          <div class="doc-num terms-num">5</div>
+          <div class="doc-section-title">Your Responsibilities</div>
+        </div>
+        <div class="doc-text">As a UMali user you agree to:</div>
+        <ul class="doc-list">
+          <li>Provide accurate and truthful information at all times</li>
+          <li>Keep your login credentials secure and not share them</li>
+          <li>Notify us immediately if your account is compromised</li>
+          <li>Use UMali only for lawful purposes</li>
+          <li>Not attempt to hack, disrupt or damage the platform</li>
+          <li>Not upload false or fraudulent burial claims</li>
+          <li>Not impersonate another person or society</li>
+          <li>Ensure all contributions you record are genuine</li>
+        </ul>
+        <div class="doc-box red">
+          <div class="doc-box-title">❌ Strictly Prohibited</div>
+          <div class="doc-box-text">
+            • Filing false burial claims — this is fraud and a criminal offence<br>
+            • Using UMali to launder money<br>
+            • Creating fake burial societies to steal funds<br>
+            • Reverse engineering or copying UMali's code<br>
+            • Reselling or sublicensing UMali to others<br><br>
+            Violations will result in immediate account termination and may be reported to the South African Police Service (SAPS).
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. FUNERAL SERVICES -->
+      <div class="doc-section">
+        <div class="doc-section-hdr">
+          <div class="doc-num terms-num">6</div>
+          <div class="doc-section-title">Funeral Services Marketplace</div>
+        </div>
+        <div class="doc-text">UMali connects burial societies to funeral companies. By using the funeral marketplace you understand that:</div>
+        <ul class="doc-list">
+          <li>UMali verifies funeral companies but cannot guarantee service quality</li>
+          <li>The contract for funeral services is between you and the funeral company directly</li>
+          <li>UMali facilitates payment but is not responsible for the funeral service itself</li>
+          <li>Disputes about funeral services must be resolved with the funeral company</li>
+          <li>UMali earns an 8% commission on bookings made through our platform</li>
+        </ul>
+      </div>
+
+      <!-- 7. INSTANT PAYMENTS -->
+      <div class="doc-section">
+        <div class="doc-section-hdr">
+          <div class="doc-num terms-num">7</div>
+          <div class="doc-section-title">Instant Payment System</div>
+        </div>
+        <div class="doc-text">When a burial claim is approved by the society admin UMali will:</div>
+        <ul class="doc-list">
+          <li>Process payment to the funeral home within 2 minutes</li>
+          <li>Send notifications to all society members automatically</li>
+          <li>Generate a payment receipt and booking reference</li>
+        </ul>
+        <div class="doc-box gold">
+          <div class="doc-box-title">⚠️ Admin Responsibility</div>
+          <div class="doc-box-text">Society admins are solely responsible for verifying claim eligibility before approving. UMali processes the payment immediately after admin approval. We cannot reverse payments once sent to funeral homes.</div>
+        </div>
+      </div>
+
+      <!-- 8. INTELLECTUAL PROPERTY -->
+      <div class="doc-section">
+        <div class="doc-section-hdr">
+          <div class="doc-num terms-num">8</div>
+          <div class="doc-section-title">Intellectual Property</div>
+        </div>
+        <div class="doc-text">All intellectual property in the UMali platform belongs exclusively to UMali (Pty) Ltd including:</div>
+        <ul class="doc-list">
+          <li>The UMali name, logo and brand identity</li>
+          <li>All source code and technical systems</li>
+          <li>All designs, interfaces and user experience</li>
+          <li>All written content and documentation</li>
+          <li>All business processes and methodologies</li>
+        </ul>
+        <div class="doc-text">You may not copy, modify, distribute or create derivative works based on any UMali intellectual property without our written permission.</div>
+      </div>
+
+      <!-- 9. LIMITATION OF LIABILITY -->
+      <div class="doc-section">
+        <div class="doc-section-hdr">
+          <div class="doc-num terms-num">9</div>
+          <div class="doc-section-title">Limitation of Liability</div>
+        </div>
+        <div class="doc-text">UMali shall not be liable for:</div>
+        <ul class="doc-list">
+          <li>Losses caused by fraudulent burial claims filed by users</li>
+          <li>Disputes between burial society members</li>
+          <li>Service failures by funeral companies</li>
+          <li>Internet or network connectivity failures beyond our control</li>
+          <li>Losses caused by unauthorised access to your account if you shared your password</li>
+          <li>Indirect or consequential losses of any kind</li>
+        </ul>
+        <div class="doc-text">Our maximum liability to you for any claim is limited to the subscription fees you paid in the 3 months before the claim.</div>
+      </div>
+
+      <!-- 10. TERMINATION -->
+      <div class="doc-section">
+        <div class="doc-section-hdr">
+          <div class="doc-num terms-num">10</div>
+          <div class="doc-section-title">Account Termination</div>
+        </div>
+        <div class="doc-text"><strong>You can cancel anytime</strong> by contacting umaliapp@gmail.com. Your account remains active until the end of your paid period.</div>
+        <div class="doc-text"><strong>We can terminate your account</strong> immediately and without notice if you:</div>
+        <ul class="doc-list">
+          <li>File fraudulent burial claims</li>
+          <li>Violate any of these Terms</li>
+          <li>Use UMali for illegal purposes</li>
+          <li>Fail to pay your subscription for more than 30 days</li>
+          <li>Attempt to hack or damage the platform</li>
+        </ul>
+      </div>
+
+      <!-- 11. CHANGES -->
+      <div class="doc-section">
+        <div class="doc-section-hdr">
+          <div class="doc-num terms-num">11</div>
+          <div class="doc-section-title">Changes to These Terms</div>
+        </div>
+        <div class="doc-text">We may update these Terms from time to time. We will notify you of significant changes via the app and by email or SMS. Your continued use of UMali after changes means you accept the new Terms.</div>
+      </div>
+
+      <!-- 12. GOVERNING LAW -->
+      <div class="doc-section">
+        <div class="doc-section-hdr">
+          <div class="doc-num terms-num">12</div>
+          <div class="doc-section-title">Governing Law</div>
+        </div>
+        <div class="doc-text">These Terms are governed by the laws of the Republic of South Africa. Any disputes will be resolved in the South African courts. You consent to the jurisdiction of the courts of South Africa.</div>
+        <div class="doc-text">Applicable laws include:</div>
+        <ul class="doc-list">
+          <li>Electronic Communications and Transactions Act (ECT Act)</li>
+          <li>Protection of Personal Information Act (POPIA)</li>
+          <li>Consumer Protection Act (CPA)</li>
+          <li>National Payment System Act</li>
+          <li>Financial Intelligence Centre Act (FICA)</li>
+        </ul>
+      </div>
+
+      <!-- CONTACT -->
+      <div style="background:linear-gradient(135deg,var(--green-deep),var(--green-mid));border-radius:18px;padding:20px;text-align:center;margin-bottom:16px;">
+        <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:18px;margin-bottom:8px;">Questions About These Terms?</div>
+        <div style="color:rgba(255,255,255,.5);font-size:12px;margin-bottom:14px;">Contact our legal team within 30 days</div>
+        <div style="background:rgba(255,255,255,.08);border-radius:10px;padding:10px;color:var(--gold);font-size:13px;font-family:'DM Mono',monospace;">umaliapp@gmail.com</div>
+      </div>
+
+      <button class="print-btn" onclick="window.print()">🖨️ Print Terms & Conditions</button>
+      <button class="share-btn" onclick="shareDoc('Terms')">📲 Share via WhatsApp</button>
+
+      <div class="doc-footer">
+        © 2026 UMali (Pty) Ltd · All rights reserved<br>
+        Terms & Conditions Version 1.0<br>
+        Last Updated: 19 March 2026 · South Africa 🇿🇦
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function shareDoc(type) {
+  const msg = type === 'NDA'
+    ? `Please sign this Non-Disclosure Agreement before our meeting about UMali:\n\numali-app.vercel.app/legal.html\n\nThis is required before I can share any details about the UMali platform.\n\n— Andisa Shabalala, Founder UMali`
+    : `UMali Terms & Conditions:\n\numali-app.vercel.app/legal.html\n\nBy using UMali you agree to these terms.\n\n— UMali (Pty) Ltd`;
+
+  const whatsapp = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+  window.open(whatsapp, '_blank');
+}
+</script>
+
+</body>
+</html>
