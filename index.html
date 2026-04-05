@@ -1,0 +1,2447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UMali — Burial Societies · Stokvels · Funeral Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#C9A84C; --gold-light:#E8C97A; --gold-pale:#FDF6E3;
+  --green-deep:#0A2E1A; --green-mid:#1A5C34; --green-bright:#2E9954;
+  --cream:#FAF7F0; --white:#fff; --text:#2A2A2A; --muted:#7A7A6E;
+  --maroon:#6B0000; --maroon-mid:#A00000;
+  --purple-mid:#4A1080; --purple-soft:#F3E5F5;
+  --blue-deep:#00245C; --blue-mid:#0055CC; --blue-light:#EEF3FF;
+  --danger:#C0392B; --success:#27AE60; --warning:#E67E22;
+  --shadow:0 2px 14px rgba(0,0,0,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--green-deep);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 15%,rgba(201,168,76,.1) 0%,transparent 55%),radial-gradient(ellipse at 85% 85%,rgba(46,153,84,.12) 0%,transparent 55%),repeating-linear-gradient(45deg,transparent,transparent 60px,rgba(201,168,76,.012) 60px,rgba(201,168,76,.012) 61px);pointer-events:none;z-index:0;}
+
+/* SCREENS */
+.screen{display:none;min-height:100vh;position:relative;z-index:1;}
+.screen.active{display:flex;flex-direction:column;}
+
+/* ===== LOGIN ===== */
+#loginScreen{background:var(--green-deep);align-items:center;justify-content:center;padding:32px 20px;}
+.login-wrap{width:100%;max-width:420px;animation:fadeUp .7s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+
+.logo-hero{text-align:center;margin-bottom:32px;}
+.logo-mark{width:76px;height:76px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:22px;display:inline-flex;align-items:center;justify-content:center;font-size:34px;margin-bottom:16px;box-shadow:0 10px 40px rgba(201,168,76,.35);animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.logo-name{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;color:var(--gold);display:block;letter-spacing:-1.5px;}
+.logo-tag{color:rgba(255,255,255,.35);font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-top:5px;}
+
+/* ROLE SELECTOR */
+.who-label{color:rgba(255,255,255,.4);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;text-align:center;margin-bottom:12px;}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.role-card{background:rgba(255,255,255,.055);border:2px solid rgba(255,255,255,.1);border-radius:16px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .25s;}
+.role-card:hover{background:rgba(255,255,255,.09);}
+.role-card.on{border-color:var(--gold);background:rgba(201,168,76,.12);}
+.role-icon{font-size:28px;display:block;margin-bottom:7px;}
+.role-title{color:var(--white);font-weight:700;font-size:12px;margin-bottom:2px;}
+.role-sub{color:rgba(255,255,255,.35);font-size:10px;line-height:1.3;}
+
+.lcard{background:rgba(255,255,255,.055);border:1px solid rgba(201,168,76,.18);border-radius:22px;padding:28px;backdrop-filter:blur(24px);}
+.lcard-title{font-family:'Playfair Display',serif;color:var(--white);font-size:20px;margin-bottom:14px;}
+.fg{margin-bottom:13px;}
+.fg label{display:block;color:rgba(255,255,255,.45);font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.fg input,.fg select{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(201,168,76,.18);border-radius:12px;padding:13px 15px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:all .2s;}
+.fg input:focus{border-color:var(--gold);background:rgba(201,168,76,.07);}
+.fg input::placeholder{color:rgba(255,255,255,.22);}
+.btn-gold{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--green-deep);border:none;border-radius:13px;padding:15px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:6px;letter-spacing:.3px;}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.45);}
+.login-banks{margin-top:22px;text-align:center;color:rgba(255,255,255,.18);font-size:10px;line-height:1.8;}
+
+/* ===== APP ===== */
+#appScreen{background:var(--cream);}
+.topbar{background:var(--green-deep);padding:0 18px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 2px 24px rgba(0,0,0,.3);}
+.tb-logo{font-family:'Playfair Display',serif;color:var(--gold);font-size:22px;font-weight:900;}
+.tb-center{flex:1;display:flex;justify-content:center;}
+
+/* VIEW TOGGLE */
+.vtoggle{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:30px;padding:4px;display:flex;gap:2px;}
+.vt-opt{padding:6px 12px;border-radius:24px;font-size:10px;font-weight:700;cursor:pointer;transition:all .3s;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:4px;white-space:nowrap;}
+.vt-opt.vm{background:linear-gradient(135deg,var(--green-mid),var(--green-bright));color:white;box-shadow:0 2px 8px rgba(26,92,52,.4);}
+.vt-opt.va{background:linear-gradient(135deg,var(--maroon),var(--maroon-mid));color:white;box-shadow:0 2px 8px rgba(107,0,0,.4);}
+.vt-opt.vf{background:linear-gradient(135deg,var(--blue-deep),var(--blue-mid));color:white;box-shadow:0 2px 8px rgba(0,36,92,.4);}
+
+.tb-right{display:flex;align-items:center;gap:8px;}
+.live-ind{display:flex;align-items:center;gap:4px;font-size:10px;color:#4CAF50;font-weight:500;}
+.live-dot{width:6px;height:6px;background:#4CAF50;border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.av-btn{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--green-deep);border:none;cursor:pointer;}
+
+.main{flex:1;overflow-y:auto;padding-bottom:80px;}
+.view{display:none;}.view.active{display:block;}
+.tab{display:none;}.tab.active{display:block;}
+
+/* ===== HEROES ===== */
+.hero-green{background:linear-gradient(135deg,var(--green-deep),var(--green-mid));padding:24px 20px 46px;position:relative;overflow:hidden;}
+.hero-green::after,.hero-maroon::after,.hero-blue::after{content:'';position:absolute;bottom:-20px;left:0;right:0;height:40px;background:var(--cream);border-radius:40px 40px 0 0;}
+.hero-maroon{background:linear-gradient(160deg,#160000,#6B0000,#2A0000);padding:24px 20px 46px;position:relative;overflow:hidden;}
+.hero-maroon::before{content:'⚰️';position:absolute;right:-5px;top:5px;font-size:110px;opacity:.05;}
+.hero-blue{background:linear-gradient(160deg,#000B1E,#00245C,#000B1E);padding:24px 20px 46px;position:relative;overflow:hidden;}
+.hero-blue::before{content:'🏢';position:absolute;right:-5px;top:5px;font-size:110px;opacity:.04;}
+
+/* BALANCE CARD */
+.bal-card{background:rgba(255,255,255,.07);border:1px solid rgba(201,168,76,.22);border-radius:20px;padding:20px;}
+.bal-lbl{color:rgba(255,255,255,.45);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;}
+.bal-amt{font-family:'DM Mono',monospace;color:var(--gold);font-size:34px;font-weight:500;margin-bottom:12px;letter-spacing:-1px;}
+.bal-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.bs{text-align:center;}
+.bsv{color:var(--white);font-weight:600;font-size:13px;}
+.bsl{color:rgba(255,255,255,.38);font-size:9px;margin-top:1px;}
+.bdiv{width:1px;background:rgba(255,255,255,.1);}
+
+/* SECTIONS */
+.sec{padding:18px 20px 0;}
+.sec-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.sec-t{font-family:'Playfair Display',serif;font-size:18px;color:var(--green-deep);font-weight:700;}
+.see-all{color:var(--gold);font-size:11px;font-weight:600;cursor:pointer;border:none;background:none;}
+
+/* CARDS */
+.card{background:var(--white);border-radius:16px;padding:16px;margin-bottom:10px;box-shadow:var(--shadow);cursor:pointer;transition:all .2s;border:1px solid transparent;}
+.card:hover{border-color:var(--gold);transform:translateY(-1px);}
+.prog{background:#F0F0F0;border-radius:10px;height:5px;overflow:hidden;margin-top:6px;}
+.prog-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--green-mid),var(--gold));transition:width 1s ease;}
+
+/* PILLS */
+.pill{padding:3px 9px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;display:inline-block;}
+.p-paid{background:#E8F5E9;color:#2E7D32;}
+.p-pending{background:#FFF3E0;color:#E65100;}
+.p-late{background:#FFEBEE;color:#C62828;}
+.p-active{background:#E8F5E9;color:#2E7D32;}
+.p-covered{background:#EEF3FF;color:var(--blue-mid);}
+
+/* QA */
+.qa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.qa{background:var(--white);border-radius:14px;padding:12px 6px;text-align:center;cursor:pointer;transition:all .2s;border:1px solid transparent;box-shadow:var(--shadow);}
+.qa:hover{border-color:var(--gold);transform:translateY(-2px);}
+.qa-icon{font-size:20px;margin-bottom:5px;display:block;}
+.qa-lbl{font-size:9px;color:var(--muted);font-weight:600;line-height:1.2;}
+
+/* ===== MEMBER COVER CARD ===== */
+.cover-card{background:linear-gradient(135deg,var(--green-mid),var(--green-bright));border-radius:18px;padding:18px;margin-bottom:10px;position:relative;overflow:hidden;}
+.cover-card::before{content:'';position:absolute;top:-20px;right:-20px;width:90px;height:90px;background:rgba(255,255,255,.08);border-radius:50%;}
+.cover-tag{font-size:10px;color:rgba(255,255,255,.55);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.cover-name{font-family:'Playfair Display',serif;color:var(--white);font-size:17px;font-weight:700;margin-bottom:12px;}
+.cover-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
+.cover-stat{text-align:center;background:rgba(255,255,255,.1);border-radius:10px;padding:8px 4px;}
+.cover-val{color:var(--white);font-weight:700;font-size:13px;font-family:'DM Mono',monospace;}
+.cover-lbl{color:rgba(255,255,255,.5);font-size:8px;margin-top:2px;}
+.cover-status{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.7);}
+.cover-dot{width:7px;height:7px;background:#4CAF50;border-radius:50%;}
+.cover-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:8px 14px;color:var(--white);font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:10px;transition:all .2s;}
+.cover-btn:hover{background:rgba(255,255,255,.25);}
+
+/* ===== FAMILY LIST ===== */
+.family-list{display:flex;flex-direction:column;gap:8px;}
+.family-row{background:var(--white);border-radius:14px;padding:13px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow);}
+.fam-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:#F0F0F0;}
+.fam-info{flex:1;}
+.fam-name{font-weight:700;color:var(--green-deep);font-size:13px;}
+.fam-rel{font-size:10px;color:var(--muted);margin-top:1px;}
+.fam-right{text-align:right;}
+.fam-cover{font-family:'DM Mono',monospace;font-weight:700;font-size:13px;color:var(--green-mid);}
+
+/* ===== CLAIM FLOW ===== */
+.claim-card{background:var(--white);border-radius:18px;padding:18px;margin-bottom:12px;box-shadow:var(--shadow);border-left:4px solid var(--danger);}
+.claim-urgency{background:linear-gradient(135deg,#FFF0F0,#FFE4E4);border:1px solid #FFCDD2;border-radius:12px;padding:12px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.urg-icon{font-size:24px;flex-shrink:0;}
+.urg-text h4{font-weight:700;color:var(--danger);font-size:13px;margin-bottom:2px;}
+.urg-text p{font-size:11px;color:#C62828;line-height:1.4;}
+.claim-checks{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.chk{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text);}
+.chk-icon{width:20px;height:20px;border-radius:50%;background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
+
+/* FAMILY SELECTOR IN CLAIM */
+.family-selector{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.fam-opt{background:#F8F8F8;border:2px solid #E8E8E8;border-radius:12px;padding:12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px;}
+.fam-opt.on{border-color:var(--maroon-mid);background:#FFF8F8;}
+.fam-opt-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:#F0F0F0;}
+.fam-opt-name{font-weight:700;color:var(--green-deep);font-size:12px;}
+.fam-opt-rel{font-size:10px;color:var(--muted);}
+.fam-opt-cover{font-family:'DM Mono',monospace;font-weight:700;color:var(--maroon-mid);font-size:14px;margin-left:auto;}
+
+/* FUNERAL PARTNER OPTIONS */
+.funeral-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.funeral-opt{background:#F8F8F8;border:2px solid #E8E8E8;border-radius:12px;padding:12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px;}
+.funeral-opt.on{border-color:var(--blue-mid);background:var(--blue-light);}
+.fo-logo{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.fo-name{font-weight:700;color:var(--green-deep);font-size:12px;}
+.fo-detail{font-size:10px;color:var(--muted);margin-top:1px;}
+.fo-price{font-family:'DM Mono',monospace;font-weight:700;color:var(--blue-mid);font-size:14px;margin-left:auto;}
+
+/* INSTANT PAY BUTTON */
+.instant-btn{width:100%;background:linear-gradient(135deg,#003399,var(--blue-mid),#0077FF);color:white;border:none;border-radius:16px;padding:18px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden;}
+.instant-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);animation:shimmer 2s infinite;}
+@keyframes shimmer{to{left:100%}}
+.instant-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,85,204,.45);}
+.instant-sub{text-align:center;font-size:11px;color:var(--muted);margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;}
+
+/* ===== ADMIN STATS ===== */
+.admin-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:28px 20px 0;}
+.ast{background:var(--white);border-radius:16px;padding:14px;box-shadow:var(--shadow);}
+.ast.urgent{border:2px solid #FFCDD2;background:#FFF8F8;}
+.ast-icon{font-size:22px;display:block;margin-bottom:6px;}
+.ast-val{font-family:'DM Mono',monospace;font-size:22px;font-weight:700;color:var(--green-deep);}
+.ast.urgent .ast-val{color:var(--danger);}
+.ast-lbl{font-size:11px;color:var(--muted);}
+
+/* MEMBER ROWS */
+.mem-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F5F5F5;}
+.mem-row:last-child{border-bottom:none;}
+.mem-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:white;flex-shrink:0;}
+.mem-info{flex:1;}
+.mem-name{font-weight:600;color:var(--green-deep);font-size:12px;}
+.mem-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+.mem-right{text-align:right;}
+.mem-amt{font-family:'DM Mono',monospace;font-weight:600;font-size:12px;color:var(--green-deep);}
+
+/* ===== FUNERAL HOME VIEW ===== */
+.fh-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:28px 20px 0;}
+.fhst{background:var(--white);border-radius:16px;padding:14px;box-shadow:var(--shadow);}
+.fhst-icon{font-size:22px;margin-bottom:6px;display:block;}
+.fhst-val{font-family:'DM Mono',monospace;font-size:20px;font-weight:700;color:var(--green-deep);}
+.fhst-lbl{font-size:10px;color:var(--muted);}
+
+.notification-card{background:var(--white);border-radius:18px;padding:16px;margin-bottom:10px;box-shadow:var(--shadow);border-left:4px solid var(--blue-mid);}
+.notif-urgent{background:linear-gradient(135deg,#EEF3FF,#D0E4FF);border:1px solid rgba(0,102,255,.2);border-radius:12px;padding:12px;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.notif-u-icon{font-size:24px;flex-shrink:0;}
+.notif-u-title{font-weight:700;color:var(--blue-mid);font-size:13px;margin-bottom:2px;}
+.notif-u-sub{font-size:11px;color:#0D47A1;line-height:1.4;}
+.notif-details{background:#F8F8F8;border-radius:12px;padding:12px;margin-bottom:12px;}
+.nd-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #F0F0F0;}
+.nd-row:last-child{border-bottom:none;}
+.nd-label{font-size:11px;color:var(--muted);}
+.nd-value{font-weight:700;font-size:11px;color:var(--green-deep);}
+.confirm-btn{width:100%;background:linear-gradient(135deg,var(--success),#2ECC71);color:white;border:none;border-radius:13px;padding:15px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.confirm-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(39,174,96,.4);}
+
+/* PARTNER SOCIETIES LIST */
+.partner-soc{background:var(--white);border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;}
+.ps-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ps-info{flex:1;}
+.ps-name{font-weight:700;color:var(--green-deep);font-size:13px;}
+.ps-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+.ps-right{text-align:right;}
+.ps-amount{font-family:'DM Mono',monospace;font-weight:700;font-size:13px;color:var(--success);}
+
+/* EARNINGS TABLE */
+.earnings-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #F5F5F5;}
+.earnings-item:last-child{border-bottom:none;}
+.ei-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.ei-info{flex:1;}
+.ei-name{font-weight:600;color:var(--green-deep);font-size:12px;}
+.ei-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+.ei-right{text-align:right;}
+.ei-gross{font-family:'DM Mono',monospace;font-weight:700;font-size:13px;color:var(--green-deep);}
+.ei-comm{font-size:9px;color:var(--danger);margin-top:1px;}
+.ei-net{font-size:10px;color:var(--success);font-weight:600;}
+
+/* NOTIFICATIONS */
+.notif-item{background:var(--white);border-radius:16px;padding:13px;margin-bottom:9px;box-shadow:var(--shadow);display:flex;gap:10px;border-left:4px solid transparent;}
+.notif-item.blue{border-left-color:var(--blue-mid);}
+.notif-item.green{border-left-color:var(--success);}
+.notif-item.orange{border-left-color:var(--warning);}
+.notif-item.red{border-left-color:var(--danger);}
+.ni-icon{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.ni-body{flex:1;}
+.ni-title{font-weight:700;color:var(--green-deep);font-size:12px;margin-bottom:2px;}
+.ni-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+.ni-time{font-size:9px;color:var(--muted);margin-top:3px;}
+.time-chip{background:var(--blue-light);color:var(--blue-mid);border-radius:7px;padding:2px 7px;font-size:9px;font-weight:700;display:inline-block;margin-top:3px;}
+
+/* PROCESSING SCREEN */
+#procScreen{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(12px);}
+#procScreen.open{display:flex;}
+.proc-card{background:var(--white);border-radius:28px;padding:28px 22px;width:100%;max-width:380px;text-align:center;}
+.proc-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--green-deep);margin-bottom:6px;}
+.proc-sub{color:var(--muted);font-size:12px;margin-bottom:18px;line-height:1.5;}
+.live-timer-box{background:linear-gradient(135deg,#000B1E,#001A4A);border-radius:16px;padding:14px;margin-bottom:16px;}
+.ltb-count{font-family:'DM Mono',monospace;font-size:38px;font-weight:700;color:#4488FF;letter-spacing:-2px;}
+.ltb-sub{color:rgba(255,255,255,.3);font-size:10px;margin-top:3px;}
+.pay-steps{display:flex;flex-direction:column;gap:8px;text-align:left;}
+.ps-step{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;background:#F8F8F8;transition:all .3s;}
+.ps-step.active{background:var(--blue-light);border:1px solid rgba(0,102,255,.2);}
+.ps-step.done{background:#E8F5E9;border:1px solid rgba(39,174,96,.2);}
+.ps-step-icon{width:32px;height:32px;border-radius:50%;background:#E0E0E0;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:all .3s;}
+.ps-step.active .ps-step-icon{background:var(--blue-mid);animation:spin .8s linear infinite;}
+.ps-step.done .ps-step-icon{background:var(--success);animation:none;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ps-step-name{font-weight:600;font-size:12px;color:var(--green-deep);}
+.ps-step.active .ps-step-name{color:var(--blue-mid);}
+.ps-step.done .ps-step-name{color:var(--success);}
+.ps-step-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+
+/* SUCCESS SCREEN */
+#succScreen{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:600;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(12px);overflow-y:auto;}
+#succScreen.open{display:flex;}
+.succ-card{background:var(--white);border-radius:28px;padding:26px 22px;width:100%;max-width:380px;text-align:center;animation:pop .4s ease;margin:auto;}
+@keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.succ-check{width:70px;height:70px;background:linear-gradient(135deg,var(--success),#2ECC71);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 14px;animation:bounce .6s ease;}
+@keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.succ-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--green-deep);margin-bottom:4px;}
+.succ-sub{color:var(--muted);font-size:12px;margin-bottom:16px;line-height:1.5;}
+.succ-time-badge{background:linear-gradient(135deg,#EEF3FF,#D0E4FF);border:1px solid rgba(0,102,255,.2);border-radius:12px;padding:12px;margin-bottom:14px;display:flex;align-items:center;gap:10px;text-align:left;}
+.stb-icon{font-size:26px;}
+.stb-title{font-weight:700;color:var(--blue-mid);font-size:13px;}
+.stb-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.succ-details{background:#F8F8F8;border-radius:12px;padding:13px;margin-bottom:12px;text-align:left;}
+.sd-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #F0F0F0;}
+.sd-row:last-child{border-bottom:none;}
+.sd-label{font-size:11px;color:var(--muted);}
+.sd-value{font-weight:700;font-size:11px;color:var(--green-deep);}
+.notif-blast{background:linear-gradient(135deg,#E8F5E9,#F0FFF4);border:1px solid rgba(39,174,96,.2);border-radius:12px;padding:12px;margin-bottom:12px;text-align:left;}
+.nb-title{font-weight:700;color:var(--success);font-size:12px;margin-bottom:6px;}
+.nb-msg{background:var(--white);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--text);line-height:1.6;font-style:italic;margin-bottom:6px;}
+.nb-count{font-size:10px;color:var(--muted);}
+.m-chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none;}
+.m-chips::-webkit-scrollbar{display:none;}
+.m-chip{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;}
+.mc-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:white;position:relative;}
+.mc-check{position:absolute;bottom:-2px;right:-2px;width:12px;height:12px;background:var(--success);border-radius:50%;border:2px solid white;font-size:6px;display:flex;align-items:center;justify-content:center;color:white;}
+.mc-name{font-size:8px;color:var(--muted);text-align:center;max-width:36px;}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid #F0F0F0;display:flex;padding:8px 0 16px;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.08);}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0;border:none;background:none;position:relative;transition:all .2s;}
+.nav-icon{font-size:18px;transition:transform .2s;}
+.nav-lbl{font-size:9px;color:var(--muted);font-weight:500;}
+.nav-btn.am .nav-lbl,.nav-btn.am .nav-icon{color:var(--green-mid);transform:scale(1.12);}
+.nav-btn.aa .nav-lbl,.nav-btn.aa .nav-icon{color:var(--maroon-mid);transform:scale(1.12);}
+.nav-btn.af .nav-lbl,.nav-btn.af .nav-icon{color:var(--blue-mid);transform:scale(1.12);}
+.nav-btn.am .nav-lbl{font-weight:700;}
+.nav-btn.aa .nav-lbl{font-weight:700;}
+.nav-btn.af .nav-lbl{font-weight:700;}
+.nbadge{position:absolute;top:0;right:calc(50% - 18px);background:var(--danger);color:white;border-radius:50%;width:15px;height:15px;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:flex-end;backdrop-filter:blur(5px);}
+.overlay.open{display:flex;}
+.modal{background:var(--white);border-radius:28px 28px 0 0;padding:22px 20px 34px;width:100%;animation:slideUp .3s ease;max-height:92vh;overflow-y:auto;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:40px;height:4px;background:#E0E0E0;border-radius:2px;margin:0 auto 16px;}
+.modal-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--green-deep);margin-bottom:4px;}
+.modal-sub{color:var(--muted);font-size:12px;margin-bottom:16px;}
+.mfg{margin-bottom:12px;}
+.mfg label{display:block;color:var(--muted);font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.mfg input,.mfg select,.mfg textarea{width:100%;background:#F8F8F8;border:1px solid #E8E8E8;border-radius:11px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;color:var(--text);transition:all .2s;}
+.mfg input:focus,.mfg select:focus{border-color:var(--gold);background:var(--gold-pale);}
+.mfg select{-webkit-appearance:none;}
+.mfg textarea{resize:none;height:75px;}
+.btn-red{width:100%;background:linear-gradient(135deg,var(--maroon),var(--maroon-mid));color:white;border:none;border-radius:13px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:4px;}
+.btn-red:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(107,0,0,.4);}
+.btn-green{width:100%;background:linear-gradient(135deg,var(--success),#2ECC71);color:white;border:none;border-radius:13px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-blue{width:100%;background:linear-gradient(135deg,var(--blue-deep),var(--blue-mid));color:white;border:none;border-radius:13px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;}
+
+/* INFO BOX */
+.ibox{border-radius:13px;padding:12px;margin-bottom:12px;display:flex;gap:8px;font-size:12px;line-height:1.5;}
+.ibox.gold{background:var(--gold-pale);border:1px solid rgba(201,168,76,.3);color:#7B6008;}
+.ibox.blue{background:var(--blue-light);border:1px solid rgba(0,102,255,.2);color:#0D47A1;}
+.ibox.green{background:#E8F5E9;border:1px solid #A5D6A7;color:#1B5E20;}
+.ibox strong{font-weight:700;}
+
+/* TOAST */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green-deep);color:var(--white);padding:12px 22px;border-radius:100px;font-size:12px;font-weight:500;z-index:700;opacity:0;transition:all .3s;white-space:nowrap;border:1px solid rgba(201,168,76,.3);max-width:92vw;text-align:center;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* FOOTER */
+.app-footer{text-align:center;padding:16px 20px 24px;color:var(--muted);font-size:10px;line-height:1.8;}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="loginScreen" class="screen active">
+  <div class="login-wrap">
+    <div class="logo-hero">
+      <div class="logo-mark">💰</div>
+      <span class="logo-name">UMali</span>
+      <span class="logo-tag">Burial Societies · Stokvels · Funerals</span>
+    </div>
+
+    <div class="who-label">I am signing in as...</div>
+    <div class="role-grid">
+      <div class="role-card on" id="r-member" onclick="selectRole('member')">
+        <span class="role-icon">👤</span>
+        <div class="role-title">Member</div>
+        <div class="role-sub">I belong to a society or stokvel</div>
+      </div>
+      <div class="role-card" id="r-admin" onclick="selectRole('admin')">
+        <span class="role-icon">👑</span>
+        <div class="role-title">Society Admin</div>
+        <div class="role-sub">I run a burial society or stokvel</div>
+      </div>
+      <div class="role-card" id="r-funeral" onclick="selectRole('funeral')">
+        <span class="role-icon">🏢</span>
+        <div class="role-title">Funeral Home</div>
+        <div class="role-sub">I am a UMali partner funeral service</div>
+      </div>
+      <div class="role-card" id="r-individual" onclick="selectRole('individual')">
+        <span class="role-icon">🛡️</span>
+        <div class="role-title">Individual Cover</div>
+        <div class="role-sub">I save alone for funeral cover</div>
+      </div>
+    </div>
+
+    <div class="lcard">
+      <div class="lcard-title">Welcome to UMali</div>
+
+      <!-- TABS -->
+      <div style="display:flex;gap:0;margin-bottom:16px;background:rgba(255,255,255,.06);border-radius:12px;padding:4px;">
+        <button id="tabSignIn" onclick="showAuthTab('signin')" style="flex:1;padding:10px;border:none;border-radius:10px;background:var(--gold);color:var(--green-deep);font-weight:700;font-size:13px;cursor:pointer;">Sign In</button>
+        <button id="tabRegister" onclick="showAuthTab('register')" style="flex:1;padding:10px;border:none;border-radius:10px;background:transparent;color:rgba(255,255,255,.4);font-weight:600;font-size:13px;cursor:pointer;">Register</button>
+      </div>
+
+      <!-- SIGN IN -->
+      <div id="signinForm">
+        <div class="fg">
+          <label>Phone Number</label>
+          <div style="display:flex;gap:8px;">
+            <div style="background:rgba(255,255,255,.08);border:1px solid rgba(201,168,76,.2);border-radius:12px;padding:12px 14px;color:rgba(255,255,255,.6);font-size:14px;white-space:nowrap;">+27</div>
+            <input type="tel" id="loginPhone" placeholder="71 234 5678" style="flex:1;" />
+          </div>
+        </div>
+        <div class="fg">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="Your password" />
+        </div>
+        <button class="btn-gold" onclick="doLogin()" id="loginBtn">Sign In</button>
+        <div style="text-align:center;margin-top:10px;color:rgba(255,255,255,.3);font-size:11px;cursor:pointer;" onclick="showForgotPassword()">Forgot password?</div>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="registerForm" style="display:none;">
+        <div class="fg">
+          <label>Full Name</label>
+          <input type="text" id="regName" placeholder="Your full name" />
+        </div>
+        <div class="fg">
+          <label>Phone Number</label>
+          <div style="display:flex;gap:8px;">
+            <div style="background:rgba(255,255,255,.08);border:1px solid rgba(201,168,76,.2);border-radius:12px;padding:12px 14px;color:rgba(255,255,255,.6);font-size:14px;white-space:nowrap;">+27</div>
+            <input type="tel" id="regPhone" placeholder="71 234 5678" style="flex:1;" />
+          </div>
+        </div>
+        <div class="fg">
+          <label>Email Address</label>
+          <input type="email" id="regEmail" placeholder="your@email.com" />
+        </div>
+        <div class="fg">
+          <label>Create Password</label>
+          <input type="password" id="regPassword" placeholder="Minimum 6 characters" />
+        </div>
+        <button class="btn-gold" onclick="doRegister()" id="registerBtn">Create Account</button>
+      </div>
+
+      <div style="text-align:center;margin-top:10px;color:rgba(255,255,255,.2);font-size:10px;">Secured by Firebase · 256-bit encrypted</div>
+    </div>
+
+    <div class="login-banks">
+      🏦 FNB · Capitec · Standard Bank · ABSA · Nedbank · TymeBank<br>
+      ⚡ Instant payments · 🛡️ 256-bit encrypted · 🇿🇦 South Africa
+    </div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="appScreen" class="screen">
+  <div class="topbar">
+    <div class="tb-logo">UMali</div>
+    <div class="tb-center">
+      <div id="roleLabel" style="color:rgba(255,255,255,.5);font-size:11px;letter-spacing:2px;text-transform:uppercase;"></div>
+    </div>
+    <div class="tb-right">
+      <div class="live-ind"><div class="live-dot"></div>Live</div>
+      <button class="av-btn" onclick="openOverlay('settingsOverlay')">A</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- ============================================================ -->
+    <!-- MEMBER VIEW -->
+    <!-- ============================================================ -->
+    <div id="view-member" class="view active">
+
+      <!-- MEMBER HOME -->
+      <div id="mt-home" class="tab active">
+        <div class="hero-green">
+          <div style="color:rgba(255,255,255,.55);font-size:13px;margin-bottom:3px;">Good day,</div>
+          <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:24px;font-weight:700;margin-bottom:18px;">Nomvula 👤</div>
+          <div class="bal-card">
+            <div class="bal-lbl">My Total Cover</div>
+            <div class="bal-amt">R 90,000</div>
+            <div class="bal-row">
+              <div class="bs"><div class="bsv">6</div><div class="bsl">Family Covered</div></div>
+              <div class="bdiv"></div>
+              <div class="bs"><div class="bsv">R200</div><div class="bsl">Monthly</div></div>
+              <div class="bdiv"></div>
+              <div class="bs"><div class="bsv" style="color:#4CAF50;">✅</div><div class="bsl">Up to Date</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sec" style="padding-top:28px;">
+          <div class="sec-t" style="margin-bottom:12px;">Quick Actions</div>
+          <div class="qa-grid">
+            <div class="qa" onclick="mSwitch('mt-mycover')"><span class="qa-icon">🛡️</span><span class="qa-lbl">My Cover</span></div>
+            <div class="qa" onclick="mSwitch('mt-family')"><span class="qa-icon">👨‍👩‍👧</span><span class="qa-lbl">My Family</span></div>
+            <div class="qa" onclick="openOverlay('reportOverlay')"><span class="qa-icon">🕊️</span><span class="qa-lbl">Report Passing</span></div>
+            <div class="qa" onclick="mSwitch('mt-payments')"><span class="qa-icon">💸</span><span class="qa-lbl">Payments</span></div>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-h"><div class="sec-t">My Membership</div></div>
+          <div class="cover-card">
+            <div class="cover-tag">Burial Society</div>
+            <div class="cover-name">Lesedi Burial Society</div>
+            <div class="cover-grid">
+              <div class="cover-stat"><div class="cover-val">R200</div><div class="cover-lbl">Monthly</div></div>
+              <div class="cover-stat"><div class="cover-val">R20K</div><div class="cover-lbl">Main Cover</div></div>
+              <div class="cover-stat"><div class="cover-val">38</div><div class="cover-lbl">Months Paid</div></div>
+            </div>
+            <div class="cover-status"><div class="cover-dot"></div>Active · Partner: Avbob Soweto ✅</div>
+            <button class="cover-btn" onclick="openOverlay('reportOverlay')">🕊️ Report a Passing</button>
+          </div>
+
+          <div class="card">
+            <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;">
+              <div style="width:40px;height:40px;border-radius:12px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:18px;">💰</div>
+              <div style="flex:1;">
+                <div style="font-weight:700;color:var(--green-deep);font-size:13px;">Zama Zama Stokvel</div>
+                <div style="color:var(--muted);font-size:10px;">8 members · Savings · R500/month</div>
+              </div>
+              <span class="pill p-paid">Paid</span>
+            </div>
+            <div class="prog"><div class="prog-fill" style="width:62%"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--muted);">
+              <span>5 of 8 paid · Next: April 2026</span><span>R8,000 saved</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY COVER -->
+      <div id="mt-mycover" class="tab">
+        <div class="hero-green">
+          <div style="color:rgba(255,255,255,.55);font-size:12px;margin-bottom:3px;">Lesedi Burial Society</div>
+          <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:22px;margin-bottom:18px;">My Funeral Cover</div>
+          <div class="bal-card">
+            <div class="bal-lbl">Total Family Cover</div>
+            <div class="bal-amt">R 90,000</div>
+            <div class="bal-row">
+              <div class="bs"><div class="bsv">6</div><div class="bsl">People Covered</div></div>
+              <div class="bdiv"></div>
+              <div class="bs"><div class="bsv">Avbob</div><div class="bsl">Partner Home</div></div>
+              <div class="bdiv"></div>
+              <div class="bs"><div class="bsv" style="color:#4CAF50;">Active</div><div class="bsl">Status</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sec" style="padding-top:28px;">
+          <div class="ibox blue">
+            <span>ℹ️</span>
+            <div><strong>How your cover works:</strong> You pay R200/month. When any covered family member passes away, simply tap "Report a Passing" and UMali notifies Avbob automatically. Payment goes directly to Avbob. You pay nothing extra.</div>
+          </div>
+
+          <div class="sec-h"><div class="sec-t">Partner Funeral Home</div></div>
+          <div class="card" style="cursor:default;">
+            <div style="display:flex;gap:12px;align-items:center;">
+              <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#1A2F5A,#2E4A8A);display:flex;align-items:center;justify-content:center;font-size:22px;">🏛️</div>
+              <div style="flex:1;">
+                <div style="font-weight:700;color:var(--green-deep);font-size:14px;">Avbob Funeral Services</div>
+                <div style="color:var(--muted);font-size:11px;">📍 Soweto Branch · ⭐4.8 · UMali Partner ✅</div>
+                <div style="color:var(--success);font-size:10px;font-weight:600;margin-top:3px;">⚡ Notified automatically when you report</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-h"><div class="sec-t">What Happens When Someone Dies</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+            <div style="background:var(--white);border-radius:14px;padding:14px;display:flex;gap:12px;box-shadow:var(--shadow);">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green-deep);flex-shrink:0;">1</div>
+              <div><div style="font-weight:700;color:var(--green-deep);font-size:12px;">You tap "Report a Passing"</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">Select which family member passed away</div></div>
+            </div>
+            <div style="background:var(--white);border-radius:14px;padding:14px;display:flex;gap:12px;box-shadow:var(--shadow);">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--blue-mid);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0;">2</div>
+              <div><div style="font-weight:700;color:var(--green-deep);font-size:12px;">UMali notifies Avbob instantly</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">They know you have been paying every month</div></div>
+            </div>
+            <div style="background:var(--white);border-radius:14px;padding:14px;display:flex;gap:12px;box-shadow:var(--shadow);">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--maroon-mid);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0;">3</div>
+              <div><div style="font-weight:700;color:var(--green-deep);font-size:12px;">Admin approves</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">Society admin verifies and approves in 1 tap</div></div>
+            </div>
+            <div style="background:var(--white);border-radius:14px;padding:14px;display:flex;gap:12px;box-shadow:var(--shadow);">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--success);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0;">4</div>
+              <div><div style="font-weight:700;color:var(--green-deep);font-size:12px;">⚡ Payment sent automatically</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">Money goes DIRECTLY to Avbob. You pay nothing.</div></div>
+            </div>
+            <div style="background:var(--white);border-radius:14px;padding:14px;display:flex;gap:12px;box-shadow:var(--shadow);">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green-deep);flex-shrink:0;">5</div>
+              <div><div style="font-weight:700;color:var(--green-deep);font-size:12px;">Avbob contacts you within 1 hour</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">Burial arranged. Your family buried with dignity.</div></div>
+            </div>
+          </div>
+          <button class="btn-red" onclick="openOverlay('reportOverlay')">🕊️ Report a Passing Now</button>
+        </div>
+      </div>
+
+      <!-- MY FAMILY -->
+      <div id="mt-family" class="tab">
+        <div class="hero-green">
+          <div style="color:rgba(255,255,255,.55);font-size:12px;margin-bottom:3px;">Lesedi Burial Society</div>
+          <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:22px;margin-bottom:4px;">My Family Cover</div>
+          <div style="color:rgba(255,255,255,.45);font-size:12px;margin-bottom:18px;">6 family members protected · Total: R90,000</div>
+          <div class="bal-card">
+            <div class="bal-lbl">Monthly Payment</div>
+            <div class="bal-amt">R 200</div>
+            <div style="color:rgba(255,255,255,.4);font-size:11px;margin-top:4px;">Covers your entire family listed below</div>
+          </div>
+        </div>
+
+        <div class="sec" style="padding-top:28px;">
+          <div class="ibox gold">
+            <span>⚠️</span>
+            <div><strong>Important:</strong> Only family members registered here are covered. You cannot add new family members after someone has passed away. Contact your society admin to update your family list.</div>
+          </div>
+          <div class="sec-h"><div class="sec-t">Covered Family Members</div></div>
+          <div class="family-list">
+            <div class="family-row">
+              <div class="fam-av">👤</div>
+              <div class="fam-info"><div class="fam-name">Nomvula Dlamini</div><div class="fam-rel">Main Member (Self) · ID: 780101****</div></div>
+              <div class="fam-right"><div class="fam-cover">R20,000</div><span class="pill p-covered">Covered</span></div>
+            </div>
+            <div class="family-row">
+              <div class="fam-av">👨</div>
+              <div class="fam-info"><div class="fam-name">Sipho Dlamini</div><div class="fam-rel">Spouse · ID: 720512****</div></div>
+              <div class="fam-right"><div class="fam-cover">R20,000</div><span class="pill p-covered">Covered</span></div>
+            </div>
+            <div class="family-row">
+              <div class="fam-av">👦</div>
+              <div class="fam-info"><div class="fam-name">Thabo Dlamini</div><div class="fam-rel">Son · ID: 020315****</div></div>
+              <div class="fam-right"><div class="fam-cover">R10,000</div><span class="pill p-covered">Covered</span></div>
+            </div>
+            <div class="family-row">
+              <div class="fam-av">👧</div>
+              <div class="fam-info"><div class="fam-name">Zanele Dlamini</div><div class="fam-rel">Daughter · ID: 050612****</div></div>
+              <div class="fam-right"><div class="fam-cover">R10,000</div><span class="pill p-covered">Covered</span></div>
+            </div>
+            <div class="family-row">
+              <div class="fam-av">👴</div>
+              <div class="fam-info"><div class="fam-name">Agnes Khumalo</div><div class="fam-rel">Mother · ID: 520101****</div></div>
+              <div class="fam-right"><div class="fam-cover">R15,000</div><span class="pill p-covered">Covered</span></div>
+            </div>
+            <div class="family-row">
+              <div class="fam-av">👴</div>
+              <div class="fam-info"><div class="fam-name">Joseph Khumalo</div><div class="fam-rel">Father · ID: 500512****</div></div>
+              <div class="fam-right"><div class="fam-cover">R15,000</div><span class="pill p-covered">Covered</span></div>
+            </div>
+          </div>
+          <div style="padding-top:16px;">
+            <button class="btn-gold" style="margin-top:0;" onclick="showToast('📲 Request sent to society admin to update family list')">+ Request to Add Family Member</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY PAYMENTS -->
+      <div id="mt-payments" class="tab">
+        <div class="hero-green">
+          <div style="color:rgba(255,255,255,.55);font-size:12px;margin-bottom:3px;">My Payment History</div>
+          <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:22px;margin-bottom:18px;">38 Months Paid ✅</div>
+          <div class="bal-card">
+            <div class="bal-lbl">Total Paid to Date</div>
+            <div class="bal-amt">R 7,600</div>
+            <div style="color:rgba(255,255,255,.4);font-size:11px;margin-top:4px;">38 months × R200 · All confirmed</div>
+          </div>
+        </div>
+        <div class="sec" style="padding-top:28px;">
+          <div class="ibox green"><span>✅</span><div><strong>Debit Order Active:</strong> R200 deducted automatically on 25th of every month from your Capitec account **** 4521</div></div>
+          <div class="sec-h"><div class="sec-t">Recent Payments</div></div>
+          <div style="background:var(--white);border-radius:16px;padding:14px;box-shadow:var(--shadow);">
+            <div class="mem-row"><div class="mem-av" style="background:linear-gradient(135deg,var(--green-mid),var(--green-bright));">M</div><div class="mem-info"><div class="mem-name">March 2026 — Lesedi Society</div><div class="mem-sub">Capitec debit order · 25 Mar 2026</div></div><div class="mem-right"><div class="mem-amt">R200</div><span class="pill p-paid">Paid</span></div></div>
+            <div class="mem-row"><div class="mem-av" style="background:linear-gradient(135deg,var(--green-mid),var(--green-bright));">M</div><div class="mem-info"><div class="mem-name">February 2026 — Lesedi Society</div><div class="mem-sub">Capitec debit order · 25 Feb 2026</div></div><div class="mem-right"><div class="mem-amt">R200</div><span class="pill p-paid">Paid</span></div></div>
+            <div class="mem-row"><div class="mem-av" style="background:linear-gradient(135deg,var(--green-mid),var(--green-bright));">M</div><div class="mem-info"><div class="mem-name">January 2026 — Lesedi Society</div><div class="mem-sub">Capitec debit order · 25 Jan 2026</div></div><div class="mem-right"><div class="mem-amt">R200</div><span class="pill p-paid">Paid</span></div></div>
+            <div class="mem-row"><div class="mem-av" style="background:linear-gradient(135deg,var(--green-mid),var(--green-bright));">M</div><div class="mem-info"><div class="mem-name">March 2026 — Zama Stokvel</div><div class="mem-sub">FNB EFT · 10 Mar 2026</div></div><div class="mem-right"><div class="mem-amt">R500</div><span class="pill p-paid">Paid</span></div></div>
+          </div>
+          <div style="padding-top:12px;">
+            <button class="btn-gold" style="margin-top:0;" onclick="showToast('📄 Statement downloaded!')">📄 Download Full Statement</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end member view -->
+
+    <!-- ============================================================ -->
+    <!-- ADMIN VIEW -->
+    <!-- ============================================================ -->
+    <div id="view-admin" class="view">
+
+      <!-- ADMIN HOME -->
+      <div id="at-home" class="tab active">
+        <div class="hero-maroon">
+          <div style="color:rgba(255,255,255,.45);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;">Admin Dashboard</div>
+          <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:22px;margin-bottom:3px;">Lesedi Burial Society</div>
+          <div style="color:rgba(255,255,255,.35);font-size:11px;margin-bottom:16px;">Soweto · 32 families · Partner: Avbob</div>
+          <div class="bal-card">
+            <div class="bal-lbl">Society Treasury</div>
+            <div class="bal-amt">R 24,800</div>
+            <div class="bal-row">
+              <div class="bs"><div class="bsv">32</div><div class="bsl">Families</div></div>
+              <div class="bdiv"></div>
+              <div class="bs"><div class="bsv">R6,400</div><div class="bsl">Monthly</div></div>
+              <div class="bdiv"></div>
+              <div class="bs"><div class="bsv">R20K</div><div class="bsl">Cover</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-stats">
+          <div class="ast urgent"><span class="ast-icon">🚨</span><div class="ast-val">1</div><div class="ast-lbl">Pending Claim</div></div>
+          <div class="ast"><span class="ast-icon">✅</span><div class="ast-val">26</div><div class="ast-lbl">Paid March</div></div>
+          <div class="ast"><span class="ast-icon">⏰</span><div class="ast-val">6</div><div class="ast-lbl">Not Yet Paid</div></div>
+          <div class="ast"><span class="ast-icon">👨‍👩‍👧</span><div class="ast-val">156</div><div class="ast-lbl">Family Members Covered</div></div>
+        </div>
+
+        <!-- CREATE SOCIETY BUTTON — shows when admin has no real society -->
+        <div id="createSocietyBanner" class="sec" style="margin-top:16px;">
+          <div style="background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:20px;padding:20px;text-align:center;box-shadow:0 8px 24px rgba(201,168,76,.3);">
+            <div style="font-size:36px;margin-bottom:8px;">🏛️</div>
+            <div style="font-family:Playfair Display,serif;color:var(--green-deep);font-size:18px;font-weight:700;margin-bottom:6px;">Create Your Burial Society</div>
+            <div style="color:rgba(10,46,26,.6);font-size:12px;margin-bottom:14px;line-height:1.5;">Set up your society digitally. Get an invite link to share with your members on WhatsApp.</div>
+            <button onclick="openOverlay('createSocietyOverlay')" style="background:var(--green-deep);color:var(--gold);border:none;border-radius:13px;padding:14px 24px;font-family:DM Sans,sans-serif;font-size:15px;font-weight:700;cursor:pointer;width:100%;">+ Create Burial Society</button>
+          </div>
+        </div>
+
+        <!-- REAL SOCIETY ACTIONS — shows after society created -->
+        <div id="realAdminActions" class="sec" style="margin-top:16px;display:none;">
+          <div class="sec-t" style="margin-bottom:12px;">Admin Actions</div>
+          <div class="qa-grid">
+            <div class="qa" onclick="aSwitch('at-claims')"><span class="qa-icon">📋</span><span class="qa-lbl">Review Claims</span></div>
+            <div class="qa" onclick="aSwitch('at-members')"><span class="qa-icon">👥</span><span class="qa-lbl">Members</span></div>
+            <div class="qa" onclick="showInvitePopup()"><span class="qa-icon">🔗</span><span class="qa-lbl">Invite Link</span></div>
+            <div class="qa" onclick="openOverlay('addMemberOverlay')"><span class="qa-icon">➕</span><span class="qa-lbl">Add Member</span></div>
+          </div>
+        </div>
+
+        <!-- SUBSCRIPTION INFO -->
+        <div class="sec">
+          <div class="ibox gold"><span>💳</span><div><strong>UMali Subscription:</strong> R29/month deducted automatically on 1st of each month from society collections. Current plan: Starter (up to 35 members).</div></div>
+        </div>
+      </div>
+
+      <!-- CLAIMS TAB -->
+      <div id="at-claims" class="tab">
+        <div class="hero-maroon">
+          <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:22px;margin-bottom:4px;">Claim Review</div>
+          <div style="color:rgba(255,255,255,.4);font-size:12px;">Review and approve burial claims</div>
+        </div>
+
+        <div class="sec" style="padding-top:28px;">
+          <div class="sec-h"><div class="sec-t">🚨 Pending — Requires Action</div></div>
+          <div class="claim-card">
+            <div class="claim-urgency">
+              <span class="urg-icon">⚡</span>
+              <div class="urg-text">
+                <h4>Family needs urgent help</h4>
+                <p>Approve now — UMali pays Avbob instantly. Family can arrange burial today.</p>
+              </div>
+            </div>
+
+            <div style="font-weight:700;color:var(--green-deep);font-size:15px;margin-bottom:3px;">Sipho Dlamini (deceased)</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Claimed by: Nomvula Dlamini (Wife) · Submitted 2 hours ago</div>
+
+            <div class="claim-checks">
+              <div class="chk"><div class="chk-icon">✓</div>Member since January 2020 — 6 years ✅</div>
+              <div class="chk"><div class="chk-icon">✓</div>38 consecutive payments — all up to date ✅</div>
+              <div class="chk"><div class="chk-icon">✓</div>Death certificate uploaded and verified ✅</div>
+              <div class="chk"><div class="chk-icon">✓</div>Sipho Dlamini registered as spouse ✅</div>
+              <div class="chk"><div class="chk-icon">✓</div>Cover amount R20,000 available in treasury ✅</div>
+            </div>
+
+            <!-- FAMILY COVER DETAIL -->
+            <div style="background:#F8F8F8;border-radius:12px;padding:12px;margin-bottom:14px;">
+              <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Member Family Cover Status After This Claim:</div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;justify-content:space-between;font-size:11px;"><span>👤 Nomvula (Self)</span><span class="pill p-covered">Still Covered R20K</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;"><span>👨 Sipho (Spouse) — CLAIMING</span><span class="pill p-late">Claiming R20K</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;"><span>👦 Thabo (Son)</span><span class="pill p-covered">Still Covered R10K</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;"><span>👧 Zanele (Daughter)</span><span class="pill p-covered">Still Covered R10K</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;"><span>👴 Agnes (Mother)</span><span class="pill p-covered">Still Covered R15K</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;"><span>👴 Joseph (Father)</span><span class="pill p-covered">Still Covered R15K</span></div>
+              </div>
+            </div>
+
+            <!-- FUNERAL HOME ALREADY NOTIFIED -->
+            <div class="ibox blue" style="margin-bottom:14px;">
+              <span>🏛️</span>
+              <div><strong>Avbob Soweto has been notified.</strong> They know this family has been paying monthly. They are waiting for your approval to proceed.</div>
+            </div>
+
+            <!-- PAYMENT BREAKDOWN -->
+            <div style="background:#F8F8F8;border-radius:12px;padding:12px;margin-bottom:14px;">
+              <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">Payment Breakdown</div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid #F0F0F0;"><span>Cover amount</span><span style="font-weight:700;">R20,000</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid #F0F0F0;"><span>Avbob service fee</span><span style="font-weight:700;">R20,000</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid #F0F0F0;"><span style="color:var(--muted);">UMali commission (8% from Avbob)</span><span style="color:var(--muted);">-R1,600 (Avbob pays)</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;"><span style="font-weight:700;color:var(--green-deep);">Family receives full service</span><span style="font-weight:700;color:var(--success);">R20,000 ✅</span></div>
+            </div>
+
+            <button class="instant-btn" onclick="startInstantPay()">
+              <span>⚡</span><span>Approve & Pay Avbob Instantly</span>
+            </button>
+            <div class="instant-sub">
+              <span>💸 R20,000 to Avbob</span>
+              <span>·</span>
+              <span>📲 32 members notified</span>
+              <span>·</span>
+              <span>⚡ Under 2 minutes</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;">
+              <button style="background:#FFEBEE;color:var(--danger);border:1px solid #FFCDD2;border-radius:12px;padding:12px;font-weight:700;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;" onclick="showToast('❌ Claim rejected. Member notified.')">✗ Reject</button>
+              <button style="background:#FFF3E0;color:var(--warning);border:1px solid #FFB74D;border-radius:12px;padding:12px;font-weight:700;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;" onclick="showToast('📋 Claim sent back for more info')">⏸ Need More Info</button>
+            </div>
+          </div>
+
+          <!-- PAST CLAIMS -->
+          <div class="sec-h" style="margin-top:16px;"><div class="sec-t">Claim History</div></div>
+          <div style="background:var(--white);border-radius:14px;padding:14px;box-shadow:var(--shadow);margin-bottom:10px;border-left:4px solid var(--success);">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><div style="font-weight:700;color:var(--green-deep);font-size:13px;">Thandi Mokoena (deceased)</div><span class="pill p-paid">Paid</span></div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Feb 2026 · Doves Funeral Services</div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">Claimed by: Lerato (daughter)</span><span style="font-family:'DM Mono',monospace;font-weight:700;color:var(--success);">R20,000 ✅</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEMBERS TAB -->
+      <div id="at-members" class="tab">
+        <div class="hero-maroon">
+          <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:22px;margin-bottom:4px;">Member Management</div>
+          <div style="color:rgba(255,255,255,.4);font-size:12px;">32 families · 156 people covered</div>
+        </div>
+
+        <div style="display:flex;gap:8px;overflow-x:auto;padding:28px 20px 0;scrollbar-width:none;">
+          <div style="background:var(--maroon-mid);color:white;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;white-space:nowrap;cursor:pointer;">All (32)</div>
+          <div style="background:var(--white);border:1px solid #E8E8E8;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;cursor:pointer;">Paid ✅ (26)</div>
+          <div style="background:var(--white);border:1px solid #E8E8E8;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;cursor:pointer;">Pending ⏳ (4)</div>
+          <div style="background:var(--white);border:1px solid #E8E8E8;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;cursor:pointer;">Late 🔴 (2)</div>
+        </div>
+
+        <div class="sec" style="padding-top:14px;">
+          <div style="background:var(--white);border-radius:16px;padding:14px;box-shadow:var(--shadow);">
+            <!-- MEMBER WITH FAMILY EXPAND -->
+            <div class="mem-row" onclick="toggleFamily('fam1')">
+              <div class="mem-av" style="background:linear-gradient(135deg,#1A5C34,#2E9954);">N</div>
+              <div class="mem-info">
+                <div class="mem-name">Nomvula Dlamini</div>
+                <div class="mem-sub">Paid via Capitec · 25 Mar · 6 family covered · Claim pending</div>
+              </div>
+              <div class="mem-right"><div class="mem-amt">R200</div><span class="pill p-paid">Paid</span></div>
+            </div>
+            <!-- FAMILY EXPAND -->
+            <div id="fam1" style="display:none;background:#F8F8F8;border-radius:10px;padding:10px;margin:4px 0 8px;font-size:11px;">
+              <div style="font-weight:700;color:var(--muted);margin-bottom:6px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;">Family Members Covered:</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+                <div>👤 Nomvula (Self) — R20K</div>
+                <div>👨 Sipho (Spouse) — R20K</div>
+                <div>👦 Thabo (Son) — R10K</div>
+                <div>👧 Zanele (Daughter) — R10K</div>
+                <div>👴 Agnes (Mother) — R15K</div>
+                <div>👴 Joseph (Father) — R15K</div>
+              </div>
+              <div style="margin-top:6px;color:var(--success);font-weight:600;">Total cover: R90,000 · All active ✅</div>
+            </div>
+
+            <div class="mem-row">
+              <div class="mem-av" style="background:linear-gradient(135deg,#1565C0,#1E88E5);">T</div>
+              <div class="mem-info"><div class="mem-name">Thabo Sithole</div><div class="mem-sub">Paid via FNB · 8 Mar · 4 family covered</div></div>
+              <div class="mem-right"><div class="mem-amt">R200</div><span class="pill p-paid">Paid</span></div>
+            </div>
+            <div class="mem-row">
+              <div class="mem-av" style="background:linear-gradient(135deg,#C0392B,#E74C3C);">S</div>
+              <div class="mem-info"><div class="mem-name">Sipho Nkosi</div><div class="mem-sub">Overdue · 5 days · 3 family at risk</div></div>
+              <div class="mem-right"><div class="mem-amt">R200</div><span class="pill p-late">Late</span></div>
+            </div>
+            <div class="mem-row">
+              <div class="mem-av" style="background:linear-gradient(135deg,#E67E22,#F39C12);">Z</div>
+              <div class="mem-info"><div class="mem-name">Zanele Khumalo</div><div class="mem-sub">Paid via ABSA · 12 Mar · 5 family covered</div></div>
+              <div class="mem-right"><div class="mem-amt">R200</div><span class="pill p-paid">Paid</span></div>
+            </div>
+            <div class="mem-row" style="border-bottom:none;">
+              <div class="mem-av" style="background:linear-gradient(135deg,#37474F,#546E7A);">M</div>
+              <div class="mem-info"><div class="mem-name">Mandla Cele</div><div class="mem-sub">Due 25 Mar · 2 family covered</div></div>
+              <div class="mem-right"><div class="mem-amt">R200</div><span class="pill p-pending">Pending</span></div>
+            </div>
+          </div>
+          <div style="padding-top:12px;">
+            <button class="btn-red" style="margin-top:0;" onclick="showToast('📲 Reminders sent to all 6 unpaid members!')">📲 Send Reminders to Unpaid (6)</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end admin view -->
+
+    <!-- ============================================================ -->
+    <!-- FUNERAL HOME VIEW -->
+    <!-- ============================================================ -->
+    <div id="view-funeral" class="view">
+
+      <!-- FUNERAL HOME HOME -->
+      <div id="ft-home" class="tab active">
+        <div class="hero-blue">
+          <div style="color:rgba(255,255,255,.4);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;">Partner Dashboard</div>
+          <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:22px;margin-bottom:3px;">Avbob Funeral Services</div>
+          <div style="color:rgba(255,255,255,.35);font-size:11px;margin-bottom:16px;">Soweto Branch · UMali Partner ✅ · 8% commission agreed</div>
+          <div class="bal-card">
+            <div class="bal-lbl">March 2026 Earnings</div>
+            <div class="bal-amt">R 147,200</div>
+            <div class="bal-row">
+              <div class="bs"><div class="bsv">8</div><div class="bsl">Funerals</div></div>
+              <div class="bdiv"></div>
+              <div class="bs"><div class="bsv">R12</div><div class="bsl">Societies</div></div>
+              <div class="bdiv"></div>
+              <div class="bs"><div class="bsv" style="color:#4CAF50;">⚡ Instant</div><div class="bsl">Payments</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fh-stat-row">
+          <div class="fhst"><span class="fhst-icon">🔔</span><div class="fhst-val" style="color:var(--danger);">1</div><div class="fhst-lbl">New Notification</div></div>
+          <div class="fhst"><span class="fhst-icon">✅</span><div class="fhst-val">8</div><div class="fhst-lbl">Completed March</div></div>
+          <div class="fhst"><span class="fhst-icon">👥</span><div class="fhst-val">384</div><div class="fhst-lbl">Families Covered</div></div>
+          <div class="fhst"><span class="fhst-icon">💰</span><div class="fhst-val">R12,800</div><div class="fhst-lbl">Commission Paid to UMali</div></div>
+        </div>
+
+        <div class="sec" style="margin-top:16px;">
+          <div class="sec-h"><div class="sec-t">🔔 New Notification</div></div>
+          <div class="notification-card">
+            <div class="notif-urgent">
+              <span class="notif-u-icon">🕊️</span>
+              <div>
+                <div class="notif-u-title">Society Member Has Passed Away</div>
+                <div class="notif-u-sub">Lesedi Burial Society member. Family has been paying R200/month for 38 months. Cover: R20,000. Awaiting admin approval.</div>
+              </div>
+            </div>
+            <div class="notif-details">
+              <div class="nd-row"><span class="nd-label">Deceased</span><span class="nd-value">Sipho Dlamini</span></div>
+              <div class="nd-row"><span class="nd-label">Society</span><span class="nd-value">Lesedi Burial Society</span></div>
+              <div class="nd-row"><span class="nd-label">Family Contact</span><span class="nd-value">Nomvula · 071 234 5678</span></div>
+              <div class="nd-row"><span class="nd-label">Cover Amount</span><span class="nd-value" style="color:var(--success);">R20,000 ✅</span></div>
+              <div class="nd-row"><span class="nd-label">Months Paid</span><span class="nd-value">38 months — up to date ✅</span></div>
+              <div class="nd-row"><span class="nd-label">Your Commission</span><span class="nd-value" style="color:var(--muted);">8% = R1,600 to UMali</span></div>
+              <div class="nd-row"><span class="nd-label">Your Payment</span><span class="nd-value" style="color:var(--success);">R18,400 net ✅</span></div>
+            </div>
+            <div class="ibox gold" style="margin-bottom:12px;"><span>⏳</span><div>Waiting for society admin approval. Once approved, R20,000 payment will arrive in your account within 2 minutes via instant EFT.</div></div>
+            <button class="confirm-btn" onclick="showToast('✅ Service confirmed! Calling family now...')">
+              <span>✅</span><span>Confirm Service & Call Family</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ADD FUNERAL DETAILS BUTTON — shows first time -->
+        <div id="addFuneralDetailsBanner" class="sec">
+          <div style="background:linear-gradient(135deg,var(--blue-deep),var(--blue-mid));border-radius:20px;padding:20px;text-align:center;box-shadow:0 8px 24px rgba(0,36,92,.3);">
+            <div style="font-size:36px;margin-bottom:8px;">🏢</div>
+            <div style="font-family:Playfair Display,serif;color:var(--white);font-size:18px;font-weight:700;margin-bottom:6px;">Add Your Funeral Home Details</div>
+            <div style="color:rgba(255,255,255,.5);font-size:12px;margin-bottom:14px;line-height:1.5;">Add your details so burial society admins can find and select your funeral home as their partner.</div>
+            <button onclick="openOverlay('funeralDetailsOverlay')" style="background:var(--white);color:var(--blue-mid);border:none;border-radius:13px;padding:14px 24px;font-family:DM Sans,sans-serif;font-size:15px;font-weight:700;cursor:pointer;width:100%;">+ Add Funeral Home Details</button>
+          </div>
+        </div>
+
+        <!-- REAL FUNERAL ACTIONS — shows after details added -->
+        <div id="realFuneralActions" class="sec" style="display:none;">
+          <div class="sec-h"><div class="sec-t">Quick Actions</div></div>
+          <div class="qa-grid">
+            <div class="qa" onclick="fSwitch('ft-societies')"><span class="qa-icon">👥</span><span class="qa-lbl">Partner Societies</span></div>
+            <div class="qa" onclick="fSwitch('ft-earnings')"><span class="qa-icon">💰</span><span class="qa-lbl">Earnings</span></div>
+            <div class="qa" onclick="fSwitch('ft-history')"><span class="qa-icon">📋</span><span class="qa-lbl">History</span></div>
+            <div class="qa" onclick="showToast('📄 Statement downloaded!')"><span class="qa-icon">📄</span><span class="qa-lbl">Statement</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PARTNER SOCIETIES -->
+      <div id="ft-societies" class="tab">
+        <div class="hero-blue">
+          <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:22px;margin-bottom:4px;">Partner Societies</div>
+          <div style="color:rgba(255,255,255,.4);font-size:12px;">12 societies · 384 families · Guaranteed monthly payments</div>
+        </div>
+        <div class="sec" style="padding-top:28px;">
+          <div class="ibox blue"><span>💡</span><div>These societies have chosen you as their funeral partner. When any member reports a passing, you are notified automatically.</div></div>
+          <div class="partner-soc">
+            <div class="ps-icon" style="background:#FFEBEE;">⚰️</div>
+            <div class="ps-info"><div class="ps-name">Lesedi Burial Society</div><div class="ps-sub">32 families · R200/month · Active claim pending 🔴</div></div>
+            <div class="ps-right"><div class="ps-amount">R6,400/mo</div><span class="pill p-active">Active</span></div>
+          </div>
+          <div class="partner-soc">
+            <div class="ps-icon" style="background:#FFEBEE;">⚰️</div>
+            <div class="ps-info"><div class="ps-name">Zuma Burial Society</div><div class="ps-sub">45 families · R150/month · All paid ✅</div></div>
+            <div class="ps-right"><div class="ps-amount">R6,750/mo</div><span class="pill p-active">Active</span></div>
+          </div>
+          <div class="partner-soc">
+            <div class="ps-icon" style="background:#FFEBEE;">⚰️</div>
+            <div class="ps-info"><div class="ps-name">Khumalo Family Society</div><div class="ps-sub">28 families · R250/month · All paid ✅</div></div>
+            <div class="ps-right"><div class="ps-amount">R7,000/mo</div><span class="pill p-active">Active</span></div>
+          </div>
+          <div class="partner-soc">
+            <div class="ps-icon" style="background:#FFEBEE;">⚰️</div>
+            <div class="ps-info"><div class="ps-name">Soweto Unity Society</div><div class="ps-sub">52 families · R200/month · All paid ✅</div></div>
+            <div class="ps-right"><div class="ps-amount">R10,400/mo</div><span class="pill p-active">Active</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EARNINGS -->
+      <div id="ft-earnings" class="tab">
+        <div class="hero-blue">
+          <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:22px;margin-bottom:18px;">March 2026 Earnings</div>
+          <div class="bal-card">
+            <div class="bal-lbl">Net Earnings (After UMali 8%)</div>
+            <div class="bal-amt">R 147,200</div>
+            <div class="bal-row">
+              <div class="bs"><div class="bsv">R160,000</div><div class="bsl">Gross</div></div>
+              <div class="bdiv"></div>
+              <div class="bs"><div class="bsv" style="color:#FF6B6B;">R12,800</div><div class="bsl">Commission</div></div>
+              <div class="bdiv"></div>
+              <div class="bs"><div class="bsv" style="color:#4CAF50;">R147,200</div><div class="bsl">Net</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="sec" style="padding-top:28px;">
+          <div class="ibox green"><span>✅</span><div><strong>All payments instant:</strong> Every payment arrives in your FNB account within 2 minutes of admin approval. No waiting. No chasing.</div></div>
+          <div class="sec-h"><div class="sec-t">Booking Breakdown</div></div>
+          <div style="background:var(--white);border-radius:16px;padding:14px;box-shadow:var(--shadow);">
+            <div class="earnings-item">
+              <div class="ei-icon" style="background:#FFEBEE;">⚰️</div>
+              <div class="ei-info"><div class="ei-name">Lesedi Society — Thandi Mokoena</div><div class="ei-sub">Standard Package · 10 Mar 2026</div></div>
+              <div class="ei-right"><div class="ei-gross">R20,000</div><div class="ei-comm">-R1,600 commission</div><div class="ei-net">Net: R18,400</div></div>
+            </div>
+            <div class="earnings-item">
+              <div class="ei-icon" style="background:#FFEBEE;">⚰️</div>
+              <div class="ei-info"><div class="ei-name">Zuma Society — Member</div><div class="ei-sub">Basic Package · 15 Mar 2026</div></div>
+              <div class="ei-right"><div class="ei-gross">R15,000</div><div class="ei-comm">-R1,200 commission</div><div class="ei-net">Net: R13,800</div></div>
+            </div>
+            <div class="earnings-item" style="border-bottom:none;">
+              <div class="ei-icon" style="background:#FFEBEE;">⚰️</div>
+              <div class="ei-info"><div class="ei-name">Khumalo Society — Member</div><div class="ei-sub">Premium Package · 20 Mar 2026</div></div>
+              <div class="ei-right"><div class="ei-gross">R25,000</div><div class="ei-comm">-R2,000 commission</div><div class="ei-net">Net: R23,000</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTORY -->
+      <div id="ft-history" class="tab">
+        <div class="hero-blue">
+          <div style="font-family:'Playfair Display',serif;color:var(--white);font-size:22px;margin-bottom:4px;">Booking History</div>
+          <div style="color:rgba(255,255,255,.4);font-size:12px;">All completed funerals through UMali</div>
+        </div>
+        <div class="sec" style="padding-top:28px;">
+          <div style="background:var(--white);border-radius:16px;padding:14px;box-shadow:var(--shadow);">
+            <div class="notif-item green" style="background:transparent;box-shadow:none;padding:8px 0;border-radius:0;border-left:none;border-bottom:1px solid #F5F5F5;">
+              <div class="ni-icon" style="background:#E8F5E9;">✅</div>
+              <div class="ni-body"><div class="ni-title">Thandi Mokoena — Lesedi Society</div><div class="ni-desc">Standard Package · R20,000 paid · 10 Mar 2026</div><div class="time-chip">⚡ Paid in 1 min 43 sec</div></div>
+            </div>
+            <div class="notif-item green" style="background:transparent;box-shadow:none;padding:8px 0;border-radius:0;border-left:none;border-bottom:1px solid #F5F5F5;">
+              <div class="ni-icon" style="background:#E8F5E9;">✅</div>
+              <div class="ni-body"><div class="ni-title">Bongani Dube — Zuma Society</div><div class="ni-desc">Basic Package · R15,000 paid · 15 Mar 2026</div><div class="time-chip">⚡ Paid in 58 sec</div></div>
+            </div>
+            <div class="notif-item green" style="background:transparent;box-shadow:none;padding:8px 0;border-radius:0;border-left:none;">
+              <div class="ni-icon" style="background:#E8F5E9;">✅</div>
+              <div class="ni-body"><div class="ni-title">Agnes Nkosi — Khumalo Society</div><div class="ni-desc">Premium Package · R25,000 paid · 20 Mar 2026</div><div class="time-chip">⚡ Paid in 2 min 01 sec</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end funeral view -->
+
+  </div><!-- end main -->
+
+  <!-- BOTTOM NAV (changes per view) -->
+  <div class="bottom-nav" id="bottomNav">
+    <!-- rendered by JS -->
+  </div>
+
+</div><!-- end app -->
+
+<!-- ===== PROCESSING SCREEN ===== -->
+<div id="procScreen">
+  <div class="proc-card">
+    <div class="proc-title" id="procTitle">Processing Payment...</div>
+    <div class="proc-sub">UMali is paying Avbob Funeral Services</div>
+    <div class="live-timer-box">
+      <div class="ltb-count" id="procTimer">0:00</div>
+      <div class="ltb-sub">⚡ Target: Under 2 minutes</div>
+    </div>
+    <div class="pay-steps">
+      <div class="ps-step active" id="s1"><div class="ps-step-icon">⚡</div><div><div class="ps-step-name">Verifying claim</div><div class="ps-step-sub">Checking member eligibility...</div></div></div>
+      <div class="ps-step" id="s2"><div class="ps-step-icon">🏦</div><div><div class="ps-step-name">Connecting to bank</div><div class="ps-step-sub">Authorising payment...</div></div></div>
+      <div class="ps-step" id="s3"><div class="ps-step-icon">💸</div><div><div class="ps-step-name">Sending to Avbob</div><div class="ps-step-sub">Instant EFT in progress...</div></div></div>
+      <div class="ps-step" id="s4"><div class="ps-step-icon">📲</div><div><div class="ps-step-name">Notifying 32 members</div><div class="ps-step-sub">WhatsApp + SMS sending...</div></div></div>
+      <div class="ps-step" id="s5"><div class="ps-step-icon">✅</div><div><div class="ps-step-name">Complete</div><div class="ps-step-sub">Generating receipt...</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SUCCESS SCREEN ===== -->
+<div id="succScreen">
+  <div class="succ-card">
+    <div class="succ-check">✅</div>
+    <div class="succ-title">Payment Sent!</div>
+    <div class="succ-sub">Avbob paid · All 32 members notified · Family can bury with dignity</div>
+
+    <div class="succ-time-badge">
+      <span class="stb-icon">⚡</span>
+      <div>
+        <div class="stb-title">Paid in <span id="finalTime">1 min 43 sec</span></div>
+        <div class="stb-sub">Family pays nothing. Burial can be arranged today.</div>
+      </div>
+    </div>
+
+    <div class="succ-details">
+      <div class="sd-row"><span class="sd-label">Deceased</span><span class="sd-value">Sipho Dlamini</span></div>
+      <div class="sd-row"><span class="sd-label">Funeral Home</span><span class="sd-value">Avbob Funeral Services</span></div>
+      <div class="sd-row"><span class="sd-label">Amount Paid</span><span class="sd-value" style="color:var(--blue-mid);">R20,000</span></div>
+      <div class="sd-row"><span class="sd-label">Paid From</span><span class="sd-value" style="color:var(--success);">Society Treasury ✅</span></div>
+      <div class="sd-row"><span class="sd-label">Family Gets</span><span class="sd-value" style="color:var(--success);">Full R20,000 service ✅</span></div>
+      <div class="sd-row"><span class="sd-label">New Balance</span><span class="sd-value">R4,800</span></div>
+      <div class="sd-row"><span class="sd-label">Reference</span><span class="sd-value" style="font-family:'DM Mono',monospace;font-size:10px;">UM-2026-031714:32</span></div>
+    </div>
+
+    <div class="notif-blast">
+      <div class="nb-title">📲 All 32 Members Notified Automatically</div>
+      <div class="nb-msg">"Lesedi Burial Society: A claim was approved for Sipho Dlamini. R20,000 paid to Avbob Funeral Services. Burial: 22 March 2026. Our thoughts are with the Dlamini family. 🕊️ — UMali"</div>
+      <div class="nb-count">✅ Sent via WhatsApp + SMS to all members</div>
+    </div>
+
+    <div class="m-chips">
+      <div class="m-chip"><div class="mc-av" style="background:linear-gradient(135deg,#1A5C34,#2E9954);">N<div class="mc-check">✓</div></div><div class="mc-name">Nomvula</div></div>
+      <div class="m-chip"><div class="mc-av" style="background:linear-gradient(135deg,#1565C0,#1E88E5);">T<div class="mc-check">✓</div></div><div class="mc-name">Thabo</div></div>
+      <div class="m-chip"><div class="mc-av" style="background:linear-gradient(135deg,#E67E22,#F39C12);">Z<div class="mc-check">✓</div></div><div class="mc-name">Zanele</div></div>
+      <div class="m-chip"><div class="mc-av" style="background:linear-gradient(135deg,#6A1B9A,#AB47BC);">B<div class="mc-check">✓</div></div><div class="mc-name">Bongani</div></div>
+      <div class="m-chip"><div class="mc-av" style="background:linear-gradient(135deg,#00695C,#00897B);">L<div class="mc-check">✓</div></div><div class="mc-name">Lerato</div></div>
+      <div class="m-chip"><div class="mc-av" style="background:linear-gradient(135deg,#C0392B,#E74C3C);">S<div class="mc-check">✓</div></div><div class="mc-name">Sipho</div></div>
+      <div class="m-chip"><div class="mc-av" style="background:linear-gradient(135deg,#37474F,#546E7A);">M<div class="mc-check">✓</div></div><div class="mc-name">Mandla</div></div>
+      <div class="m-chip"><div class="mc-av" style="background:#F0F0F0;color:var(--muted);">+25</div><div class="mc-name">more</div></div>
+    </div>
+
+    <button class="btn-gold" style="margin-top:0;" onclick="closeSucc()">Done ✅</button>
+  </div>
+</div>
+
+<!-- OVERLAYS -->
+<div class="overlay" id="reportOverlay" onclick="closeOL(event,'reportOverlay')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🕊️ Report a Passing</div>
+    <div class="modal-sub">Select who passed away from your covered family</div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:10px;">Who passed away?</div>
+      <div class="family-selector">
+        <div class="fam-opt" onclick="selFam(this)">
+          <div class="fam-opt-av">👤</div>
+          <div><div class="fam-opt-name">Nomvula Dlamini</div><div class="fam-opt-rel">Main Member (Self)</div></div>
+          <div class="fam-opt-cover">R20,000</div>
+        </div>
+        <div class="fam-opt on" onclick="selFam(this)">
+          <div class="fam-opt-av">👨</div>
+          <div><div class="fam-opt-name">Sipho Dlamini</div><div class="fam-opt-rel">Spouse</div></div>
+          <div class="fam-opt-cover">R20,000</div>
+        </div>
+        <div class="fam-opt" onclick="selFam(this)">
+          <div class="fam-opt-av">👦</div>
+          <div><div class="fam-opt-name">Thabo Dlamini</div><div class="fam-opt-rel">Son</div></div>
+          <div class="fam-opt-cover">R10,000</div>
+        </div>
+        <div class="fam-opt" onclick="selFam(this)">
+          <div class="fam-opt-av">👧</div>
+          <div><div class="fam-opt-name">Zanele Dlamini</div><div class="fam-opt-rel">Daughter</div></div>
+          <div class="fam-opt-cover">R10,000</div>
+        </div>
+        <div class="fam-opt" onclick="selFam(this)">
+          <div class="fam-opt-av">👴</div>
+          <div><div class="fam-opt-name">Agnes Khumalo</div><div class="fam-opt-rel">Mother</div></div>
+          <div class="fam-opt-cover">R15,000</div>
+        </div>
+        <div class="fam-opt" onclick="selFam(this)">
+          <div class="fam-opt-av">👴</div>
+          <div><div class="fam-opt-name">Joseph Khumalo</div><div class="fam-opt-rel">Father</div></div>
+          <div class="fam-opt-cover">R15,000</div>
+        </div>
+      </div>
+    </div>
+    <div class="mfg"><label>Date of Passing</label><input type="date" /></div>
+    <div class="mfg"><label>Upload Death Certificate</label><input type="file" accept="image/*,.pdf" style="padding:10px;color:var(--text);" /></div>
+    <div class="ibox blue" style="margin-bottom:14px;"><span>⚡</span><div><strong>What happens next:</strong> Your admin is notified immediately. Avbob is automatically notified that you have been paying every month. Once admin approves, payment goes to Avbob instantly.</div></div>
+    <button class="btn-red" onclick="submitReport()">Submit Report → Admin Reviews Now</button>
+  </div>
+</div>
+
+<div class="overlay" id="addMemberOverlay" onclick="closeOL(event,'addMemberOverlay')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">➕ Add New Member</div>
+    <div class="modal-sub">New family to Lesedi Burial Society</div>
+    <div class="mfg"><label>Full Name (Head of Family)</label><input type="text" placeholder="e.g. Sipho Dlamini" /></div>
+    <div class="mfg"><label>SA ID Number</label><input type="text" placeholder="13-digit ID number" /></div>
+    <div class="mfg"><label>Phone Number</label><input type="tel" placeholder="+27 xxx xxx xxxx" /></div>
+    <div class="mfg"><label>Cover Type</label>
+      <select>
+        <option value="basic">Basic — Member only (R100/month)</option>
+        <option value="standard">Standard — Member + Spouse (R150/month)</option>
+        <option value="family" selected>Family — + Children (R200/month)</option>
+        <option value="extended">Extended — + Parents (R300/month)</option>
+      </select>
+    </div>
+    <div class="ibox green" style="margin-bottom:14px;"><span>✅</span><div>Member will receive a WhatsApp invite to set up their account and add their family members. 3-month waiting period before claim eligibility.</div></div>
+    <button class="btn-red" onclick="addMember()">Add Member & Send WhatsApp Invite 📲</button>
+  </div>
+</div>
+
+<!-- CREATE SOCIETY OVERLAY (Admin Onboarding) -->
+<div class="overlay" id="createSocietyOverlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-size:48px;margin-bottom:8px;">🏛️</div>
+      <div class="modal-title">Create Your Society</div>
+      <div class="modal-sub">Set up your burial society on UMali</div>
+    </div>
+    <div class="mfg">
+      <label>Society Name</label>
+      <input type="text" id="newSocietyName" placeholder="e.g. Lesedi Burial Society" />
+    </div>
+    <div class="mfg">
+      <label>Location / Area</label>
+      <input type="text" id="newSocietyLocation" placeholder="e.g. Soweto, Gauteng" />
+    </div>
+    <div class="mfg">
+      <label>Monthly Contribution (R)</label>
+      <input type="number" id="newSocietyMonthly" placeholder="e.g. 200" />
+    </div>
+    <div class="mfg">
+      <label>Payout Amount (R)</label>
+      <input type="number" id="newSocietyPayout" placeholder="e.g. 20000" />
+    </div>
+    <div class="mfg">
+      <label>Partner Funeral Home (optional)</label>
+      <input type="text" id="newSocietyFuneral" placeholder="e.g. Avbob Soweto" />
+    </div>
+    <div style="background:#E8F5E9;border:1px solid #A5D6A7;border-radius:12px;padding:12px;margin-bottom:14px;font-size:12px;color:#2E7D32;line-height:1.5;">
+      After creating your society you will get an invite code to share with your members!
+    </div>
+    <button class="btn-red" onclick="createSociety()">Create Society</button>
+  </div>
+</div>
+
+<!-- JOIN SOCIETY OVERLAY -->
+<div class="overlay" id="joinSocietyOverlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+
+    <!-- STEP 1: ENTER INVITE CODE -->
+    <div id="joinStep1">
+      <div style="text-align:center;margin-bottom:20px;">
+        <div style="width:70px;height:70px;background:linear-gradient(135deg,var(--green-mid),var(--green-bright));border-radius:20px;display:inline-flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:12px;box-shadow:0 8px 24px rgba(26,92,52,.3);">🤝</div>
+        <div class="modal-title">Enter Invite Code</div>
+        <div class="modal-sub">Your society admin sent you a code — enter it below</div>
+      </div>
+
+      <!-- BIG INVITE CODE INPUT -->
+      <div style="background:linear-gradient(135deg,var(--green-deep),var(--green-mid));border-radius:20px;padding:22px;margin-bottom:16px;text-align:center;">
+        <div style="color:rgba(255,255,255,.5);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">Your Invite Code</div>
+        <input type="text" id="inviteCode"
+          placeholder="e.g. LESEDI-2026"
+          maxlength="15"
+          oninput="this.value=this.value.toUpperCase();checkInviteCode(this.value)"
+          style="width:100%;background:rgba(255,255,255,.1);border:2px solid rgba(201,168,76,.4);border-radius:14px;padding:16px;color:var(--gold);font-family:DM Mono,monospace;font-size:24px;text-align:center;letter-spacing:4px;font-weight:700;outline:none;transition:all .3s;"
+          onfocus="this.style.borderColor='var(--gold)';this.style.background='rgba(201,168,76,.1)'"
+          onblur="this.style.borderColor='rgba(201,168,76,.4)'"
+        />
+        <div id="codeStatus" style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.4);min-height:18px;"></div>
+      </div>
+
+      <!-- SOCIETY PREVIEW (shows when code is found) -->
+      <div id="societyPreview" style="display:none;background:#E8F5E9;border:1px solid #A5D6A7;border-radius:16px;padding:16px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:46px;height:46px;background:linear-gradient(135deg,var(--green-mid),var(--green-bright));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;">🏛️</div>
+          <div>
+            <div id="previewName" style="font-weight:700;color:var(--green-deep);font-size:15px;"></div>
+            <div id="previewLocation" style="font-size:11px;color:var(--muted);margin-top:2px;"></div>
+          </div>
+          <div style="margin-left:auto;text-align:right;">
+            <div id="previewMonthly" style="font-family:DM Mono,monospace;font-weight:700;color:var(--green-mid);font-size:15px;"></div>
+            <div style="font-size:9px;color:var(--muted);">per month</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+          <span id="previewPayout" style="background:#C8E6C9;color:#2E7D32;border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;"></span>
+          <span id="previewFuneral" style="background:#EEF3FF;color:var(--blue-mid);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;"></span>
+        </div>
+      </div>
+
+      <div class="mfg">
+        <label>Your SA ID Number</label>
+        <input type="tel" id="memberIdNumber" placeholder="13-digit ID number" maxlength="13"
+          style="letter-spacing:2px;font-size:16px;text-align:center;font-weight:600;" />
+      </div>
+
+      <div style="background:var(--blue-light);border:1px solid rgba(0,102,255,.2);border-radius:12px;padding:12px;margin-bottom:14px;font-size:12px;color:#0D47A1;line-height:1.6;display:flex;gap:8px;">
+        <span style="flex-shrink:0;">💡</span>
+        <span>Your invite code was sent by your society admin via WhatsApp. It looks like <strong>LESEDI-2026</strong></span>
+      </div>
+
+      <button class="btn-gold" style="margin-top:0;" onclick="joinSociety()" id="joinBtn">Join Society</button>
+      <div style="text-align:center;margin-top:10px;color:var(--muted);font-size:12px;cursor:pointer;" onclick="closeOverlay('joinSocietyOverlay')">Skip for now</div>
+    </div>
+
+    <!-- STEP 2: SUCCESS -->
+    <div id="joinStep2" style="display:none;text-align:center;">
+      <div style="font-size:64px;margin-bottom:12px;animation:bounce .6s ease;">🎉</div>
+      <div class="modal-title" style="margin-bottom:6px;">Welcome to the Society!</div>
+      <div id="joinSuccessName" style="color:var(--green-mid);font-weight:700;font-size:16px;margin-bottom:6px;"></div>
+      <div class="modal-sub" style="margin-bottom:20px;">You are now a member. Your family can be covered!</div>
+
+      <div id="joinSuccessDetails" style="background:#F8F8F8;border-radius:14px;padding:14px;text-align:left;margin-bottom:16px;">
+      </div>
+
+      <button class="btn-gold" style="margin-top:0;" onclick="closeOverlay('joinSocietyOverlay');openOverlay('addFamilyOverlay')">Add Family Members</button>
+      <div style="text-align:center;margin-top:10px;color:var(--muted);font-size:12px;cursor:pointer;" onclick="closeOverlay('joinSocietyOverlay')">Do this later</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ADD FAMILY MEMBER OVERLAY -->
+<div class="overlay" id="addFamilyOverlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Add Family Member</div>
+    <div class="modal-sub">Add who is covered under your membership</div>
+    <div class="mfg">
+      <label>Full Name</label>
+      <input type="text" id="famName" placeholder="e.g. Sipho Dlamini" />
+    </div>
+    <div class="mfg">
+      <label>Relationship</label>
+      <select id="famRelation">
+        <option>Spouse</option>
+        <option>Son</option>
+        <option>Daughter</option>
+        <option>Mother</option>
+        <option>Father</option>
+        <option>Mother-in-law</option>
+        <option>Father-in-law</option>
+        <option>Sibling</option>
+      </select>
+    </div>
+    <div class="mfg">
+      <label>SA ID Number</label>
+      <input type="text" id="famId" placeholder="13-digit SA ID" maxlength="13" />
+    </div>
+    <div class="mfg">
+      <label>Cover Amount (R)</label>
+      <input type="number" id="famCover" placeholder="e.g. 20000" />
+    </div>
+    <button class="btn-red" onclick="addFamilyMember()">Add Family Member</button>
+  </div>
+</div>
+
+<!-- FUNERAL HOME DETAILS OVERLAY -->
+<div class="overlay" id="funeralDetailsOverlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-size:48px;margin-bottom:8px;">🏢</div>
+      <div class="modal-title">Your Funeral Home Details</div>
+      <div class="modal-sub">This info is shown to burial society admins when they search for a partner</div>
+    </div>
+    <div class="mfg"><label>Funeral Home Name</label><input type="text" id="fhName" placeholder="e.g. Sechaba Funeral Services" /></div>
+    <div class="mfg"><label>Phone Number</label><input type="tel" id="fhPhone" placeholder="e.g. 078 138 5295" /></div>
+    <div class="mfg"><label>Address</label><input type="text" id="fhAddress" placeholder="e.g. 24 Dela Street, Duduza, Nigel" /></div>
+    <div class="mfg"><label>Basic Package Price (R)</label><input type="number" id="fhBasic" placeholder="e.g. 8000" /></div>
+    <div class="mfg"><label>Standard Package Price (R)</label><input type="number" id="fhStandard" placeholder="e.g. 15000" /></div>
+    <div class="mfg"><label>Premium Package Price (R)</label><input type="number" id="fhPremium" placeholder="e.g. 25000" /></div>
+    <div class="mfg"><label>Services Offered</label>
+      <input type="text" id="fhServices" placeholder="e.g. Coffin, Hearse, Family Car, Tombstone" />
+    </div>
+    <div style="background:#EEF3FF;border:1px solid rgba(0,102,255,.2);border-radius:12px;padding:12px;margin-bottom:14px;font-size:12px;color:#0D47A1;line-height:1.6;display:flex;gap:8px;">
+      <span>💡</span><span>UMali takes 8% commission only when you receive a booking. No monthly fee to be listed.</span>
+    </div>
+    <button class="btn-blue" onclick="saveFuneralDetails()">Save Details & Go Live</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// STATE
+let currentRole = 'member';
+let currentView = 'member';
+let procSeconds = 0;
+let procInterval = null;
+
+// ROLE SELECTION
+function selectRole(role) {
+  currentRole = role;
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('on'));
+  document.getElementById('r-' + role).classList.add('on');
+}
+
+// AUTH TAB SWITCHER
+// SIMPLE AUTH FUNCTIONS
+function showAuthTab(tab) {
+  var signin = document.getElementById('signinForm');
+  var register = document.getElementById('registerForm');
+  var btnSignIn = document.getElementById('tabSignIn');
+  var btnRegister = document.getElementById('tabRegister');
+
+  if (tab === 'signin') {
+    signin.style.display = 'block';
+    register.style.display = 'none';
+    btnSignIn.style.background = 'var(--gold)';
+    btnSignIn.style.color = 'var(--green-deep)';
+    btnRegister.style.background = 'transparent';
+    btnRegister.style.color = 'rgba(255,255,255,.4)';
+  } else {
+    signin.style.display = 'none';
+    register.style.display = 'block';
+    btnRegister.style.background = 'var(--gold)';
+    btnRegister.style.color = 'var(--green-deep)';
+    btnSignIn.style.background = 'transparent';
+    btnSignIn.style.color = 'rgba(255,255,255,.4)';
+  }
+}
+
+// SIGN IN
+async function doLogin() {
+  var phone = document.getElementById('loginPhone').value.trim();
+  var password = document.getElementById('loginPassword').value;
+  var btn = document.getElementById('loginBtn');
+
+  if (!phone) {
+    showToast('Please enter your phone number');
+    return;
+  }
+  if (!password) {
+    showToast('Please enter your password');
+    return;
+  }
+
+  btn.textContent = 'Signing in...';
+  btn.disabled = true;
+
+  // Format phone to email for Firebase
+  var cleanPhone = phone.replace(/ /g, '').replace(/^0/, '');
+  var email = cleanPhone + '@umali.app';
+
+  try {
+    var user = null;
+    if (window.signInUser) {
+      user = await window.signInUser(email, password);
+    } else {
+      user = { email: email, displayName: phone };
+    }
+
+    btn.textContent = 'Sign In';
+    btn.disabled = false;
+
+    if (user) {
+      enterApp(phone, user.displayName || phone);
+    }
+  } catch(e) {
+    btn.textContent = 'Sign In';
+    btn.disabled = false;
+    showToast('Sign in failed - check your details');
+  }
+}
+
+// REGISTER
+async function doRegister() {
+  var name = document.getElementById('regName').value.trim();
+  var phone = document.getElementById('regPhone').value.trim();
+  var email = document.getElementById('regEmail').value.trim();
+  var password = document.getElementById('regPassword').value;
+  var btn = document.getElementById('registerBtn');
+
+  if (!name || !phone || !email || !password) {
+    showToast('Please fill in all fields');
+    return;
+  }
+  if (password.length < 6) {
+    showToast('Password must be at least 6 characters');
+    return;
+  }
+
+  btn.textContent = 'Creating account...';
+  btn.disabled = true;
+
+  try {
+    var user = null;
+    if (window.registerUser) {
+      user = await window.registerUser(email, password, name, currentRole);
+    } else {
+      user = { email: email, displayName: name };
+    }
+
+    btn.textContent = 'Create Account';
+    btn.disabled = false;
+
+    if (user) {
+      showToast('Account created! Welcome to UMali');
+      enterApp(phone, name);
+    }
+  } catch(e) {
+    btn.textContent = 'Create Account';
+    btn.disabled = false;
+  }
+}
+
+// FORGOT PASSWORD
+function showForgotPassword() {
+  var phone = document.getElementById('loginPhone').value.trim();
+  if (!phone) {
+    showToast('Enter your phone number first');
+    return;
+  }
+  showToast('Contact umaliapp@gmail.com to reset your password');
+}
+
+// CHECK URL FOR INVITE CODE ON PAGE LOAD
+window.addEventListener('load', function() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var joinCode = urlParams.get('join');
+  if (joinCode) {
+    // Store code to use after login
+    window._pendingJoinCode = joinCode.toUpperCase();
+    showToast('Invite code detected: ' + joinCode.toUpperCase());
+  }
+});
+
+// USER DATA STATE
+var userData = {
+  name: '',
+  phone: '',
+  role: '',
+  societies: [],
+  members: [],
+  claims: [],
+  notifications: []
+};
+
+// ENTER THE APP — shows ONLY the correct view per role
+async function enterApp(phone, name) {
+  document.getElementById('loginScreen').classList.remove('active');
+  document.getElementById('appScreen').classList.add('active');
+
+  userData.name = name || phone;
+  userData.phone = phone;
+  userData.role = currentRole;
+
+  // Set role label in topbar
+  var roleLabels = {
+    member: 'Member',
+    admin: 'Society Admin',
+    funeral: 'Funeral Home',
+    individual: 'Individual Cover'
+  };
+  var roleLabelEl = document.getElementById('roleLabel');
+  if (roleLabelEl) roleLabelEl.textContent = roleLabels[currentRole] || '';
+
+  // Show name in hero
+  var heroName = document.getElementById('heroName');
+  if (heroName) heroName.textContent = userData.name;
+
+  // Hide ALL views first
+  document.getElementById('view-member').style.display = 'none';
+  document.getElementById('view-admin').style.display = 'none';
+  document.getElementById('view-funeral').style.display = 'none';
+
+  // Show ONLY the correct view
+  var viewMap = {
+    member: 'view-member',
+    admin: 'view-admin',
+    funeral: 'view-funeral',
+    individual: 'view-member'
+  };
+  var viewId = viewMap[currentRole] || 'view-member';
+  document.getElementById(viewId).style.display = 'block';
+  document.getElementById(viewId).classList.add('active');
+
+  // Render correct bottom nav for this role
+  renderNav(currentRole === 'funeral' ? 'funeral' : currentRole === 'admin' ? 'admin' : 'member');
+
+  // Load real data from Firebase
+  await loadRealData();
+
+  // Check if coming from invite link
+  checkPendingJoinCode();
+}
+
+// AUTO FILL INVITE CODE FROM URL
+function checkPendingJoinCode() {
+  if (window._pendingJoinCode && currentRole === 'member') {
+    setTimeout(function() {
+      openOverlay('joinSocietyOverlay');
+      var codeInput = document.getElementById('inviteCode');
+      if (codeInput) {
+        codeInput.value = window._pendingJoinCode;
+        checkInviteCode(window._pendingJoinCode);
+      }
+      window._pendingJoinCode = null;
+    }, 1000);
+  }
+}
+
+// LOAD ALL REAL DATA FROM FIREBASE
+async function loadRealData() {
+  if (!window.db) {
+    console.log('Firebase not ready - showing demo');
+    return;
+  }
+
+  showToast('Loading your data...');
+
+  try {
+    // Load societies this user belongs to
+    if (window.getSocieties) {
+      var allSocieties = await window.getSocieties();
+      userData.societies = allSocieties;
+
+      if (allSocieties.length > 0) {
+        // Update balance card with real data
+        updateBalanceDisplay(allSocieties);
+        // Update society cards
+        updateSocietyCards(allSocieties);
+        showToast('Data loaded!');
+      } else {
+        // No societies yet - show onboarding
+        showOnboarding();
+      }
+    }
+
+    // Load claims
+    if (window.getClaims) {
+      var claims = await window.getClaims();
+      userData.claims = claims;
+      updateClaimsDisplay(claims);
+    }
+
+    // Load members (for admin)
+    if (currentRole === 'admin' && window.getMembers) {
+      var members = await window.getMembers();
+      userData.members = members;
+      updateMembersDisplay(members);
+    }
+
+    // Listen to real time notifications
+    if (window.listenToNotifications) {
+      window.listenToNotifications(function(notifications) {
+        userData.notifications = notifications;
+        updateNotificationBadge(notifications.filter(function(n) { return !n.read; }).length);
+        updateNotificationFeed(notifications);
+      });
+    }
+
+  } catch(e) {
+    console.log('Error loading data:', e);
+    showToast('Using demo data');
+  }
+}
+
+// UPDATE BALANCE DISPLAY WITH REAL DATA
+function updateBalanceDisplay(societies) {
+  var totalBalance = 0;
+  var totalMembers = 0;
+  societies.forEach(function(s) {
+    totalBalance += (s.balance || 0);
+    totalMembers += (s.memberCount || 0);
+  });
+
+  var balEl = document.querySelector('.bal-amt');
+  if (balEl && totalBalance > 0) {
+    balEl.textContent = 'R ' + totalBalance.toLocaleString();
+  }
+
+  var heroName = document.getElementById('heroName');
+  if (heroName) heroName.textContent = userData.name;
+}
+
+// UPDATE SOCIETY CARDS WITH REAL DATA
+function updateSocietyCards(societies) {
+  if (societies.length === 0) return;
+
+  // Update the first society card with real data
+  var society = societies[0];
+
+  // Update admin hero
+  var adminHeroName = document.querySelector('.hero-maroon .bal-amt');
+  if (adminHeroName && society.balance) {
+    adminHeroName.textContent = 'R ' + society.balance.toLocaleString();
+  }
+}
+
+// UPDATE CLAIMS DISPLAY
+function updateClaimsDisplay(claims) {
+  var pendingClaims = claims.filter(function(c) { return c.status === 'pending'; });
+  var urgentEl = document.querySelector('.ast.urgent .ast-val');
+  if (urgentEl) urgentEl.textContent = pendingClaims.length;
+}
+
+// UPDATE MEMBERS DISPLAY
+function updateMembersDisplay(members) {
+  var paidEl = document.querySelectorAll('.ast-val')[1];
+  if (paidEl && members.length > 0) {
+    var paid = members.filter(function(m) { return m.paymentsUpToDate; }).length;
+    paidEl.textContent = paid;
+  }
+}
+
+// UPDATE NOTIFICATION FEED WITH REAL DATA
+function updateNotificationFeed(notifications) {
+  // Will update notification tab when real notifications exist
+  if (notifications.length > 0) {
+    console.log('Real notifications:', notifications.length);
+  }
+}
+
+// UPDATE NOTIFICATION BADGE
+function updateNotificationBadge(count) {
+  var badges = document.querySelectorAll('.nbadge');
+  badges.forEach(function(badge) {
+    badge.textContent = count > 9 ? '9+' : count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+  });
+}
+
+// SHOW ONBOARDING FOR NEW USERS
+function showOnboarding() {
+  // Show setup overlay for new users who have no societies
+  if (currentRole === 'admin') {
+    openOverlay('createSocietyOverlay');
+  } else if (currentRole === 'member') {
+    openOverlay('joinSocietyOverlay');
+  }
+}
+
+// VIEW TOGGLE
+function switchView(v) {
+  currentView = v;
+  document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.vt-opt').forEach(x => { x.className = 'vt-opt'; });
+  document.getElementById('view-' + v)?.classList.add('active');
+  const vtEl = document.getElementById('vt-' + v);
+  if (vtEl) { const cls = v === 'member' ? 'vm' : v === 'admin' ? 'va' : 'vf'; vtEl.classList.add(cls); }
+  renderNav(v);
+  // Reset tabs
+  if (v === 'member') { mSwitch('mt-home'); }
+  if (v === 'admin') { aSwitch('at-home'); }
+  if (v === 'funeral') { fSwitch('ft-home'); }
+}
+
+// NAV RENDERING
+function renderNav(v) {
+  const nav = document.getElementById('bottomNav');
+  const navs = {
+    member: [
+      { id:'mt-home', icon:'🏠', lbl:'Home', fn:'mSwitch' },
+      { id:'mt-mycover', icon:'🛡️', lbl:'My Cover', fn:'mSwitch' },
+      { id:'mt-family', icon:'👨‍👩‍👧', lbl:'Family', fn:'mSwitch' },
+      { id:'mt-payments', icon:'💸', lbl:'Payments', fn:'mSwitch' },
+    ],
+    admin: [
+      { id:'at-home', icon:'🏠', lbl:'Home', fn:'aSwitch' },
+      { id:'at-claims', icon:'📋', lbl:'Claims', fn:'aSwitch', badge:1 },
+      { id:'at-members', icon:'👥', lbl:'Members', fn:'aSwitch' },
+      { id:'notifs', icon:'🔔', lbl:'Alerts', fn:'openNotifs' },
+    ],
+    funeral: [
+      { id:'ft-home', icon:'🏠', lbl:'Home', fn:'fSwitch' },
+      { id:'ft-societies', icon:'👥', lbl:'Societies', fn:'fSwitch' },
+      { id:'ft-earnings', icon:'💰', lbl:'Earnings', fn:'fSwitch' },
+      { id:'ft-history', icon:'📋', lbl:'History', fn:'fSwitch' },
+    ]
+  };
+  const items = navs[v] || navs.member;
+  const ac = v === 'member' ? 'am' : v === 'admin' ? 'aa' : 'af';
+  nav.innerHTML = items.map((n,i) => `
+    <button class="nav-btn ${i===0 ? ac : ''}" id="nb-${n.id}" onclick="${n.fn}('${n.id}')">
+      <span class="nav-icon">${n.icon}</span>
+      <span class="nav-lbl">${n.lbl}</span>
+      ${n.badge ? `<div class="nbadge">${n.badge}</div>` : ''}
+    </button>
+  `).join('');
+}
+
+function setActiveNav(id) {
+  const ac = currentView === 'member' ? 'am' : currentView === 'admin' ? 'aa' : 'af';
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('am','aa','af'));
+  document.getElementById('nb-' + id)?.classList.add(ac);
+}
+
+function mSwitch(tab) { switchTabIn('view-member', tab); setActiveNav(tab); }
+function aSwitch(tab) { switchTabIn('view-admin', tab); setActiveNav(tab); }
+function fSwitch(tab) { switchTabIn('view-funeral', tab); setActiveNav(tab); }
+function openNotifs() { showToast('🔔 Notifications coming soon!'); }
+
+function switchTabIn(viewId, tabId) {
+  const view = document.getElementById(viewId);
+  if (!view) return;
+  view.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId)?.classList.add('active');
+}
+
+// OVERLAYS
+function openOverlay(id) { document.getElementById(id)?.classList.add('open'); }
+function closeOL(e, id) { if (e.target.classList.contains('overlay')) document.getElementById(id)?.classList.remove('open'); }
+function closeOverlay(id) { document.getElementById(id)?.classList.remove('open'); }
+
+// FAMILY SELECTION
+function selFam(el) {
+  document.querySelectorAll('.fam-opt').forEach(o => o.classList.remove('on'));
+  el.classList.add('on');
+}
+
+// FAMILY EXPAND
+function toggleFamily(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+// REPORT A PASSING
+function submitReport() {
+  closeOverlay('reportOverlay');
+  showToast('📋 Report submitted! Admin and Avbob notified instantly');
+  setTimeout(() => showToast('🔔 Admin is reviewing your claim now'), 2000);
+}
+
+// ADD MEMBER
+function addMember() {
+  closeOverlay('addMemberOverlay');
+  showToast('✅ Member added! WhatsApp invite sent 📲');
+}
+
+// INSTANT PAYMENT PROCESSING
+function startInstantPay() {
+  document.getElementById('procScreen').classList.add('open');
+  procSeconds = 0;
+  procInterval = setInterval(() => {
+    procSeconds++;
+    const m = Math.floor(procSeconds/60), s = procSeconds%60;
+    document.getElementById('procTimer').textContent = m + ':' + String(s).padStart(2,'0');
+  }, 1000);
+
+  setTimeout(() => { doneStep('s1'); activeStep('s2'); document.getElementById('procTitle').textContent = 'Connecting to Bank...'; }, 2000);
+  setTimeout(() => { doneStep('s2'); activeStep('s3'); showToast('💸 Sending R20,000 to Avbob...'); }, 4500);
+  setTimeout(() => { doneStep('s3'); activeStep('s4'); showToast('📲 Notifying all 32 members...'); }, 7000);
+  setTimeout(() => { doneStep('s4'); activeStep('s5'); }, 9000);
+  setTimeout(() => {
+    doneStep('s5');
+    clearInterval(procInterval);
+    const m = Math.floor(procSeconds/60), s = procSeconds%60;
+    document.getElementById('finalTime').textContent = m + ' min ' + s + ' sec';
+    setTimeout(() => {
+      document.getElementById('procScreen').classList.remove('open');
+      document.getElementById('succScreen').classList.add('open');
+    }, 600);
+  }, 11000);
+}
+
+function activeStep(id) { const s = document.getElementById(id); s.classList.add('active'); s.querySelector('.ps-step-icon').textContent = '⚡'; }
+function doneStep(id) { const s = document.getElementById(id); s.classList.remove('active'); s.classList.add('done'); s.querySelector('.ps-step-icon').textContent = '✅'; }
+
+function closeSucc() {
+  document.getElementById('succScreen').classList.remove('open');
+  aSwitch('at-home');
+  showToast('✅ All done! Check notifications tab');
+}
+
+// TOAST
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ===== CREATE SOCIETY =====
+async function createSociety() {
+  var name = document.getElementById('newSocietyName').value.trim();
+  var location = document.getElementById('newSocietyLocation').value.trim();
+  var monthly = document.getElementById('newSocietyMonthly').value;
+  var payout = document.getElementById('newSocietyPayout').value;
+  var funeral = document.getElementById('newSocietyFuneral').value.trim();
+
+  if (!name || !location || !monthly || !payout) {
+    showToast('Please fill in all required fields');
+    return;
+  }
+
+  // Generate unique invite code from society name
+  var words = name.toUpperCase().split(' ');
+  var prefix = words[0].substring(0, 6);
+  var year = new Date().getFullYear();
+  var rand = Math.floor(Math.random() * 900 + 100);
+  var inviteCode = prefix + '-' + rand;
+
+  var societyData = {
+    name: name,
+    location: location,
+    monthlyAmount: parseInt(monthly),
+    payoutAmount: parseInt(payout),
+    funeralPartner: funeral || 'Not set yet',
+    inviteCode: inviteCode,
+    adminName: userData.name || 'Admin',
+    balance: 0,
+    memberCount: 1,
+    status: 'active'
+  };
+
+  try {
+    // Save to Firebase
+    if (window.saveSociety) {
+      var id = await window.saveSociety(societyData);
+      societyData.id = id;
+    }
+
+    userData.societies.push(societyData);
+    closeOverlay('createSocietyOverlay');
+
+    // Hide create banner show real actions
+    var banner = document.getElementById('createSocietyBanner');
+    var actions = document.getElementById('realAdminActions');
+    if (banner) banner.style.display = 'none';
+    if (actions) actions.style.display = 'block';
+
+    showToast('Society created!');
+    setTimeout(function() {
+      showInviteCode(inviteCode, name);
+    }, 500);
+
+  } catch(e) {
+    console.error('Error:', e);
+    closeOverlay('createSocietyOverlay');
+
+    var banner = document.getElementById('createSocietyBanner');
+    var actions = document.getElementById('realAdminActions');
+    if (banner) banner.style.display = 'none';
+    if (actions) actions.style.display = 'block';
+
+    showInviteCode(inviteCode, name);
+  }
+}
+
+// SHOW INVITE CODE TO ADMIN
+function showInviteCode(code, societyName) {
+  // Create a popup showing the invite code
+  var existing = document.getElementById('inviteCodePopup');
+  if (existing) existing.remove();
+
+  var popup = document.createElement('div');
+  popup.id = 'inviteCodePopup';
+  popup.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:800;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);';
+  popup.innerHTML = '<div style="background:white;border-radius:24px;padding:28px 22px;width:100%;max-width:380px;text-align:center;">' +
+    '<div style="font-size:48px;margin-bottom:12px;">🎉</div>' +
+    '<div style="font-family:Playfair Display,serif;font-size:22px;color:#0A2E1A;margin-bottom:6px;">' + societyName + '</div>' +
+    '<div style="color:#7A7A6E;font-size:13px;margin-bottom:20px;">Created successfully! Share this code with your members:</div>' +
+    '<div style="background:#F8F8F8;border:2px dashed #C9A84C;border-radius:16px;padding:20px;margin-bottom:16px;">' +
+    '<div style="color:#7A7A6E;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Your Invite Code</div>' +
+    '<div style="font-family:DM Mono,monospace;font-size:32px;font-weight:700;color:#C9A84C;letter-spacing:4px;">' + code + '</div>' +
+    '</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">' +
+    '<button onclick="copyInviteLink('' + code + '')" style="background:#E8F5E9;color:#2E7D32;border:1px solid #A5D6A7;border-radius:12px;padding:12px;font-weight:700;font-size:13px;cursor:pointer;font-family:DM Sans,sans-serif;">Copy Link</button>' +
+    '<button onclick="shareInviteCode('' + code + '','' + societyName + '')" style="background:#E7FFDB;color:#075E54;border:1px solid #25D366;border-radius:12px;padding:12px;font-weight:700;font-size:13px;cursor:pointer;font-family:DM Sans,sans-serif;">WhatsApp</button>' +
+    '</div>' +
+    '<button onclick="document.getElementById('inviteCodePopup').remove()" style="width:100%;background:linear-gradient(135deg,#C9A84C,#E8C97A);color:#0A2E1A;border:none;border-radius:12px;padding:14px;font-weight:700;font-size:15px;cursor:pointer;font-family:DM Sans,sans-serif;">Done</button>' +
+    '</div>';
+
+  document.body.appendChild(popup);
+}
+
+function copyInviteCode(code) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(code).then(function() {
+      showToast('Code copied: ' + code);
+    });
+  } else {
+    showToast('Your code is: ' + code);
+  }
+}
+
+function copyInviteLink(code) {
+  var link = 'https://umali-app.vercel.app?join=' + code;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(link).then(function() {
+      showToast('Link copied! Share it on WhatsApp');
+    });
+  } else {
+    showToast('Link: ' + link);
+  }
+}
+
+function shareInviteCode(code, societyName) {
+  var msg = 'You have been invited to join ' + societyName + ' on UMali!
+
+Your invite code is: ' + code + '
+
+Download UMali and enter this code to join:
+umali-app.vercel.app
+
+UMali - Burial Society Management';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ===== CHECK INVITE CODE AS USER TYPES =====
+var foundSociety = null;
+
+async function checkInviteCode(code) {
+  var statusEl = document.getElementById('codeStatus');
+  var previewEl = document.getElementById('societyPreview');
+
+  if (code.length < 4) {
+    statusEl.textContent = '';
+    previewEl.style.display = 'none';
+    foundSociety = null;
+    return;
+  }
+
+  statusEl.textContent = 'Searching...';
+  statusEl.style.color = 'rgba(255,255,255,.5)';
+
+  try {
+    if (window.db) {
+      var { getDocs, collection, query, where } = await import('https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js');
+      var q = query(collection(window.db, 'societies'), where('inviteCode', '==', code));
+      var snap = await getDocs(q);
+
+      if (!snap.empty) {
+        var doc = snap.docs[0];
+        foundSociety = { id: doc.id, ...doc.data() };
+
+        // Show preview
+        document.getElementById('previewName').textContent = foundSociety.name;
+        document.getElementById('previewLocation').textContent = foundSociety.location || 'South Africa';
+        document.getElementById('previewMonthly').textContent = 'R' + (foundSociety.monthlyAmount || 0);
+        document.getElementById('previewPayout').textContent = 'Payout: R' + (foundSociety.payoutAmount || 0);
+        document.getElementById('previewFuneral').textContent = foundSociety.funeralPartner || 'No partner yet';
+
+        previewEl.style.display = 'block';
+        statusEl.textContent = 'Society found!';
+        statusEl.style.color = '#4CAF50';
+      } else {
+        foundSociety = null;
+        previewEl.style.display = 'none';
+        if (code.length >= 6) {
+          statusEl.textContent = 'Code not found - check with your admin';
+          statusEl.style.color = '#FF5252';
+        }
+      }
+    }
+  } catch(e) {
+    console.log('Search error:', e);
+  }
+}
+
+// ===== JOIN SOCIETY WITH INVITE CODE =====
+async function joinSociety() {
+  var code = document.getElementById('inviteCode').value.trim().toUpperCase();
+  var idNumber = document.getElementById('memberIdNumber').value.trim();
+  var btn = document.getElementById('joinBtn');
+
+  if (!code) {
+    showToast('Please enter your invite code');
+    return;
+  }
+  if (!idNumber || idNumber.length < 10) {
+    showToast('Please enter your 13-digit SA ID number');
+    return;
+  }
+
+  btn.textContent = 'Joining...';
+  btn.disabled = true;
+
+  try {
+    var society = foundSociety;
+
+    // If not found yet search now
+    if (!society && window.db) {
+      var { getDocs, collection, query, where } = await import('https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js');
+      var q = query(collection(window.db, 'societies'), where('inviteCode', '==', code));
+      var snap = await getDocs(q);
+      if (!snap.empty) {
+        var doc = snap.docs[0];
+        society = { id: doc.id, ...doc.data() };
+      }
+    }
+
+    if (society) {
+      // Save member to Firebase
+      if (window.saveMember) {
+        await window.saveMember({
+          name: userData.name,
+          phone: userData.phone,
+          idNumber: idNumber,
+          societyId: society.id,
+          societyName: society.name,
+          inviteCode: code,
+          monthlyAmount: society.monthlyAmount,
+          payoutAmount: society.payoutAmount,
+          paymentsUpToDate: true
+        });
+      }
+
+      userData.societies.push(society);
+
+      // Show success screen
+      document.getElementById('joinStep1').style.display = 'none';
+      document.getElementById('joinStep2').style.display = 'block';
+      document.getElementById('joinSuccessName').textContent = society.name;
+      document.getElementById('joinSuccessDetails').innerHTML =
+        '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #F0F0F0;"><span style="font-size:12px;color:var(--muted);">Monthly</span><span style="font-weight:700;font-size:12px;">R' + (society.monthlyAmount || 0) + '</span></div>' +
+        '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #F0F0F0;"><span style="font-size:12px;color:var(--muted);">Payout</span><span style="font-weight:700;font-size:12px;color:var(--green-mid);">R' + (society.payoutAmount || 0) + '</span></div>' +
+        '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #F0F0F0;"><span style="font-size:12px;color:var(--muted);">Location</span><span style="font-weight:700;font-size:12px;">' + (society.location || 'SA') + '</span></div>' +
+        '<div style="display:flex;justify-content:space-between;padding:6px 0;"><span style="font-size:12px;color:var(--muted);">Funeral Partner</span><span style="font-weight:700;font-size:12px;">' + (society.funeralPartner || 'Not set') + '</span></div>';
+
+      // Update main dashboard
+      updateSocietyCards(userData.societies);
+      showToast('Welcome to ' + society.name + '!');
+
+    } else {
+      btn.textContent = 'Join Society';
+      btn.disabled = false;
+      showToast('Code not found - check with your admin');
+    }
+
+  } catch(e) {
+    btn.textContent = 'Join Society';
+    btn.disabled = false;
+    console.error('Error joining:', e);
+    showToast('Error - please try again');
+  }
+}
+
+// ===== ADD FAMILY MEMBER =====
+async function addFamilyMember() {
+  var name = document.getElementById('famName').value.trim();
+  var relation = document.getElementById('famRelation').value;
+  var idNum = document.getElementById('famId').value.trim();
+  var cover = document.getElementById('famCover').value;
+
+  if (!name || !idNum || !cover) {
+    showToast('Please fill in all fields');
+    return;
+  }
+
+  try {
+    if (window.db) {
+      var { addDoc, collection } = await import('https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js');
+      await addDoc(collection(window.db, 'familyMembers'), {
+        memberName: userData.name,
+        memberPhone: userData.phone,
+        familyMemberName: name,
+        relationship: relation,
+        idNumber: idNum,
+        coverAmount: parseInt(cover),
+        societyId: userData.societies.length > 0 ? userData.societies[0].id : 'none',
+        addedAt: new Date()
+      });
+    }
+
+    showToast(name + ' added to your cover!');
+    document.getElementById('famName').value = '';
+    document.getElementById('famId').value = '';
+    document.getElementById('famCover').value = '';
+
+  } catch(e) {
+    showToast(name + ' added!');
+    console.error(e);
+  }
+}
+
+// SAVE FUNERAL HOME DETAILS
+async function saveFuneralDetails() {
+  var name = document.getElementById('fhName').value.trim();
+  var phone = document.getElementById('fhPhone').value.trim();
+  var address = document.getElementById('fhAddress').value.trim();
+  var basic = document.getElementById('fhBasic').value;
+  var standard = document.getElementById('fhStandard').value;
+  var premium = document.getElementById('fhPremium').value;
+  var services = document.getElementById('fhServices').value.trim();
+
+  if (!name || !phone || !address) {
+    showToast('Please fill in name, phone and address');
+    return;
+  }
+
+  var details = {
+    name: name,
+    phone: phone,
+    address: address,
+    basicPrice: parseInt(basic) || 0,
+    standardPrice: parseInt(standard) || 0,
+    premiumPrice: parseInt(premium) || 0,
+    services: services,
+    ownerId: window.currentUser ? window.currentUser.uid : 'demo',
+    ownerName: userData.name,
+    commission: '8%',
+    status: 'active',
+    verified: false
+  };
+
+  try {
+    if (window.db) {
+      var { addDoc, collection } = await import('https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js');
+      await addDoc(collection(window.db, 'funeralHomes'), details);
+    }
+
+    closeOverlay('funeralDetailsOverlay');
+    showToast('Details saved! Admins can now find you');
+
+    // Hide banner show real actions
+    var banner = document.getElementById('addFuneralDetailsBanner');
+    var actions = document.getElementById('realFuneralActions');
+    if (banner) banner.style.display = 'none';
+    if (actions) actions.style.display = 'block';
+
+    // Update funeral home name in header
+    var fhTitle = document.querySelector('.hero-blue .tb-logo');
+    if (fhTitle) fhTitle.textContent = name;
+
+  } catch(e) {
+    console.error(e);
+    closeOverlay('funeralDetailsOverlay');
+    showToast('Details saved!');
+    var banner = document.getElementById('addFuneralDetailsBanner');
+    var actions = document.getElementById('realFuneralActions');
+    if (banner) banner.style.display = 'none';
+    if (actions) actions.style.display = 'block';
+  }
+}
+
+// SHOW INVITE LINK POPUP FOR ADMIN
+function showInvitePopup() {
+  if (userData.societies.length === 0) {
+    showToast('Create your society first');
+    openOverlay('createSocietyOverlay');
+    return;
+  }
+  var society = userData.societies[0];
+  var code = society.inviteCode || 'No code yet';
+  showInviteCode(code, society.name);
+}
+
+// INIT
+renderNav('member');
+
+// SETTINGS
+function openSettings() { openOverlay('settingsOverlay'); }
+
+// LEGAL CONTENT
+// Legal pages - now links to legal.html
+function showLegal(page) {
+  // Open legal pages
+  const urls = {
+    about: 'legal.html#about',
+    privacy: 'legal.html#privacy',
+    terms: 'legal.html#terms',
+    nda: 'nda.html'
+  };
+  if (urls[page]) {
+    window.open(urls[page], '_blank');
+  }
+  closeOverlay('settingsOverlay');
+}
+
+function shareNDA() {
+  const msg = `Before our meeting about UMali please review and agree to our NDA:\n\numali-app.vercel.app/nda.html\n\nThis is required before sharing any details about UMali.\n\n— Andisa Shabalala, Founder UMali`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+}
+</script>
+
+<!-- FOOTER -->
+<div class="app-footer" style="display:none;">
+  © 2026 UMali (Pty) Ltd · All rights reserved · umali-app.vercel.app
+</div>
+
+
+<!-- ===== FIREBASE ===== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc, updateDoc, onSnapshot, query, orderBy, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+  // Push messaging handled via browser Notification API
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC4OFkK0w-A9uaDgD0peCD4cq0z6GySIXI",
+    authDomain: "umali-3bcb8.firebaseapp.com",
+    projectId: "umali-3bcb8",
+    storageBucket: "umali-3bcb8.firebasestorage.app",
+    messagingSenderId: "294155035969",
+    appId: "1:294155035969:web:9b21ccbbf91bff48f92dc0"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      window.currentUser = user;
+      console.log("UMali: User signed in:", user.email);
+    } else {
+      window.currentUser = null;
+    }
+  });
+
+  window.registerUser = async function(email, password, name, role) {
+    try {
+      const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      await setDoc(doc(db, "users", userCred.user.uid), { name, email, role, createdAt: new Date(), status: "active" });
+      showToast("✅ Account created!");
+      return userCred.user;
+    } catch(e) {
+      showToast("❌ " + (e.code === "auth/email-already-in-use" ? "Email already registered" : e.message));
+    }
+  };
+
+  window.signInUser = async function(email, password) {
+    try {
+      const c = await signInWithEmailAndPassword(auth, email, password);
+      showToast("✅ Signed in!");
+      return c.user;
+    } catch(e) {
+      showToast("❌ Wrong email or password");
+    }
+  };
+
+  window.signOutUser = async function() {
+    await signOut(auth);
+    document.getElementById("appScreen").classList.remove("active");
+    document.getElementById("loginScreen").classList.add("active");
+    showToast("👋 Signed out");
+  };
+
+  window.saveClaim = async function(data) {
+    try {
+      const ref = await addDoc(collection(db, "claims"), { ...data, filedAt: new Date(), status: "pending" });
+      showToast("📋 Claim saved!");
+      return ref.id;
+    } catch(e) { console.error(e); }
+  };
+
+  window.saveMember = async function(data) {
+    try {
+      const ref = await addDoc(collection(db, "members"), { ...data, joinedAt: new Date() });
+      showToast("✅ Member saved!");
+      return ref.id;
+    } catch(e) { console.error(e); }
+  };
+
+  window.saveContribution = async function(data) {
+    try {
+      await addDoc(collection(db, "contributions"), { ...data, paidAt: new Date() });
+    } catch(e) { console.error(e); }
+  };
+
+  window.db = db;
+  window.auth = auth;
+  window.firebaseReady = true;
+
+  // ===== APPROVE CLAIM =====
+  window.approveClaim = async function(claimId, funeralHome, amount) {
+    try {
+      await updateDoc(doc(db, "claims", claimId), {
+        status: "approved",
+        approvedAt: serverTimestamp(),
+        funeralHome, amount
+      });
+      await addDoc(collection(db, "notifications"), {
+        type: "claim_approved",
+        title: "Funeral Payment Sent",
+        message: "R" + amount + " sent to " + funeralHome + ". Burial arranged. 🕊️",
+        createdAt: serverTimestamp(),
+        read: false
+      });
+    } catch(e) { console.error(e); }
+  };
+
+  // ===== PUSH NOTIFICATIONS =====
+  window.requestPushPermission = async function() {
+    if (!("Notification" in window)) {
+      showToast("❌ Notifications not supported");
+      return;
+    }
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      showToast("🔔 You will now get instant alerts!");
+      localStorage.setItem("umali_notif", "on");
+    } else {
+      showToast("⚠️ Enable notifications in browser settings");
+    }
+  };
+
+  window.showPushNotification = function(title, body) {
+    if (Notification.permission === "granted") {
+      try {
+        new Notification("UMali 🇿🇦 " + title, {
+          body: body,
+          icon: "https://umali-app.vercel.app/favicon.ico",
+          vibrate: [200, 100, 200]
+        });
+      } catch(e) {}
+    }
+  };
+
+  // ===== REAL TIME NOTIFICATIONS =====
+  window.listenToNotifications = function(callback) {
+    try {
+      const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
+      return onSnapshot(q, (snap) => {
+        const notifs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        callback(notifs);
+        const unread = notifs.filter(n => !n.read).length;
+        if (unread > 0) updateNotificationBadge(unread);
+        if (notifs[0] && !notifs[0].read) {
+          window.showPushNotification(notifs[0].title, notifs[0].message);
+        }
+      });
+    } catch(e) { console.error(e); }
+  };
+
+  // ===== SIGN OUT =====
+  window.signOutUser = async function() {
+    try {
+      await signOut(auth);
+      document.getElementById("appScreen").classList.remove("active");
+      document.getElementById("loginScreen").classList.add("active");
+      showToast("👋 Signed out successfully");
+      window.currentUser = null;
+    } catch(e) { console.error(e); }
+  };
+
+  // ===== PASSWORD RESET =====
+  window.sendPasswordResetEmail = sendPasswordResetEmail;
+
+  // Auto request notifications after login
+  setTimeout(() => {
+    if (window.currentUser && Notification && Notification.permission === "default") {
+      if (!localStorage.getItem("umali_notif")) {
+        showToast("🔔 Enable notifications for instant alerts!");
+      }
+    }
+  }, 4000);
+
+  console.log("🔥 UMali Firebase fully connected!");
+  console.log("📍 Database: Johannesburg");
+  console.log("🔔 Push notifications: Ready");
+</script>
+
+</body>
+</html>
