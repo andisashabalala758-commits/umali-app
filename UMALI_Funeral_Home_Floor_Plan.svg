@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="820" viewBox="0 0 1100 820" font-family="Georgia, 'Times New Roman', serif">
+  <!-- Paper background -->
+  <rect x="0" y="0" width="1100" height="820" fill="#F7F5F0"/>
+
+  <!-- Outer frame -->
+  <rect x="20" y="20" width="1060" height="780" fill="none" stroke="#1C2B33" stroke-width="2"/>
+
+  <!-- Title block -->
+  <text x="50" y="58" font-size="24" fill="#1C2B33" font-weight="bold" letter-spacing="0.5">UMALI FUNERAL HOME</text>
+  <text x="50" y="80" font-size="13" fill="#5B6B73">Concept Floor Layout — Duduza, Nigel, Ekurhuleni, Gauteng</text>
+  <line x1="50" y1="92" x2="600" y2="92" stroke="#1C2B33" stroke-width="1"/>
+  <text x="50" y="110" font-size="11" fill="#5B6B73">Approx. 216 m² envelope (18m × 12m) · Single storey · Illustrative concept, not an approved architectural drawing</text>
+
+  <!-- Compass -->
+  <g transform="translate(1000,60)">
+    <circle cx="0" cy="0" r="26" fill="none" stroke="#1C2B33" stroke-width="1.3"/>
+    <line x1="0" y1="-22" x2="0" y2="22" stroke="#1C2B33" stroke-width="1"/>
+    <line x1="-22" y1="0" x2="22" y2="0" stroke="#1C2B33" stroke-width="1"/>
+    <path d="M0,-22 L-5,-8 L5,-8 Z" fill="#1C2B33"/>
+    <text x="0" y="-30" font-size="12" fill="#1C2B33" text-anchor="middle" font-weight="bold">N</text>
+  </g>
+
+  <!-- Drawing area: building envelope. Scale: 40px = 1m. Origin at (150,150) -->
+  <!-- Building outline: 18m x 12m = 720 x 480 px -->
+  <g transform="translate(150,150)">
+
+    <!-- Building outer wall -->
+    <rect x="0" y="0" width="720" height="480" fill="#FFFFFF" stroke="#1C2B33" stroke-width="4"/>
+
+    <!-- ===== FRONT ZONE (public, y 0-200) ===== -->
+    <!-- Reception & Waiting -->
+    <rect x="0" y="0" width="240" height="200" fill="#EAF1EF" stroke="#1C2B33" stroke-width="2"/>
+    <text x="120" y="90" font-size="14" fill="#1C2B33" text-anchor="middle" font-weight="bold">RECEPTION &amp;</text>
+    <text x="120" y="108" font-size="14" fill="#1C2B33" text-anchor="middle" font-weight="bold">WAITING AREA</text>
+    <text x="120" y="128" font-size="11" fill="#5B6B73" text-anchor="middle">6.0m × 5.0m</text>
+
+    <!-- Front Entrance Lobby -->
+    <rect x="240" y="0" width="240" height="200" fill="#F1EEE4" stroke="#1C2B33" stroke-width="2"/>
+    <text x="360" y="95" font-size="14" fill="#1C2B33" text-anchor="middle" font-weight="bold">ENTRANCE LOBBY</text>
+    <text x="360" y="113" font-size="11" fill="#5B6B73" text-anchor="middle">6.0m × 5.0m</text>
+    <!-- Front door marker -->
+    <rect x="345" y="196" width="30" height="8" fill="#1C2B33"/>
+    <text x="360" y="222" font-size="10" fill="#5B6B73" text-anchor="middle">MAIN ENTRANCE</text>
+
+    <!-- Casket Showroom -->
+    <rect x="480" y="0" width="240" height="200" fill="#EAF1EF" stroke="#1C2B33" stroke-width="2"/>
+    <text x="600" y="90" font-size="14" fill="#1C2B33" text-anchor="middle" font-weight="bold">CASKET &amp;</text>
+    <text x="600" y="108" font-size="14" fill="#1C2B33" text-anchor="middle" font-weight="bold">MEMORIAL SHOWROOM</text>
+    <text x="600" y="128" font-size="11" fill="#5B6B73" text-anchor="middle">6.0m × 5.0m</text>
+
+    <!-- ===== MIDDLE ZONE (y 200-320) ===== -->
+    <!-- Family Consultation Office -->
+    <rect x="0" y="200" width="200" height="120" fill="#EAF1EF" stroke="#1C2B33" stroke-width="2"/>
+    <text x="100" y="255" font-size="13" fill="#1C2B33" text-anchor="middle" font-weight="bold">FAMILY</text>
+    <text x="100" y="271" font-size="13" fill="#1C2B33" text-anchor="middle" font-weight="bold">CONSULTATION</text>
+    <text x="100" y="290" font-size="10" fill="#5B6B73" text-anchor="middle">5.0m × 3.0m</text>
+
+    <!-- Central corridor -->
+    <rect x="200" y="200" width="120" height="280" fill="#FBFAF6" stroke="#1C2B33" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="260" y="345" font-size="10" fill="#8A9399" text-anchor="middle" transform="rotate(-90 260 345)">CIRCULATION CORRIDOR</text>
+
+    <!-- CEO / Admin Office -->
+    <rect x="320" y="200" width="160" height="120" fill="#F1EEE4" stroke="#1C2B33" stroke-width="2"/>
+    <text x="400" y="255" font-size="13" fill="#1C2B33" text-anchor="middle" font-weight="bold">ADMIN OFFICE</text>
+    <text x="400" y="271" font-size="10" fill="#5B6B73" text-anchor="middle">4.0m × 3.0m</text>
+
+    <!-- Public + Staff restrooms -->
+    <rect x="480" y="200" width="110" height="120" fill="#EEEAE0" stroke="#1C2B33" stroke-width="2"/>
+    <text x="535" y="250" font-size="11" fill="#1C2B33" text-anchor="middle" font-weight="bold">PUBLIC</text>
+    <text x="535" y="264" font-size="11" fill="#1C2B33" text-anchor="middle" font-weight="bold">RESTROOMS</text>
+    <text x="535" y="282" font-size="10" fill="#5B6B73" text-anchor="middle">2.75m × 3.0m</text>
+
+    <rect x="590" y="200" width="130" height="120" fill="#EEEAE0" stroke="#1C2B33" stroke-width="2"/>
+    <text x="655" y="250" font-size="11" fill="#1C2B33" text-anchor="middle" font-weight="bold">STOREROOM</text>
+    <text x="655" y="266" font-size="9" fill="#5B6B73" text-anchor="middle">(coffin stock,</text>
+    <text x="655" y="279" font-size="9" fill="#5B6B73" text-anchor="middle">supplies)</text>
+    <text x="655" y="296" font-size="10" fill="#5B6B73" text-anchor="middle">3.25m × 3.0m</text>
+
+    <!-- ===== REAR ZONE (restricted + chapel, y 320-480) ===== -->
+    <!-- Chapel / Service Hall -->
+    <rect x="0" y="320" width="320" height="160" fill="#EAF1EF" stroke="#1C2B33" stroke-width="2"/>
+    <text x="160" y="390" font-size="15" fill="#1C2B33" text-anchor="middle" font-weight="bold">CHAPEL / SERVICE HALL</text>
+    <text x="160" y="410" font-size="11" fill="#5B6B73" text-anchor="middle">8.0m × 4.0m · seats ~60</text>
+
+    <!-- Viewing / Repose Room -->
+    <rect x="320" y="320" width="160" height="160" fill="#EFE7E3" stroke="#1C2B33" stroke-width="2"/>
+    <text x="400" y="390" font-size="12" fill="#1C2B33" text-anchor="middle" font-weight="bold">VIEWING /</text>
+    <text x="400" y="406" font-size="12" fill="#1C2B33" text-anchor="middle" font-weight="bold">REPOSE ROOM</text>
+    <text x="400" y="424" font-size="10" fill="#5B6B73" text-anchor="middle">4.0m × 4.0m</text>
+
+    <!-- Restricted zone: Preparation Room + Cold Room -->
+    <rect x="480" y="320" width="120" height="160" fill="#E8DCDC" stroke="#1C2B33" stroke-width="2"/>
+    <text x="540" y="385" font-size="12" fill="#1C2B33" text-anchor="middle" font-weight="bold">PREPARATION</text>
+    <text x="540" y="401" font-size="12" fill="#1C2B33" text-anchor="middle" font-weight="bold">ROOM</text>
+    <text x="540" y="420" font-size="9" fill="#5B6B73" text-anchor="middle">3.0m × 4.0m</text>
+    <text x="540" y="434" font-size="9" fill="#8A5A5A" text-anchor="middle" font-style="italic">restricted access</text>
+
+    <rect x="600" y="320" width="120" height="160" fill="#E8DCDC" stroke="#1C2B33" stroke-width="2"/>
+    <text x="660" y="385" font-size="12" fill="#1C2B33" text-anchor="middle" font-weight="bold">COLD ROOM</text>
+    <text x="660" y="401" font-size="9" fill="#5B6B73" text-anchor="middle">(mortuary storage)</text>
+    <text x="660" y="420" font-size="9" fill="#5B6B73" text-anchor="middle">3.0m × 4.0m</text>
+    <text x="660" y="434" font-size="9" fill="#8A5A5A" text-anchor="middle" font-style="italic">restricted access</text>
+
+    <!-- Rear loading bay door -->
+    <rect x="630" y="476" width="60" height="8" fill="#1C2B33"/>
+    <text x="660" y="502" font-size="10" fill="#5B6B73" text-anchor="middle">DISCREET REAR ACCESS</text>
+
+  </g>
+
+  <!-- Front parking (outside envelope, south of building) -->
+  <g transform="translate(150,650)">
+    <rect x="0" y="0" width="720" height="70" fill="none" stroke="#1C2B33" stroke-width="1.5" stroke-dasharray="6,4"/>
+    <text x="360" y="30" font-size="12" fill="#5B6B73" text-anchor="middle" font-weight="bold">VISITOR PARKING</text>
+    <text x="360" y="48" font-size="10" fill="#8A9399" text-anchor="middle">~8 bays</text>
+  </g>
+
+  <!-- Rear yard / hearse bay (outside envelope, north of building) -->
+  <g transform="translate(700,80)">
+    <rect x="0" y="-10" width="170" height="55" fill="none" stroke="#1C2B33" stroke-width="1.5" stroke-dasharray="6,4"/>
+    <text x="85" y="10" font-size="10" fill="#5B6B73" text-anchor="middle" font-weight="bold">HEARSE BAY /</text>
+    <text x="85" y="24" font-size="10" fill="#5B6B73" text-anchor="middle" font-weight="bold">REAR YARD</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(50,740)">
+    <rect x="0" y="0" width="18" height="14" fill="#EAF1EF" stroke="#1C2B33"/>
+    <text x="24" y="12" font-size="11" fill="#1C2B33">Public / family-facing space</text>
+
+    <rect x="270" y="0" width="18" height="14" fill="#F1EEE4" stroke="#1C2B33"/>
+    <text x="294" y="12" font-size="11" fill="#1C2B33">Admin / operational space</text>
+
+    <rect x="540" y="0" width="18" height="14" fill="#E8DCDC" stroke="#1C2B33"/>
+    <text x="564" y="12" font-size="11" fill="#1C2B33">Restricted access (prep &amp; cold room)</text>
+  </g>
+
+  <!-- Scale bar -->
+  <g transform="translate(870,760)">
+    <line x1="0" y1="0" x2="80" y2="0" stroke="#1C2B33" stroke-width="2"/>
+    <line x1="0" y1="-4" x2="0" y2="4" stroke="#1C2B33" stroke-width="2"/>
+    <line x1="80" y1="-4" x2="80" y2="4" stroke="#1C2B33" stroke-width="2"/>
+    <text x="40" y="-8" font-size="10" fill="#1C2B33" text-anchor="middle">2 metres</text>
+  </g>
+</svg>
